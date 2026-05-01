@@ -1,32 +1,11 @@
+// ARCHIVED — Fonts page v1 (with breadcrumb hero, horizontal filter bar, 32-card grid, pagination)
+// To restore: copy back to src/pages/Fonts.jsx and Fonts.css
+// Archived on: 2026-04-29
 import React, { useState, useRef, useEffect } from 'react';
 import { Bookmark, Download, ChevronDown, Type, RotateCcw, ArrowUpRight } from 'lucide-react';
 import '../components/card-grid/card-grid.css';
 import Pagination from '../components/pagination/Pagination';
 import './Fonts.css';
-
-const TABS = ['All', 'Sans-Serif', 'Serif', 'Display', 'Monospace', 'Handwritten', 'Script', 'Geometric', 'Humanist'];
-
-const PILLS = [
-  { name: 'Sans-Serif', count: '1842' },
-  { name: 'Serif', count: '1203' },
-  { name: 'Display', count: '874' },
-  { name: 'Monospace', count: '312' },
-  { name: 'Handwritten', count: '547' },
-  { name: 'Script', count: '693' },
-  { name: 'Geometric', count: '428' },
-  { name: 'Humanist', count: '376' },
-  { name: 'Slab Serif', count: '284' },
-  { name: 'Condensed', count: '196' },
-  { name: 'Variable', count: '318' },
-  { name: 'Rounded', count: '241' },
-  { name: 'Wide', count: '167' },
-  { name: 'Retro', count: '432' },
-  { name: 'Futuristic', count: '289' },
-  { name: 'Decorative', count: '514' },
-  { name: 'Transitional', count: '193' },
-  { name: 'Bold & Heavy', count: '621' },
-  { name: 'Thin & Light', count: '398' },
-];
 
 const allFontsData = [
   { id: 1, name: 'Grift', bg: '#111111', color: '#ffffff', style: 'sans-serif', display: 'Grift.' },
@@ -100,8 +79,6 @@ const ITEMS_PER_PAGE = 32;
 const Fonts = () => {
   const [hoveredCard, setHoveredCard] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [activeTab, setActiveTab] = useState('All');
-  const [activePill, setActivePill] = useState(null);
   const galleryRef = useRef(null);
 
   const handlePageChange = (page) => {
@@ -136,76 +113,84 @@ const Fonts = () => {
           </div>
         </section>
 
-        {/* ── CATEGORIES PILLS/TABS SECTION ── */}
-        <section className="fonts-categories-section">
-          <div className="fonts-categories-row1">
-            {TABS.map((tab, idx) => (
-              <React.Fragment key={tab}>
-                <button
-                  className={`fonts-tab-btn ${activeTab === tab ? 'active' : ''}`}
-                  onClick={() => setActiveTab(tab)}
-                >
-                  {tab}
-                </button>
-                {idx === 0 && <span className="fonts-tab-divider">|</span>}
-              </React.Fragment>
-            ))}
-          </div>
-
-          <div className="fonts-categories-row2">
-            {PILLS.map((pill) => (
-              <button
-                key={pill.name}
-                className={`fonts-pill-btn ${activePill === pill.name ? 'active' : ''}`}
-                onClick={() => setActivePill(pill.name)}
-              >
-                {pill.name} <span className="pill-count">{pill.count}</span>
-              </button>
-            ))}
-          </div>
-        </section>
-
         {/* ── GALLERY SECTION ── */}
         <section className="fonts-gallery-section" ref={galleryRef}>
-          {/* ── CARDS GRID ── */}
-          <div className="fonts-grid">
-            {paginatedCards.map(card => (
-              <div
-                key={card.id}
-                className="font-card card-container"
-                style={{ background: card.bg }}
-                onMouseEnter={() => setHoveredCard(card.id)}
-                onMouseLeave={() => setHoveredCard(null)}
-              >
-                <span
-                  className="font-card-name"
-                  style={{ color: card.color, fontFamily: card.style === 'script' ? 'Georgia, serif' : card.style === 'serif' ? 'Georgia, Times, serif' : 'inherit' }}
-                >
-                  {card.display}
-                </span>
+          <div className="fonts-gallery-inner">
 
-                {/* Homepage card hover overlay */}
-                <div className="card-overlay">
-                  <div className="card-actions">
-                    <button className="card-action-btn card-action-open">
-                      <ArrowUpRight strokeWidth={2} size={18} /> Open
-                    </button>
-                    <button className="card-action-btn card-action-save">
-                      <Bookmark strokeWidth={2} size={18} /> Save
-                    </button>
+            {/* ── NEW HORIZONTAL FILTER BAR ── */}
+            <div className="fonts-horizontal-filter-bar">
+              <div className="fh-left">
+                <button className="fh-pill">Awards <ChevronDown size={12} color="#555" strokeWidth={2.5} /></button>
+                <button className="fh-pill">Category <ChevronDown size={12} color="#555" strokeWidth={2.5} /></button>
+                <button className="fh-pill">Tag <ChevronDown size={12} color="#555" strokeWidth={2.5} /></button>
+                <button className="fh-pill">Technology <ChevronDown size={12} color="#555" strokeWidth={2.5} /></button>
+                <button className="fh-pill">Country <ChevronDown size={12} color="#555" strokeWidth={2.5} /></button>
+                <button className="fh-pill">
+                  Font <ChevronDown size={12} color="#555" strokeWidth={2.5} />
+                  <Type size={16} className="fh-icon-type" strokeWidth={2} />
+                </button>
+                <button className="fh-pill">
+                  Color <ChevronDown size={12} color="#555" strokeWidth={2.5} />
+                  <div className="fh-color-bars">
+                    <div className="fh-bar fh-bar-1"></div>
+                    <div className="fh-bar fh-bar-2"></div>
+                    <div className="fh-bar fh-bar-3"></div>
+                  </div>
+                </button>
+              </div>
+
+              <div className="fh-right">
+                <div className="fh-badge">0</div>
+                <button className="fh-reset">
+                  <span className="fh-reset-text">Reset filters</span>
+                  <RotateCcw size={16} color="#555" strokeWidth={2} className="fh-reset-icon" />
+                </button>
+              </div>
+            </div>
+
+            <div className="fonts-topbar-divider" />
+
+            {/* ── CARDS GRID ── */}
+            <div className="fonts-grid">
+              {paginatedCards.map(card => (
+                <div
+                  key={card.id}
+                  className="font-card card-container"
+                  style={{ background: card.bg }}
+                  onMouseEnter={() => setHoveredCard(card.id)}
+                  onMouseLeave={() => setHoveredCard(null)}
+                >
+                  <span
+                    className="font-card-name"
+                    style={{ color: card.color, fontFamily: card.style === 'script' ? 'Georgia, serif' : card.style === 'serif' ? 'Georgia, Times, serif' : 'inherit' }}
+                  >
+                    {card.display}
+                  </span>
+
+                  {/* Homepage card hover overlay */}
+                  <div className="card-overlay">
+                    <div className="card-actions">
+                      <button className="card-action-btn card-action-open">
+                        <ArrowUpRight strokeWidth={2} size={18} /> Open
+                      </button>
+                      <button className="card-action-btn card-action-save">
+                        <Bookmark strokeWidth={2} size={18} /> Save
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
 
-          {/* ── PAGINATION ── */}
-          <Pagination
-            totalItems={allFontsData.length}
-            itemsPerPage={ITEMS_PER_PAGE}
-            currentPage={currentPage}
-            onPageChange={handlePageChange}
-          />
+            {/* ── PAGINATION ── */}
+            <Pagination
+              totalItems={allFontsData.length}
+              itemsPerPage={ITEMS_PER_PAGE}
+              currentPage={currentPage}
+              onPageChange={handlePageChange}
+            />
+
+          </div>
         </section>
       </div>
     </div>

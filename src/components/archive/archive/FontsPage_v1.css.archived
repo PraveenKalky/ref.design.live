@@ -1,3 +1,8 @@
+/*
+// ARCHIVED — Fonts page v1 (with breadcrumb hero, horizontal filter bar, 32-card grid, pagination)
+// To restore: copy back to src/pages/Fonts.jsx and Fonts.css
+// Archived on: 2026-04-29
+*/
 .fonts-page {
   width: 100%;
   min-height: 100vh;
@@ -82,137 +87,8 @@
 }
 
 /* ════════════════════════════════════════════
-   CATEGORIES PILLS/TABS SECTION
-════════════════════════════════════════════ */
-.fonts-categories-section {
-  width: 100%;
-  padding: 16px 0 40px 0;
-}
-
-.fonts-categories-row1 {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 24px;
-  flex-wrap: wrap;
-}
-
-.fonts-tab-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: 40px;
-  background: none;
-  border: none;
-  color: #aaa;
-  font-size: 24px;
-  font-family: 'Outfit', sans-serif;
-  font-weight: 500;
-  cursor: pointer;
-  padding: 0;
-  border-radius: 0;
-  transition: color 0.2s ease;
-}
-
-.fonts-tab-btn:hover {
-  color: #111;
-  background: none;
-}
-
-[data-theme="dark"] .fonts-tab-btn:hover {
-  color: #fff;
-  background: none;
-}
-
-.fonts-tab-btn.active {
-  background: none;
-  color: #111;
-  font-weight: 700;
-}
-
-[data-theme="dark"] .fonts-tab-btn.active {
-  background: none;
-  color: #fff;
-  font-weight: 700;
-}
-
-.fonts-tab-divider {
-  color: #ddd;
-  font-size: 16px;
-  user-select: none;
-}
-
-[data-theme="dark"] .fonts-tab-divider {
-  color: #444;
-}
-
-.fonts-categories-row2 {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.fonts-pill-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: 40px;
-  border: 1px solid #e0e0e0;
-  border-radius: 50px;
-  padding: 0 18px;
-  background: white;
-  font-size: 16px;
-  gap: 6px;
-  font-family: 'Outfit', sans-serif;
-  font-weight: 500;
-  color: #333;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.fonts-pill-btn:hover {
-  background: #f5f5f5;
-}
-
-.fonts-pill-btn.active {
-  background: #111;
-  color: white;
-  border-color: #111;
-}
-
-[data-theme="dark"] .fonts-pill-btn {
-  background: #111;
-  border-color: #333;
-  color: #ccc;
-}
-
-[data-theme="dark"] .fonts-pill-btn:hover {
-  background: #222;
-}
-
-[data-theme="dark"] .fonts-pill-btn.active {
-  background: #fff;
-  color: #111;
-  border-color: #fff;
-}
-
-.pill-count {
-  font-size: 12px;
-  color: #999;
-  margin-left: 4px;
-}
-
-.fonts-pill-btn.active .pill-count {
-  color: white;
-}
-
-[data-theme="dark"] .fonts-pill-btn.active .pill-count {
-  color: #111;
-}
-
-/* ════════════════════════════════════════════
    GALLERY SECTION
-════════════════════════════════════════════ */
+   ════════════════════════════════════════════ */
 .fonts-gallery-section {
   width: 100%;
   padding: 0 0 80px;
@@ -224,10 +100,147 @@
   background: transparent;
 }
 
+.fonts-gallery-inner {
+  width: 100%;
+}
+
+/* ── NEW HORIZONTAL FILTER BAR ── */
+.fonts-horizontal-filter-bar {
+  width: 100%;
+  height: 60px;
+  background: #f0f0f0;
+  border-radius: 8px;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 0;
+}
+
+[data-theme="dark"] .fonts-horizontal-filter-bar {
+  background: #222;
+}
+
+.fh-left {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.fh-pill {
+  background: #ffffff;
+  border: none;
+  border-radius: 8px;
+  height: 44px;
+  padding: 0 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #111;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+  font-family: 'Outfit', sans-serif;
+  transition: background 0.2s ease;
+}
+
+.fh-pill:hover {
+  background: #e8e8e8;
+}
+
+[data-theme="dark"] .fh-pill {
+  background: #333;
+  color: #ccc;
+}
+
+[data-theme="dark"] .fh-pill:hover {
+  background: #444;
+}
+
+.fh-icon-type {
+  color: #888;
+}
+
+.fh-color-bars {
+  display: flex;
+  gap: 2px;
+}
+
+.fh-bar {
+  width: 4px;
+  height: 18px;
+  border-radius: 4px;
+}
+
+.fh-bar-1 { background: #c4b5e8; }
+.fh-bar-2 { background: #9b87d4; }
+.fh-bar-3 { background: #7c6bbf; }
+
+.fh-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.fh-badge {
+  background: #FF6B35;
+  color: white;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fh-reset {
+  display: flex;
+  align-items: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: opacity 0.2s ease;
+}
+
+.fh-reset-text {
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #111;
+  margin-left: 10px;
+}
+
+[data-theme="dark"] .fh-reset-text {
+  color: #ccc;
+}
+
+.fh-reset-icon {
+  margin-left: 4px;
+}
+
+.fh-reset:hover {
+  opacity: 0.7;
+}
+
+.fonts-topbar-divider {
+  display: none;
+}
+
+[data-theme="dark"] .fonts-topbar-divider {
+  display: none;
+}
+
 .fonts-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 8px;
+  margin-top: 24px;
 }
 
 /* ── Individual font card ── */
