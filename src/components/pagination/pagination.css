@@ -99,3 +99,14 @@
   background-color: var(--dv-text);
   color: var(--dv-bg);
 }
+
+.pg-dots {
+  color: var(--dv-text-ghost);
+  font-size: 16px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  user-select: none;
+}

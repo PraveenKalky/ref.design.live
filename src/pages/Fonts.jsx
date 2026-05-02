@@ -27,7 +27,7 @@ const PILLS = [
   { name: 'Thin & Light', count: '398' },
 ];
 
-const allFontsData = [
+const initialFontsData = [
   { id: 1, name: 'RITTOKE', author: 'braden', styles: 1, license: 'Free for personal use' },
   { id: 2, name: 'Yorkmade Pro Sans Serif Font', author: 'limitype ✓', styles: 18, license: 'Free for Personal Use' },
   { id: 3, name: 'Pixel Forge', author: 'jerod.maggio', styles: 2, license: 'Free for personal use' },
@@ -62,6 +62,14 @@ const allFontsData = [
   { id: 32, name: 'Nomad', author: 'WanderType', styles: 3, license: 'Free for personal use' },
 ];
 
+const allFontsData = Array.from({ length: 20 }, (_, pageIndex) => 
+  initialFontsData.map(font => ({
+    ...font,
+    id: pageIndex * 32 + font.id,
+    name: pageIndex === 0 ? font.name : `${font.name} ${pageIndex + 1}`
+  }))
+).flat();
+
 const ITEMS_PER_PAGE = 32;
 
 const Fonts = () => {
@@ -86,12 +94,9 @@ const Fonts = () => {
         {/* ── HERO ── */}
         <section className="fonts-hero">
           <div className="fonts-hero-content">
-            <div className="fonts-breadcrumb">
-              All Items &nbsp;»&nbsp; <span className="current">Fonts</span>
-            </div>
             <h1 className="fonts-heading">
-              <span className="dark-text">High-Quality </span>
-              <span className="purple-text">Fonts</span>
+              <span className="dark-text">Every great design starts with <br /> the </span>
+              <span className="purple-text">right font</span>
             </h1>
             <p className="fonts-subtext">
               Set your projects apart with exceptional typography. Explore our range of premium fonts,
