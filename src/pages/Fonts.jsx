@@ -27,7 +27,7 @@ const PILLS = [
   { name: 'Thin & Light', count: '398' },
 ];
 
-const allFontsData = [
+const initialFontsData = [
   { id: 1, name: 'RITTOKE', author: 'braden', styles: 1, license: 'Free for personal use' },
   { id: 2, name: 'Yorkmade Pro Sans Serif Font', author: 'limitype ✓', styles: 18, license: 'Free for Personal Use' },
   { id: 3, name: 'Pixel Forge', author: 'jerod.maggio', styles: 2, license: 'Free for personal use' },
@@ -61,6 +61,14 @@ const allFontsData = [
   { id: 31, name: 'Phantom', author: 'GhostType', styles: 1, license: 'Free for personal use' },
   { id: 32, name: 'Nomad', author: 'WanderType', styles: 3, license: 'Free for personal use' },
 ];
+
+const allFontsData = Array.from({ length: 20 }, (_, pageIndex) => 
+  initialFontsData.map(font => ({
+    ...font,
+    id: pageIndex * 32 + font.id,
+    name: pageIndex === 0 ? font.name : `${font.name} ${pageIndex + 1}`
+  }))
+).flat();
 
 const ITEMS_PER_PAGE = 32;
 
