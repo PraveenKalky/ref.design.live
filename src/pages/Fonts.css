@@ -54,7 +54,7 @@
 .fonts-heading {
   font-family: 'Outfit', sans-serif;
   font-size: clamp(48px, 6vw, 72px);
-  font-weight: 800;
+  font-weight: 500;
   line-height: 1.1;
   margin: 0 0 24px 0;
   letter-spacing: -0.02em;

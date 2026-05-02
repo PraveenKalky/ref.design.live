@@ -94,12 +94,9 @@ const Fonts = () => {
         {/* ── HERO ── */}
         <section className="fonts-hero">
           <div className="fonts-hero-content">
-            <div className="fonts-breadcrumb">
-              All Items &nbsp;»&nbsp; <span className="current">Fonts</span>
-            </div>
             <h1 className="fonts-heading">
-              <span className="dark-text">High-Quality </span>
-              <span className="purple-text">Fonts</span>
+              <span className="dark-text">Every great design starts with <br /> the </span>
+              <span className="purple-text">right font</span>
             </h1>
             <p className="fonts-subtext">
               Set your projects apart with exceptional typography. Explore our range of premium fonts,
