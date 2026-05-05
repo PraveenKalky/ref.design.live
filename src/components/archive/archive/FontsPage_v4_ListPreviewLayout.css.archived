@@ -1,0 +1,378 @@
+/*
+// ARCHIVED — Fonts page v4: Full-width list layout
+// Each row: font name + author meta | large live preview text (overflow hidden) | Download + Add to List buttons
+// Archived on: 2026-05-05
+// To restore: copy back to src/pages/Fonts.jsx and Fonts.css
+*/
+
+.fonts-page {
+  width: 100%;
+  min-height: 100vh;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+}
+
+[data-theme="dark"] .fonts-page {
+  background: #111111;
+}
+
+.fonts-page-wrapper {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+/* ── Hero Section ── */
+.fonts-hero {
+  width: 100%;
+  padding: 100px 0 120px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.fonts-hero-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.fonts-breadcrumb {
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+  color: #888;
+  letter-spacing: 0.05em;
+  margin-bottom: 24px;
+}
+
+.fonts-breadcrumb .current {
+  color: #111;
+  font-weight: 600;
+}
+
+[data-theme="dark"] .fonts-breadcrumb .current {
+  color: #fff;
+}
+
+.fonts-heading {
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(48px, 6vw, 72px);
+  font-weight: 500;
+  line-height: 1.1;
+  margin: 0 0 24px 0;
+  letter-spacing: -0.02em;
+}
+
+.fonts-heading .dark-text {
+  color: #111;
+}
+
+[data-theme="dark"] .fonts-heading .dark-text {
+  color: #fff;
+}
+
+.fonts-heading .purple-text {
+  color: #7b61ff;
+}
+
+.fonts-subtext {
+  font-family: 'Outfit', sans-serif;
+  font-size: 18px;
+  line-height: 1.6;
+  color: #555;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+[data-theme="dark"] .fonts-subtext {
+  color: #aaa;
+}
+
+/* ════════════════════════════════════════════
+   CATEGORIES PILLS/TABS SECTION
+════════════════════════════════════════════ */
+.fonts-categories-section {
+  width: 100%;
+  padding: 16px 0 40px 0;
+}
+
+.fonts-categories-row1 {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.fonts-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  background: none;
+  border: none;
+  color: #aaa;
+  font-size: 24px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+  border-radius: 0;
+  transition: color 0.2s ease;
+}
+
+.fonts-tab-btn:hover {
+  color: #111;
+  background: none;
+}
+
+[data-theme="dark"] .fonts-tab-btn:hover {
+  color: #fff;
+  background: none;
+}
+
+.fonts-tab-btn.active {
+  background: none;
+  color: #111;
+  font-weight: 700;
+}
+
+[data-theme="dark"] .fonts-tab-btn.active {
+  background: none;
+  color: #fff;
+  font-weight: 700;
+}
+
+.fonts-tab-divider {
+  color: #ddd;
+  font-size: 16px;
+  user-select: none;
+}
+
+[data-theme="dark"] .fonts-tab-divider {
+  color: #444;
+}
+
+.fonts-categories-row2 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.fonts-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  border: 1px solid #e0e0e0;
+  border-radius: 50px;
+  padding: 0 18px;
+  background: white;
+  font-size: 16px;
+  gap: 6px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 500;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.fonts-pill-btn:hover {
+  background: #f5f5f5;
+}
+
+.fonts-pill-btn.active {
+  background: #111;
+  color: white;
+  border-color: #111;
+}
+
+[data-theme="dark"] .fonts-pill-btn {
+  background: #111;
+  border-color: #333;
+  color: #ccc;
+}
+
+[data-theme="dark"] .fonts-pill-btn:hover {
+  background: #222;
+}
+
+[data-theme="dark"] .fonts-pill-btn.active {
+  background: #fff;
+  color: #111;
+  border-color: #fff;
+}
+
+.pill-count {
+  font-size: 12px;
+  color: #999;
+  margin-left: 4px;
+}
+
+.fonts-pill-btn.active .pill-count {
+  color: white;
+}
+
+[data-theme="dark"] .fonts-pill-btn.active .pill-count {
+  color: #111;
+}
+
+/* ════════════════════════════════════════════
+   LIST LAYOUT SECTION
+════════════════════════════════════════════ */
+.fonts-gallery-section {
+  width: 100%;
+  padding: 0 0 80px;
+  background: transparent;
+  scroll-margin-top: 112px;
+}
+
+.fonts-gallery-inner {
+  width: 100%;
+}
+
+.fonts-list-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.font-list-row {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 0;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+[data-theme="dark"] .font-list-row {
+  border-bottom-color: #2a2a2a;
+}
+
+/* Left Side */
+.font-info-preview {
+  flex: 0 0 75%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.font-name-title {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: #111;
+  margin: 0;
+}
+
+[data-theme="dark"] .font-name-title {
+  color: #fff;
+}
+
+.font-meta-info {
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+  color: #888;
+  margin: 0;
+}
+
+.font-author {
+  color: #555;
+  font-weight: 500;
+}
+
+[data-theme="dark"] .font-author {
+  color: #aaa;
+}
+
+.font-large-preview {
+  font-family: 'Outfit', sans-serif; /* Fallback, should ideally be the font itself */
+  font-size: clamp(40px, 5vw, 72px);
+  color: #111;
+  font-weight: 400;
+  margin-top: 8px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  letter-spacing: -0.01em;
+}
+
+[data-theme="dark"] .font-large-preview {
+  color: #fff;
+}
+
+/* Right Side */
+.font-actions-section {
+  flex: 0 0 25%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.font-license-text {
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+  color: #999;
+}
+
+.font-btn-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 180px; /* Consistent button width */
+}
+
+.font-action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 24px;
+  border-radius: 50px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.font-action-btn.download {
+  border: 1.5px solid #1a73e8;
+  color: #1a73e8;
+  background: white;
+}
+
+.font-action-btn.download:hover {
+  background: #f1f8ff;
+}
+
+.font-action-btn.add-to-list {
+  border: 1.5px solid #34a853;
+  color: #34a853;
+  background: white;
+}
+
+.font-action-btn.add-to-list:hover {
+  background: #f2faf4;
+}
+
+[data-theme="dark"] .font-action-btn.download,
+[data-theme="dark"] .font-action-btn.add-to-list {
+  background: transparent;
+}
+
+[data-theme="dark"] .font-action-btn.download:hover {
+  background: rgba(26, 115, 232, 0.1);
+}
+
+[data-theme="dark"] .font-action-btn.add-to-list:hover {
+  background: rgba(52, 168, 83, 0.1);
+}
