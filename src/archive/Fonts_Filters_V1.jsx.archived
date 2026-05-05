@@ -1,0 +1,182 @@
+// ARCHIVED — Fonts page v5: Hero, Category Tabs, and Count Pills layout
+// Contains the hero section, the tabs filter (All, Sans-Serif, etc.), and the pill buttons with counts.
+// Archived on: 2026-05-05
+
+import React, { useState, useRef } from 'react';
+import { Bookmark, Download, Plus, ChevronDown, Type, RotateCcw, LayoutGrid, Menu } from 'lucide-react';
+import Pagination from '../components/pagination/Pagination';
+import './Fonts.css';
+
+const TABS = ['All', 'Sans-Serif', 'Serif', 'Display', 'Monospace', 'Handwritten', 'Script', 'Geometric', 'Humanist'];
+
+const PILLS = [
+  { name: 'Sans-Serif', count: '1842' },
+  { name: 'Serif', count: '1203' },
+  { name: 'Display', count: '874' },
+  { name: 'Monospace', count: '312' },
+  { name: 'Handwritten', count: '547' },
+  { name: 'Script', count: '693' },
+  { name: 'Geometric', count: '428' },
+  { name: 'Humanist', count: '376' },
+  { name: 'Slab Serif', count: '284' },
+  { name: 'Condensed', count: '196' },
+  { name: 'Variable', count: '318' },
+  { name: 'Rounded', count: '241' },
+  { name: 'Wide', count: '167' },
+  { name: 'Retro', count: '432' },
+  { name: 'Futuristic', count: '289' },
+  { name: 'Decorative', count: '514' },
+  { name: 'Transitional', count: '193' },
+  { name: 'Bold & Heavy', count: '621' },
+  { name: 'Thin & Light', count: '398' },
+];
+
+const initialFontsData = [
+  { id: 1, name: 'Neue Montreal', badge: 'Update', description: "The only Grotesk you'll ever need.", stylesInfo: "36 styles + Variable cut\nIncluding Italics & Text" },
+  { id: 2, name: 'Neue York Collection', badge: 'New', description: "A layered gothic rooted in the city's rich designs", stylesInfo: "48 styles + Variable cuts" },
+  { id: 3, name: 'Grift', badge: null, description: "Clean geometric sans for modern branding", stylesInfo: "4 styles" },
+  { id: 4, name: 'Cruel Reality', badge: 'New', description: "A high-contrast serif that commands attention", stylesInfo: "3 styles" },
+  { id: 5, name: 'Halfre', badge: null, description: "Minimal display with razor-thin strokes", stylesInfo: "6 styles" },
+  { id: 6, name: 'Kalieb', badge: 'Update', description: "Humanist sans with warm, readable curves", stylesInfo: "2 styles" },
+  { id: 7, name: 'Malibu Sunday', badge: null, description: "Casual grooves meet editorial weight", stylesInfo: "3 styles" },
+  { id: 8, name: 'Pixel Forge', badge: null, description: "Monospace with a retro digital feel", stylesInfo: "2 styles" },
+  { id: 9, name: 'Surgena', badge: 'New', description: "Futuristic condensed for headlines", stylesInfo: "5 styles" },
+  { id: 10, name: 'Atlas', badge: 'Update', description: "Mapping-inspired geometric sans", stylesInfo: "2 styles" },
+  { id: 11, name: 'Titan', badge: null, description: "Ultra-bold display for maximum impact", stylesInfo: "5 styles" },
+  { id: 12, name: 'Phantom', badge: 'New', description: "Ghostly high-contrast serif", stylesInfo: "1 style" },
+];
+
+const allFontsData = Array.from({ length: 6 }, (_, pageIndex) => 
+  initialFontsData.map(font => ({
+    ...font,
+    id: pageIndex * 12 + font.id,
+    name: pageIndex === 0 ? font.name : `${font.name} ${pageIndex + 1}`
+  }))
+).flat().slice(0, 62);
+
+const ITEMS_PER_PAGE = 12;
+
+const Fonts = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [activeTab, setActiveTab] = useState('All');
+  const [activePill, setActivePill] = useState(null);
+  const galleryRef = useRef(null);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    if (galleryRef.current) {
+      galleryRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const paginatedCards = allFontsData.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+
+  return (
+    <div className="fonts-page">
+      <div className="fonts-page-wrapper">
+        {/* ── HERO ── */}
+        <section className="fonts-hero">
+          <div className="fonts-hero-content">
+            <h1 className="fonts-heading">
+              <span className="dark-text">Every great design starts with <br /> the </span>
+              <span className="purple-text">right font</span>
+            </h1>
+            <p className="fonts-subtext">
+              Set your projects apart with exceptional typography. Explore our range of premium fonts,
+              from statement text to subtle body copy; we have it all to capture the mood for your project.
+            </p>
+          </div>
+        </section>
+
+        {/* ── CATEGORIES PILLS/TABS SECTION ── */}
+        <section className="fonts-categories-section">
+          <div className="fonts-categories-row1">
+            {TABS.map((tab, idx) => (
+              <React.Fragment key={tab}>
+                <button
+                  className={`fonts-tab-btn ${activeTab === tab ? 'active' : ''}`}
+                  onClick={() => setActiveTab(tab)}
+                >
+                  {tab}
+                </button>
+                {idx === 0 && <span className="fonts-tab-divider">|</span>}
+              </React.Fragment>
+            ))}
+          </div>
+
+          <div className="fonts-categories-row2">
+            {PILLS.map((pill) => (
+              <button
+                key={pill.name}
+                className={`fonts-pill-btn ${activePill === pill.name ? 'active' : ''}`}
+                onClick={() => setActivePill(pill.name)}
+              >
+                {pill.name} <span className="pill-count">{pill.count}</span>
+              </button>
+            ))}
+          </div>
+        </section>
+
+        {/* ── LIST LAYOUT SECTION ── */}
+        <section className="fonts-gallery-section" ref={galleryRef}>
+          <div className="fonts-gallery-inner">
+            
+            <div className="font-controls-bar">
+              <span className="top-bar-title">Our newest fonts</span>
+              
+              <span className="top-bar-count">Showing {ITEMS_PER_PAGE} of {allFontsData.length} fonts</span>
+              
+              <div className="font-controls-right">
+                <div className="font-view-toggle">
+                  <span className="toggle-text"><LayoutGrid size={16} /> Card view</span>
+                  <span className="toggle-text active"><Menu size={16} /> List view</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="fonts-cards-container">
+              {paginatedCards.map(font => (
+                <div key={font.id} className="font-card">
+                  <div className="font-card-top">
+                    <div className="card-top-left">
+                      <h3 className="font-card-name">{font.name}</h3>
+                      {font.badge && (
+                        <span className={`font-badge ${font.badge.toLowerCase()}`}>
+                          {font.badge}
+                        </span>
+                      )}
+                    </div>
+                    
+                    <div className="card-top-center">
+                      <p className="font-card-desc">{font.description}</p>
+                    </div>
+                    
+                    <div className="card-top-right">
+                      <p className="font-card-styles">{font.stylesInfo}</p>
+                      <button className="font-check-out-btn">Check it out</button>
+                    </div>
+                  </div>
+                  
+                  <div className="font-card-preview">
+                    AaBbCcDdEeFfGg
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* ── PAGINATION ── */}
+            <Pagination
+              totalItems={allFontsData.length}
+              itemsPerPage={ITEMS_PER_PAGE}
+              currentPage={currentPage}
+              onPageChange={handlePageChange}
+            />
+          </div>
+        </section>
+      </div>
+    </div>
+  );
+};
+
+export default Fonts;

@@ -1,3 +1,7 @@
+/* ARCHIVED — Fonts page v5: Hero, Category Tabs, and Count Pills layout */
+/* Contains the hero section, the tabs filter (All, Sans-Serif, etc.), and the pill buttons with counts. */
+/* Archived on: 2026-05-05 */
+
 .fonts-page {
   width: 100%;
   min-height: 100vh;
@@ -8,10 +12,6 @@
 
 [data-theme="dark"] .fonts-page {
   background: #111111;
-}
-
-.fonts-page .filter-bar-container {
-  border-bottom: none;
 }
 
 .fonts-page-wrapper {
@@ -89,7 +89,134 @@
   color: #aaa;
 }
 
+/* ════════════════════════════════════════════
+   CATEGORIES PILLS/TABS SECTION
+════════════════════════════════════════════ */
+.fonts-categories-section {
+  width: 100%;
+  padding: 16px 0 40px 0;
+}
 
+.fonts-categories-row1 {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.fonts-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  background: none;
+  border: none;
+  color: #aaa;
+  font-size: 24px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+  border-radius: 0;
+  transition: color 0.2s ease;
+}
+
+.fonts-tab-btn:hover {
+  color: #111;
+  background: none;
+}
+
+[data-theme="dark"] .fonts-tab-btn:hover {
+  color: #fff;
+  background: none;
+}
+
+.fonts-tab-btn.active {
+  background: none;
+  color: #111;
+  font-weight: 700;
+}
+
+[data-theme="dark"] .fonts-tab-btn.active {
+  background: none;
+  color: #fff;
+  font-weight: 700;
+}
+
+.fonts-tab-divider {
+  color: #ddd;
+  font-size: 16px;
+  user-select: none;
+}
+
+[data-theme="dark"] .fonts-tab-divider {
+  color: #444;
+}
+
+.fonts-categories-row2 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.fonts-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  border: 1px solid #e0e0e0;
+  border-radius: 50px;
+  padding: 0 18px;
+  background: white;
+  font-size: 16px;
+  gap: 6px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 500;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.fonts-pill-btn:hover {
+  background: #f5f5f5;
+}
+
+.fonts-pill-btn.active {
+  background: #111;
+  color: white;
+  border-color: #111;
+}
+
+[data-theme="dark"] .fonts-pill-btn {
+  background: #111;
+  border-color: #333;
+  color: #ccc;
+}
+
+[data-theme="dark"] .fonts-pill-btn:hover {
+  background: #222;
+}
+
+[data-theme="dark"] .fonts-pill-btn.active {
+  background: #fff;
+  color: #111;
+  border-color: #fff;
+}
+
+.pill-count {
+  font-size: 12px;
+  color: #999;
+  margin-left: 4px;
+}
+
+.fonts-pill-btn.active .pill-count {
+  color: white;
+}
+
+[data-theme="dark"] .fonts-pill-btn.active .pill-count {
+  color: #111;
+}
 
 /* ════════════════════════════════════════════
    LIST LAYOUT SECTION
@@ -147,7 +274,7 @@
 .top-bar-count {
   font-family: 'Outfit', sans-serif;
   color: #999;
-  font-size: 16px;
+  font-size: 14px;
   white-space: nowrap;
 }
 
@@ -156,7 +283,7 @@
   align-items: center;
   gap: 6px;
   font-family: 'Outfit', sans-serif;
-  font-size: 16px;
+  font-size: 14px;
   color: #111;
   white-space: nowrap;
   cursor: pointer;
@@ -187,18 +314,9 @@
 
 .font-card {
   background: #f2f2f0;
-  border-radius: 0 !important;
+  border-radius: 12px;
   padding: 20px 24px 0 24px;
   overflow: hidden;
-  height: 310px;
-  transition: background 0.25s ease, color 0.25s ease;
-  display: flex;
-  flex-direction: column;
-}
-
-.font-card:hover {
-  background: #000;
-  color: #fff;
 }
 
 [data-theme="dark"] .font-card {
@@ -221,14 +339,9 @@
 .font-card-name {
   font-family: 'Outfit', sans-serif;
   font-weight: 700;
-  font-size: 20px;
+  font-size: 16px;
   color: #111;
   margin: 0;
-  transition: color 0.25s ease;
-}
-
-.font-card:hover .font-card-name {
-  color: #fff;
 }
 
 [data-theme="dark"] .font-card-name {
@@ -260,7 +373,6 @@
   text-align: left;
   display: flex;
   align-items: center;
-  position: relative;
 }
 
 .font-card-desc {
@@ -268,11 +380,6 @@
   font-size: 14px;
   color: #888;
   margin: 0;
-  transition: color 0.25s ease;
-}
-
-.font-card:hover .font-card-desc {
-  opacity: 0;
 }
 
 .card-top-right {
@@ -280,7 +387,7 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 12px;
+  gap: 32px;
 }
 
 .font-card-styles {
@@ -291,39 +398,20 @@
   text-align: right;
   margin: 0;
   line-height: 1.4;
-  transition: opacity 0.25s ease;
-  margin-right: auto; /* Pushes the buttons to the right, wait, flex-end aligns all to right. */
-}
-
-.font-card:hover .font-card-styles {
-  opacity: 0;
 }
 
 .font-check-out-btn {
   font-family: 'Outfit', sans-serif;
   border: 1.5px solid #ccc;
-  border-radius: 0;
+  border-radius: 50px;
   padding: 8px 20px;
   font-size: 13px;
   background: white;
   color: #111;
   cursor: pointer;
   font-weight: 500;
-  transition: all 0.25s ease;
+  transition: all 0.2s ease;
   white-space: nowrap;
-}
-
-.font-check-out-btn.icon-only {
-  padding: 8px 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.font-card:hover .font-check-out-btn {
-  border-color: #fff;
-  color: #000;
-  background: #fff;
 }
 
 .font-check-out-btn:hover {
@@ -340,137 +428,16 @@
   border-color: #fff;
 }
 
-/* ── HOVER CONTROLS BAR ── */
-.font-card-hover-controls {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 32px;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.25s ease;
-  position: absolute;
-  top: 50%;
-  left: -20px;
-  transform: translateY(-50%);
-}
-
-.font-card:hover .font-card-hover-controls {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.fchc-widgets {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-}
-
-.fchc-dropdown {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: #1a1a1a;
-  color: #fff;
-  border: 1px solid #333;
-  border-radius: 0;
-  padding: 4px 10px;
-  font-family: 'Outfit', sans-serif;
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.fchc-slider {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: #888;
-  font-family: 'Outfit', sans-serif;
-  font-size: 18px;
-}
-
-.fchc-slider span {
-  width: 64px;
-}
-
-.fchc-slider-input {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 150px;
-  height: 4px;
-  background: #333;
-  outline: none;
-  border-radius: 0;
-  margin: 0;
-}
-
-.fchc-slider-input::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: #000;
-  border: 3px solid #fff;
-  cursor: pointer;
-}
-
-.fchc-slider-input::-moz-range-thumb {
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: #000;
-  border: 3px solid #fff;
-  cursor: pointer;
-}
-
 .font-card-preview {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: clamp(100px, 14vw, 200px);
+  font-weight: 700;
   color: #111;
   white-space: nowrap;
   overflow: hidden;
   line-height: 1;
   padding: 16px 0 8px 0;
   letter-spacing: -0.02em;
-  transition: color 0.25s ease;
-  position: relative;
-  display: block;
-}
-
-.preview-default {
-  font-size: clamp(100px, 14vw, 200px);
-  font-weight: 700;
-  display: block;
-  transition: opacity 0.25s ease;
-}
-
-.preview-hover {
-  font-size: clamp(36px, 5vw, 64px);
-  font-weight: 600;
-  position: absolute;
-  top: 50%;
-  left: 0;
-  transform: translateY(-50%);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.25s ease;
-  white-space: normal;
-  line-height: 1.1;
-  width: 100%;
-}
-
-.font-card:hover .preview-default {
-  opacity: 0;
-}
-
-.font-card:hover .preview-hover {
-  opacity: 1;
-}
-
-.font-card:hover .font-card-preview {
-  color: #fff;
 }
 
 [data-theme="dark"] .font-card-preview {
