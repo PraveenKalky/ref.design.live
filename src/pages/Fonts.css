@@ -749,7 +749,8 @@
 }
 
 .grid-view .font-card-name {
-  font-size: 18px;
+  font-size: 24px;
+  line-height: 1.2;
   margin-bottom: 0;
 }
 
@@ -757,16 +758,18 @@
   font-size: 13px;
   color: #888;
   white-space: pre-line;
+  text-align: left;
 }
 
 .grid-view .font-card:hover .font-card-styles {
   color: #ccc;
+  opacity: 1;
 }
 
 /* Badge positioning */
 .grid-view .font-badge {
   position: absolute;
-  top: 24px;
+  top: 26px; /* Vertically align with the 24px text */
   right: 24px;
   margin: 0;
   font-size: 11px;
@@ -843,20 +846,33 @@
   bottom: 24px;
   left: 24px;
   right: 24px;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
 }
 
 .grid-view .font-card:hover .font-check-out-btn {
   display: flex;
+  align-items: center;
+  justify-content: center;
   background: #fff;
   color: #000;
-  border: 1px solid #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0 24px;
+  height: 48px;
+  font-size: 16px;
+  font-weight: 600;
+  flex: 1; /* Expand to fill available space */
+}
+
+.grid-view .font-card:hover .font-check-out-btn.icon-only {
+  padding: 0;
+  flex: 0 0 48px;
+  width: 48px;
 }
 
 [data-theme="dark"] .grid-view .font-card:hover .font-check-out-btn {
-  background: #222;
-  color: #fff;
-  border-color: #333;
+  background: #fff;
+  color: #000;
 }
