@@ -265,10 +265,10 @@
 
 .font-card-desc {
   font-family: 'Outfit', sans-serif;
-  font-size: 14px;
+  font-size: 16px;
   color: #888;
   margin: 0;
-  transition: color 0.25s ease;
+  transition: opacity 0.5s cubic-bezier(0.25, 1, 0.5, 1), color 0.3s ease;
 }
 
 .font-card:hover .font-card-desc {
@@ -285,13 +285,13 @@
 
 .font-card-styles {
   font-family: 'Outfit', sans-serif;
-  font-size: 13px;
+  font-size: 16px;
   color: #888;
   white-space: pre-line;
   text-align: right;
   margin: 0;
   line-height: 1.4;
-  transition: opacity 0.25s ease;
+  transition: opacity 0.5s cubic-bezier(0.25, 1, 0.5, 1);
   margin-right: auto; /* Pushes the buttons to the right, wait, flex-end aligns all to right. */
 }
 
@@ -304,7 +304,7 @@
   border: 1.5px solid #ccc;
   border-radius: 0;
   padding: 8px 20px;
-  font-size: 13px;
+  font-size: 16px;
   background: transparent;
   color: #111;
   cursor: pointer;
@@ -348,17 +348,18 @@
   gap: 32px;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.5s cubic-bezier(0.25, 1, 0.5, 1), transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(calc(-50% + 12px), -50%);
+  transform: translate(-50%, -50%) scale(0.95);
+  z-index: 10;
 }
 
 .font-card:hover .font-card-hover-controls {
   opacity: 1;
   pointer-events: auto;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) scale(1);
 }
 
 .fchc-widgets {
@@ -377,7 +378,7 @@
   border-radius: 0;
   padding: 8px 16px;
   font-family: 'Outfit', sans-serif;
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 500;
   cursor: pointer;
   white-space: nowrap;
@@ -532,4 +533,330 @@
 
 [data-theme="dark"] .font-card-preview {
   color: #fff;
+}
+
+/* ── GLOBAL PREVIEW BAR ── */
+.global-preview-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+  width: 100%;
+}
+
+.gpb-left {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  position: relative;
+  padding-right: 48px; /* Room for the chevron */
+  border-bottom: 1px solid #e6e6e6;
+  padding-bottom: 16px;
+  transition: border-color 0.2s ease;
+}
+
+.gpb-left:focus-within {
+  border-bottom-color: #3B5BFF;
+}
+
+[data-theme="dark"] .gpb-left {
+  border-bottom: 1px solid #333;
+}
+
+[data-theme="dark"] .gpb-left:focus-within {
+  border-bottom-color: #3B5BFF;
+}
+
+.gpb-input {
+  width: 100%;
+  border: none;
+  background: transparent;
+  font-family: 'Outfit', sans-serif;
+  font-size: 18px;
+  color: #333;
+  outline: none;
+  font-weight: 400;
+}
+
+[data-theme="dark"] .gpb-input {
+  color: #fff;
+}
+
+.gpb-input::placeholder {
+  color: #a0a0a0;
+  font-weight: 400;
+}
+
+.gpb-chevron {
+  position: absolute;
+  right: 0;
+  bottom: 16px; /* Align with the text since padding-bottom was added */
+  color: #666;
+  cursor: pointer;
+}
+
+.gpb-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: 48px;
+  padding-bottom: 16px; /* Match padding to keep baseline alignment */
+}
+
+.gpb-label {
+  font-family: 'Outfit', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #000;
+  white-space: nowrap;
+}
+
+[data-theme="dark"] .gpb-label {
+  color: #fff;
+}
+
+.gpb-slider-wrap {
+  position: relative;
+  width: 100px;
+  display: flex;
+  align-items: center;
+}
+
+.gpb-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 2px;
+  background: #ccc; /* Default right track */
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+
+[data-theme="dark"] .gpb-slider {
+  background: #444;
+}
+
+.gpb-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fff;
+  border: 1.5px solid #000;
+  cursor: pointer;
+  position: relative;
+  z-index: 2;
+}
+
+[data-theme="dark"] .gpb-slider::-webkit-slider-thumb {
+  border: 1.5px solid #fff;
+  background: #111;
+}
+
+.gpb-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #fbfbfb;
+  border: 1px solid #e6e6e6;
+  border-top: none;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.05);
+  z-index: 100;
+  overflow: hidden;
+}
+
+[data-theme="dark"] .gpb-dropdown {
+  background: #222;
+  border-color: #333;
+}
+
+.gpb-dropdown-item {
+  padding: 16px 24px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 18px;
+  color: #333;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+[data-theme="dark"] .gpb-dropdown-item {
+  color: #ddd;
+}
+
+.gpb-dropdown-item:hover {
+  background-color: #ffd1fb; /* Specific light pink hover state matching design */
+}
+
+[data-theme="dark"] .gpb-dropdown-item:hover {
+  background-color: rgba(255, 209, 251, 0.2);
+}
+
+/* ── GRID VIEW (CARD VIEW) ── */
+.fonts-cards-container.grid-view {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.grid-view .font-card {
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  height: 400px;
+  background: #efefef;
+  border-radius: 8px;
+  position: relative;
+  transition: all 0.3s ease;
+  overflow: visible;
+  justify-content: space-between;
+  border: none;
+}
+
+[data-theme="dark"] .grid-view .font-card {
+  background: #1a1a1a;
+}
+
+.grid-view .font-card:hover {
+  background: #000;
+  color: #fff;
+}
+
+[data-theme="dark"] .grid-view .font-card:hover {
+  background: #000;
+  box-shadow: 0 0 0 1px #333;
+}
+
+/* Hide List-specific elements */
+.grid-view .card-top-center,
+.grid-view .font-check-out-btn {
+  display: none;
+}
+
+/* Adjust card top layout */
+.grid-view .font-card-top {
+  display: block;
+}
+
+.grid-view .card-top-left {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.grid-view .font-card-name {
+  font-size: 18px;
+  margin-bottom: 0;
+}
+
+.grid-view .font-card-styles {
+  font-size: 13px;
+  color: #888;
+  white-space: pre-line;
+}
+
+.grid-view .font-card:hover .font-card-styles {
+  color: #ccc;
+}
+
+/* Badge positioning */
+.grid-view .font-badge {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  margin: 0;
+  font-size: 11px;
+  padding: 4px 12px;
+  border-radius: 12px;
+  z-index: 2;
+  font-weight: 600;
+}
+
+.grid-view .font-badge.update {
+  background: #ffb800;
+  color: #000;
+}
+
+.grid-view .font-badge.new {
+  background: #ff4400;
+  color: #fff;
+}
+
+/* Adjust Preview Area */
+.grid-view .font-card-preview {
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0;
+  margin-top: 24px;
+  position: static;
+  overflow: hidden;
+}
+
+.grid-view .preview-default {
+  font-size: 160px;
+  line-height: 1;
+  text-align: center;
+  transition: opacity 0.3s ease;
+  word-break: break-all;
+  overflow: hidden;
+  max-height: 100%;
+}
+
+.grid-view .font-card:hover .preview-default {
+  opacity: 0;
+  display: none;
+}
+
+.grid-view .preview-hover {
+  display: none;
+  font-size: 26px !important; 
+  line-height: 1.3;
+  text-align: center;
+  align-self: center;
+  padding: 0 16px;
+  margin-bottom: 40px; /* Space for the absolute buttons */
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-height: 240px;
+  overflow: hidden;
+}
+
+.grid-view .font-card:hover .preview-hover {
+  display: block;
+  opacity: 1;
+}
+
+/* Hover Buttons (Download & Save) */
+.grid-view .card-top-right {
+  display: none;
+}
+
+.grid-view .font-card:hover .card-top-right {
+  display: flex;
+  position: absolute;
+  bottom: 24px;
+  left: 24px;
+  right: 24px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.grid-view .font-card:hover .font-check-out-btn {
+  display: flex;
+  background: #fff;
+  color: #000;
+  border: 1px solid #fff;
+}
+
+[data-theme="dark"] .grid-view .font-card:hover .font-check-out-btn {
+  background: #222;
+  color: #fff;
+  border-color: #333;
 }
