@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Bookmark, Download, Plus, ChevronDown, ChevronUp, X, Type, RotateCcw, LayoutGrid, Menu, Maximize2, MoveHorizontal } from 'lucide-react';
 import Pagination from '../components/pagination/Pagination';
 import '../components/filter-bar/filter-bar.css';
@@ -30,15 +30,22 @@ const initialFontsData = [
   { id: 8, name: "Telegraph", description: "A sturdy workhorse with character.", stylesInfo: "16 styles\nIncluding Italics", category: "Sans-Serif" },
 ];
 
-const FontCard = ({ font }) => {
+const FontCard = ({ font, globalText, globalFontSize, viewMode }) => {
   const [fontSize, setFontSize] = useState(48);
   const [letterSpacing, setLetterSpacing] = useState(0);
+
+  useEffect(() => {
+    if (globalFontSize !== undefined) {
+      setFontSize(globalFontSize);
+    }
+  }, [globalFontSize]);
 
   return (
     <div className="font-card">
       <div className="font-card-top">
         <div className="card-top-left">
           <h3 className="font-card-name">{font.name}</h3>
+          {viewMode === 'grid' && <p className="font-card-styles">{font.stylesInfo}</p>}
           {font.badge && (
             <span className={`font-badge ${font.badge.toLowerCase()}`}>
               {font.badge}
@@ -52,7 +59,7 @@ const FontCard = ({ font }) => {
           <div className="font-card-hover-controls">
             <div className="fchc-widgets">
               <div className="fchc-dropdown">
-                Cond Bold <ChevronDown size={18} />
+                Cond Bold <ChevronDown size={20} />
               </div>
               <div className="fchc-slider-group">
                 <div className="fchc-slider-label">Font Size</div>
@@ -66,7 +73,7 @@ const FontCard = ({ font }) => {
                     className="fchc-slider-input" 
                   />
                 </div>
-                <button className="slider-undo-btn" onClick={() => setFontSize(48)}>
+                <button type="button" className="slider-undo-btn" onClick={(e) => { e.preventDefault(); e.stopPropagation(); setFontSize(48); }}>
                   <RotateCcw size={16} />
                 </button>
               </div>
@@ -76,7 +83,7 @@ const FontCard = ({ font }) => {
                   <div className="tracking-center-tick"></div>
                   <input 
                     type="range" 
-                    min="-0.1" 
+                    min="-0.5" 
                     max="0.5" 
                     step="0.01"
                     value={letterSpacing} 
@@ -84,7 +91,7 @@ const FontCard = ({ font }) => {
                     className="fchc-slider-input" 
                   />
                 </div>
-                <button className="slider-undo-btn" onClick={() => setLetterSpacing(0)}>
+                <button type="button" className="slider-undo-btn" onClick={(e) => { e.preventDefault(); e.stopPropagation(); setLetterSpacing(0); }}>
                   <RotateCcw size={16} />
                 </button>
               </div>
@@ -93,16 +100,18 @@ const FontCard = ({ font }) => {
         </div>
         
         <div className="card-top-right">
-          <p className="font-card-styles">{font.stylesInfo}</p>
+          {viewMode === 'list' && <p className="font-card-styles">{font.stylesInfo}</p>}
           <button className="font-check-out-btn">Download</button>
-          <button className="font-check-out-btn icon-only"><Bookmark size={16} /></button>
+          <button className="font-check-out-btn icon-only"><Bookmark size={20} /></button>
         </div>
       </div>
       
       <div className="font-card-preview">
-        <span className="preview-default">AaBbCcDdEeFfGg</span>
+        <span className="preview-default">
+          {globalText && globalText.trim() !== '' ? globalText : (viewMode === 'grid' ? "Aa" : "AaBbCcDdEeFfGg")}
+        </span>
         <span className="preview-hover" style={{ fontSize: `${fontSize}px`, letterSpacing: `${letterSpacing}em` }}>
-          Six javelins thrown by the quick savages whizzed forty paces beyond the mark.
+          {globalText && globalText.trim() !== '' ? globalText : "Six javelins thrown by the quick savages whizzed forty paces beyond the mark."}
         </span>
       </div>
     </div>
@@ -119,13 +128,39 @@ const allFontsData = Array.from({ length: 6 }, (_, pageIndex) =>
 
 const ITEMS_PER_PAGE = 12;
 
+const PRESET_TEXTS = [
+  "Almost before we know it, we had left the ground.",
+  "The quick brown fox jumps over the lazy dog.",
+  "When zombies arrive, quickly fax judge Pat.",
+  "Crazy Fredericka bought many very exquisite opal jewels.",
+  "Voix ambiguë d'un cœur qui au zéphyr préfère les jattes..."
+];
+
 const Fonts = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const galleryRef = useRef(null);
 
   const [activeTab, setActiveTab] = useState('popular');
   const [isExpanded, setIsExpanded] = useState(true);
-  const [selectedCategories, setSelectedCategories] = useState(['Sans-Serif']);
+  const [selectedCategories, setSelectedCategories] = useState([]);
+
+  const [globalText, setGlobalText] = useState("");
+  const [globalFontSize, setGlobalFontSize] = useState(48);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [viewMode, setViewMode] = useState('list');
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const toggleCategory = (cat) => {
     setSelectedCategories(prev =>
@@ -253,15 +288,83 @@ const Fonts = () => {
               
               <div className="font-controls-right">
                 <div className="font-view-toggle">
-                  <span className="toggle-text"><LayoutGrid size={20} /> Card view</span>
-                  <span className="toggle-text active"><Menu size={20} /> List view</span>
+                  <span 
+                    className={`toggle-text ${viewMode === 'grid' ? 'active' : ''}`}
+                    onClick={() => setViewMode('grid')}
+                  >
+                    <LayoutGrid size={20} /> Card view
+                  </span>
+                  <span 
+                    className={`toggle-text ${viewMode === 'list' ? 'active' : ''}`}
+                    onClick={() => setViewMode('list')}
+                  >
+                    <Menu size={20} /> List view
+                  </span>
                 </div>
               </div>
             </div>
 
-            <div className="fonts-cards-container">
+            <div className="global-preview-bar">
+              <div className="gpb-left" ref={dropdownRef}>
+                <input 
+                  type="text" 
+                  className="gpb-input" 
+                  placeholder="Type your text here...."
+                  value={globalText}
+                  onChange={(e) => setGlobalText(e.target.value)}
+                />
+                {isDropdownOpen ? (
+                  <ChevronUp 
+                    className="gpb-chevron" 
+                    size={20} 
+                    onClick={() => setIsDropdownOpen(false)} 
+                  />
+                ) : (
+                  <ChevronDown 
+                    className="gpb-chevron" 
+                    size={20} 
+                    onClick={() => setIsDropdownOpen(true)} 
+                  />
+                )}
+
+                {isDropdownOpen && (
+                  <div className="gpb-dropdown">
+                    {PRESET_TEXTS.map((text, i) => (
+                      <div 
+                        key={i} 
+                        className="gpb-dropdown-item"
+                        onClick={() => {
+                          setGlobalText(text);
+                          setIsDropdownOpen(false);
+                        }}
+                      >
+                        {text}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+              <div className="gpb-right">
+                <span className="gpb-label">Font size</span>
+                <div className="gpb-slider-wrap">
+                  <input 
+                    type="range" 
+                    min="24" 
+                    max="120" 
+                    value={globalFontSize}
+                    onChange={(e) => setGlobalFontSize(Number(e.target.value))}
+                    className="gpb-slider" 
+                    style={{
+                      background: `linear-gradient(to right, #3B5BFF 0%, #3B5BFF ${(globalFontSize - 24) / (120 - 24) * 100}%, #e0e0e0 ${(globalFontSize - 24) / (120 - 24) * 100}%, #e0e0e0 100%)`
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className={`fonts-cards-container ${viewMode === 'grid' ? 'grid-view' : ''}`}>
               {paginatedCards.map(font => (
-                <FontCard key={font.id} font={font} />
+                <FontCard key={font.id} font={font} globalText={globalText} globalFontSize={globalFontSize} viewMode={viewMode} />
               ))}
             </div>
 

@@ -24,16 +24,46 @@ const NavbarTabs = () => {
     const containerRef = useRef(null);
     const linksRef    = useRef({});
 
-    // Sync active pill position whenever activeLink changes
+    // Sync active pill position whenever activeLink changes, window resizes, or fonts load
     useLayoutEffect(() => {
+        const updatePill = () => {
+            const node = linksRef.current[activeLink];
+            if (node) {
+                setPillStyle({
+                    left:   `${node.offsetLeft}px`,
+                    width:  `${node.offsetWidth}px`,
+                    height: `${node.offsetHeight}px`,
+                });
+            }
+        };
+
+        updatePill();
+
+        // Fallback for when web fonts load and change text width
+        if (document.fonts) {
+            document.fonts.ready.then(updatePill);
+        }
+
+        const resizeObserver = new ResizeObserver(() => {
+            updatePill();
+        });
+
+        const container = containerRef.current;
+        if (container) {
+            resizeObserver.observe(container);
+        }
+        
         const node = linksRef.current[activeLink];
         if (node) {
-            setPillStyle({
-                left:   `${node.offsetLeft}px`,
-                width:  `${node.offsetWidth}px`,
-                height: `${node.offsetHeight}px`,
-            });
+            resizeObserver.observe(node);
         }
+
+        window.addEventListener('resize', updatePill);
+
+        return () => {
+            resizeObserver.disconnect();
+            window.removeEventListener('resize', updatePill);
+        };
     }, [activeLink]);
 
     // Sync active tab with URL
