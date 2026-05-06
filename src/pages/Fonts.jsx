@@ -54,30 +54,39 @@ const FontCard = ({ font }) => {
               <div className="fchc-dropdown">
                 Cond Bold <ChevronDown size={18} />
               </div>
-              <div className="fchc-slider">
-                <Maximize2 size={18} />
-                <input 
-                  type="range" 
-                  min="24" 
-                  max="120" 
-                  value={fontSize} 
-                  onChange={(e) => setFontSize(e.target.value)}
-                  className="fchc-slider-input" 
-                />
-                <span>{fontSize}px</span>
+              <div className="fchc-slider-group">
+                <div className="fchc-slider-label">Font Size</div>
+                <div className="fchc-slider-track-wrap">
+                  <input 
+                    type="range" 
+                    min="24" 
+                    max="120" 
+                    value={fontSize} 
+                    onChange={(e) => setFontSize(e.target.value)}
+                    className="fchc-slider-input" 
+                  />
+                </div>
+                <button className="slider-undo-btn" onClick={() => setFontSize(48)}>
+                  <RotateCcw size={16} />
+                </button>
               </div>
-              <div className="fchc-slider">
-                <MoveHorizontal size={18} />
-                <input 
-                  type="range" 
-                  min="-0.1" 
-                  max="0.5" 
-                  step="0.01"
-                  value={letterSpacing} 
-                  onChange={(e) => setLetterSpacing(e.target.value)}
-                  className="fchc-slider-input" 
-                />
-                <span>{letterSpacing}em</span>
+              <div className="fchc-slider-group">
+                <div className="fchc-slider-label">Tracking</div>
+                <div className="fchc-slider-track-wrap">
+                  <div className="tracking-center-tick"></div>
+                  <input 
+                    type="range" 
+                    min="-0.1" 
+                    max="0.5" 
+                    step="0.01"
+                    value={letterSpacing} 
+                    onChange={(e) => setLetterSpacing(e.target.value)}
+                    className="fchc-slider-input" 
+                  />
+                </div>
+                <button className="slider-undo-btn" onClick={() => setLetterSpacing(0)}>
+                  <RotateCcw size={16} />
+                </button>
               </div>
             </div>
           </div>
