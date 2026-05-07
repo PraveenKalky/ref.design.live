@@ -31,7 +31,7 @@ const initialFontsData = [
 ];
 
 const FontCard = ({ font, globalText, globalFontSize, viewMode }) => {
-  const [fontSize, setFontSize] = useState(48);
+  const [fontSize, setFontSize] = useState(globalFontSize || 120);
   const [letterSpacing, setLetterSpacing] = useState(0);
 
   useEffect(() => {
@@ -140,7 +140,7 @@ const Fonts = () => {
   const [selectedCategories, setSelectedCategories] = useState([]);
 
   const [globalText, setGlobalText] = useState("");
-  const [globalFontSize, setGlobalFontSize] = useState(48);
+  const [globalFontSize, setGlobalFontSize] = useState(64);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [viewMode, setViewMode] = useState('list');
   const dropdownRef = useRef(null);
@@ -355,15 +355,23 @@ const Fonts = () => {
                   <input 
                     type="range" 
                     min="24" 
-                    max="120" 
+                    max="200" 
                     value={globalFontSize}
                     onChange={(e) => setGlobalFontSize(Number(e.target.value))}
                     className="gpb-slider" 
                     style={{
-                      background: `linear-gradient(to right, #3B5BFF 0%, #3B5BFF ${(globalFontSize - 24) / (120 - 24) * 100}%, #e0e0e0 ${(globalFontSize - 24) / (120 - 24) * 100}%, #e0e0e0 100%)`
+                      background: `linear-gradient(to right, #3B5BFF 0%, #3B5BFF ${(globalFontSize - 24) / (200 - 24) * 100}%, #e0e0e0 ${(globalFontSize - 24) / (200 - 24) * 100}%, #e0e0e0 100%)`
                     }}
                   />
                 </div>
+                <button 
+                  type="button" 
+                  className="slider-undo-btn gpb-undo-btn" 
+                  onClick={() => setGlobalFontSize(64)}
+                  title="Reset Font Size"
+                >
+                  <RotateCcw size={16} />
+                </button>
               </div>
             </div>
 
