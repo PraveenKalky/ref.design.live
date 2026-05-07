@@ -20,14 +20,14 @@ const FONT_CATEGORY_COUNTS = {
 };
 
 const initialFontsData = [
-  { id: 1, name: "Neue Montreal", description: "The only Grotesk you'll ever need.", stylesInfo: "36 styles + Variable cut\nIncluding Italics & Text", category: "Sans-Serif", badge: "Update", isVariable: true },
-  { id: 2, name: "PP Fragment", description: "Classic serifs with a contemporary twist.", stylesInfo: "32 styles + Variable cut\nIncluding Italic & Bold", category: "Serif", badge: "New", isVariable: true },
-  { id: 3, name: "Right Grotesk", description: "Neutral, but not boring.", stylesInfo: "130 styles + Variable cut\nCompact to Wide", category: "Sans-Serif", isVariable: true },
-  { id: 4, name: "Mori", description: "A versatile gothic sans-serif.", stylesInfo: "16 styles\nIncluding Italics", category: "Sans-Serif" },
-  { id: 5, name: "Pangram Sans", description: "The geometric workhorse.", stylesInfo: "28 styles + Variable cut\nIncluding Rounded", category: "Geometric", isVariable: true },
-  { id: 6, name: "Formula", description: "A highly versatile display font.", stylesInfo: "20 styles\nIncluding Condensed", category: "Display" },
-  { id: 7, name: "Editorial New", description: "Elegant retro editorial serif.", stylesInfo: "16 styles + Variable cut\nIncluding Italics", category: "Serif", badge: "Update", isVariable: true },
-  { id: 8, name: "Telegraph", description: "A sturdy workhorse with character.", stylesInfo: "16 styles\nIncluding Italics", category: "Sans-Serif" },
+  { id: 1, name: "Neue Montreal", description: "The only Grotesk you'll ever need.", stylesInfo: "36 styles + Variable cut\nIncluding Italics & Text", category: "Sans-Serif", badge: "Update", isVariable: true, googleFont: "'Inter', sans-serif" },
+  { id: 2, name: "PP Fragment", description: "Classic serifs with a contemporary twist.", stylesInfo: "32 styles + Variable cut\nIncluding Italic & Bold", category: "Serif", badge: "New", isVariable: true, googleFont: "'Playfair Display', serif" },
+  { id: 3, name: "Right Grotesk", description: "Neutral, but not boring.", stylesInfo: "130 styles + Variable cut\nCompact to Wide", category: "Sans-Serif", isVariable: true, googleFont: "'Space Grotesk', sans-serif" },
+  { id: 4, name: "Mori", description: "A versatile gothic sans-serif.", stylesInfo: "16 styles\nIncluding Italics", category: "Sans-Serif", googleFont: "'Gothic A1', sans-serif" },
+  { id: 5, name: "Pangram Sans", description: "The geometric workhorse.", stylesInfo: "28 styles + Variable cut\nIncluding Rounded", category: "Geometric", isVariable: true, googleFont: "'Plus Jakarta Sans', sans-serif" },
+  { id: 6, name: "Formula", description: "A highly versatile display font.", stylesInfo: "20 styles\nIncluding Condensed", category: "Display", googleFont: "'Bebas Neue', sans-serif" },
+  { id: 7, name: "Editorial New", description: "Elegant retro editorial serif.", stylesInfo: "16 styles + Variable cut\nIncluding Italics", category: "Serif", badge: "Update", isVariable: true, googleFont: "'Newsreader', serif" },
+  { id: 8, name: "Telegraph", description: "A sturdy workhorse with character.", stylesInfo: "16 styles\nIncluding Italics", category: "Sans-Serif", googleFont: "'Work Sans', sans-serif" },
 ];
 
 const FontCard = ({ font, globalText, globalFontSize, viewMode }) => {
@@ -107,10 +107,10 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode }) => {
       </div>
       
       <div className="font-card-preview">
-        <span className="preview-default">
+        <span className="preview-default" style={{ fontFamily: font.googleFont }}>
           {globalText && globalText.trim() !== '' ? globalText : (viewMode === 'grid' ? "Aa" : "AaBbCcDdEeFfGg")}
         </span>
-        <span className="preview-hover" style={{ fontSize: `${fontSize}px`, letterSpacing: `${letterSpacing}em` }}>
+        <span className="preview-hover" style={{ fontSize: `${fontSize}px`, letterSpacing: `${letterSpacing}em`, fontFamily: font.googleFont }}>
           {globalText && globalText.trim() !== '' ? globalText : "Six javelins thrown by the quick savages whizzed forty paces beyond the mark."}
         </span>
       </div>
@@ -118,15 +118,10 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode }) => {
   );
 };
 
-const allFontsData = Array.from({ length: 6 }, (_, pageIndex) => 
-  initialFontsData.map(font => ({
-    ...font,
-    id: pageIndex * 12 + font.id,
-    name: pageIndex === 0 ? font.name : `${font.name} ${pageIndex + 1}`
-  }))
-).flat().slice(0, 62);
+// No massive dummy array needed in memory!
+// We'll dynamically generate exactly the 32 cards needed per page.
 
-const ITEMS_PER_PAGE = 12;
+const ITEMS_PER_PAGE = 32;
 
 const PRESET_TEXTS = [
   "Almost before we know it, we had left the ground.",
@@ -188,7 +183,17 @@ const Fonts = () => {
   };
 
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const paginatedCards = allFontsData.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  
+  // Dynamically compute only the cards for the current page
+  const paginatedCards = Array.from({ length: ITEMS_PER_PAGE }).map((_, i) => {
+    const globalIndex = startIndex + i;
+    const baseFont = initialFontsData[globalIndex % initialFontsData.length];
+    return {
+      ...baseFont,
+      id: globalIndex + 1,
+      name: globalIndex < initialFontsData.length ? baseFont.name : `${baseFont.name} ${Math.floor(globalIndex / initialFontsData.length) + 1}`
+    };
+  });
 
   return (
     <div className="fonts-page">
@@ -284,7 +289,7 @@ const Fonts = () => {
           <div className="fonts-gallery-inner">
             
             <div className="font-controls-bar">
-              <span className="top-bar-count">Showing {ITEMS_PER_PAGE} of {allFontsData.length} fonts</span>
+              <span className="top-bar-count">Showing {ITEMS_PER_PAGE} of 3200 fonts</span>
               
               <div className="font-controls-right">
                 <div className="font-view-toggle">
@@ -362,7 +367,7 @@ const Fonts = () => {
               </div>
             </div>
 
-            <div className={`fonts-cards-container ${viewMode === 'grid' ? 'grid-view' : ''}`}>
+            <div key={currentPage} className={`fonts-cards-container ${viewMode === 'grid' ? 'grid-view' : ''}`}>
               {paginatedCards.map(font => (
                 <FontCard key={font.id} font={font} globalText={globalText} globalFontSize={globalFontSize} viewMode={viewMode} />
               ))}
@@ -370,7 +375,8 @@ const Fonts = () => {
 
             {/* ── PAGINATION ── */}
             <Pagination
-              totalItems={allFontsData.length}
+              totalItems={3200} // Faking 100 pages (100 * 32 items)
+
               itemsPerPage={ITEMS_PER_PAGE}
               currentPage={currentPage}
               onPageChange={handlePageChange}
