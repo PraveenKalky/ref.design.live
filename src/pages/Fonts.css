@@ -201,11 +201,15 @@
   background: #f2f2f0;
   border-radius: 0 !important;
   padding: 20px 24px;
-  overflow: hidden;
+  overflow: hidden !important;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   height: 310px;
   transition: background 0.25s ease, color 0.25s ease;
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
 }
 
 .font-card:hover {
@@ -497,38 +501,54 @@
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   color: #111;
   white-space: nowrap;
-  overflow: hidden;
+  overflow: hidden !important;
   line-height: 1;
-  padding: 0;
+  padding: 0 0 16px 0; /* Vertical spacing only; horizontal inherited from .font-card */
+  margin: 0;
   letter-spacing: -0.02em;
   transition: color 0.25s ease;
   position: relative;
   display: flex;
   flex: 1;
-  align-items: center;
+  align-items: flex-end;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .preview-default {
-  font-size: clamp(100px, 14vw, 200px);
+  font-size: clamp(100px, 12vw, 180px);
   font-weight: 700;
   display: block;
   transition: opacity 0.25s ease;
-  flex-shrink: 0;
+  flex-shrink: 1;
+  white-space: nowrap;
+  overflow: hidden !important;
+  max-width: 100%;
+  width: 100%;
+  text-align: left;
 }
 
 .preview-hover {
-  font-size: clamp(36px, 5vw, 64px);
-  font-weight: 600;
+  font-size: clamp(32px, 4vw, 80px);
+  font-weight: 500;
   position: absolute;
   top: 50%;
   left: 0;
+  width: 100%;
   transform: translateY(-50%);
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.25s ease;
   white-space: normal;
-  line-height: 1.1;
-  width: 100%;
+  line-height: 1.2;
+  padding: 0; /* No extra padding needed */
+  box-sizing: border-box;
+  max-height: 220px;
+  overflow: hidden;
+  text-align: left;
+  letter-spacing: -0.01em;
 }
 
 .font-card:hover .preview-default {
@@ -629,7 +649,7 @@
 
 .gpb-slider-wrap {
   position: relative;
-  width: 100px;
+  width: 200px;
   display: flex;
   align-items: center;
 }
@@ -660,6 +680,20 @@
   cursor: pointer;
   position: relative;
   z-index: 2;
+}
+
+.gpb-undo-btn {
+  margin-left: 4px;
+  color: #666; /* Fix invisible white icon */
+}
+.gpb-undo-btn:hover {
+  color: #000;
+}
+[data-theme="dark"] .gpb-undo-btn {
+  color: #aaa;
+}
+[data-theme="dark"] .gpb-undo-btn:hover {
+  color: #fff;
 }
 
 [data-theme="dark"] .gpb-slider::-webkit-slider-thumb {
@@ -722,9 +756,10 @@
   border-radius: 8px;
   position: relative;
   transition: all 0.3s ease;
-  overflow: visible;
+  overflow: hidden; /* Changed from visible to hidden */
   justify-content: space-between;
   border: none;
+  max-width: 100%;
 }
 
 [data-theme="dark"] .grid-view .font-card {
@@ -815,14 +850,13 @@
 }
 
 .grid-view .preview-default {
-  font-size: 160px;
+  font-size: clamp(140px, 20vw, 220px);
   line-height: 1;
   text-align: center;
   transition: opacity 0.3s ease;
-  word-break: break-all;
   overflow: hidden;
   max-height: 100%;
-  white-space: normal;
+  white-space: nowrap;
 }
 
 .grid-view .font-card:hover .preview-default {
