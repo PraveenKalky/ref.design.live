@@ -295,8 +295,26 @@ const SearchOverlay = ({ isOpen, onClose }) => {
   const [query, setQuery] = useState('');
   const [activeTab, setActiveTab] = useState('web');
   const [activeSidebar, setActiveSidebar] = useState('page-types');
+  const [hoveredItemName, setHoveredItemName] = useState(null);
+  const [isClosing, setIsClosing] = useState(false);
+  const [shouldRender, setShouldRender] = useState(isOpen);
   const inputRef = useRef(null);
   const overlayRef = useRef(null);
+
+  useEffect(() => {
+    if (isOpen) {
+      setShouldRender(true);
+      setIsClosing(false);
+    } else if (shouldRender) {
+      // Start closing animation
+      setIsClosing(true);
+      const timer = setTimeout(() => {
+        setShouldRender(false);
+        setIsClosing(false);
+      }, 300); // match CSS duration
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen, shouldRender]);
 
   useEffect(() => {
     if (isOpen && inputRef.current) {
@@ -328,15 +346,23 @@ const SearchOverlay = ({ isOpen, onClose }) => {
     };
   }, [isOpen]);
 
-  const handleBackdropClick = (e) => {
-    if (e.target === overlayRef.current) onClose();
+  const handleClose = () => {
+    setIsClosing(true);
+    const timer = setTimeout(() => {
+      onClose();
+      setIsClosing(false);
+    }, 300);
   };
 
-  if (!isOpen) return null;
+  const handleBackdropClick = (e) => {
+    if (e.target === overlayRef.current) handleClose();
+  };
+
+  if (!shouldRender && !isOpen) return null;
 
   return createPortal(
-    <div className="so-backdrop" ref={overlayRef} onClick={handleBackdropClick}>
-      <div className="so-container">
+    <div className={`so-backdrop ${isClosing ? 'closing' : ''}`} ref={overlayRef} onClick={handleBackdropClick}>
+      <div className={`so-container ${isClosing ? 'closing' : ''}`}>
 
         <div className="so-topbar">
           <div className="so-topbar-left">
@@ -351,7 +377,7 @@ const SearchOverlay = ({ isOpen, onClose }) => {
             />
           </div>
           <div className="so-topbar-right">
-            <button className="so-close" onClick={onClose} title="Close"><X size={28} /></button>
+            <button className="so-close" onClick={handleClose} title="Close"><X size={28} /></button>
           </div>
         </div>
 
@@ -389,12 +415,23 @@ const SearchOverlay = ({ isOpen, onClose }) => {
                   <div key={section.title || idx} className="so-section">
                     {section.title && <h3 className="so-section-title">{section.title}</h3>}
                     <div className="so-grid">
-                      {section.items.map((item) => (
-                        <a key={item.name} href="#" className="so-grid-item" onClick={(e) => e.preventDefault()}>
-                          <span className="so-item-name">{item.name}</span>
-                          <span className="so-item-count">{item.count.toLocaleString()}</span>
-                        </a>
-                      ))}
+                      {section.items.map((item) => {
+                        const isHovered = hoveredItemName === item.name;
+                        const isDimmed = hoveredItemName !== null && hoveredItemName !== item.name;
+                        return (
+                          <a 
+                            key={item.name} 
+                            href="#" 
+                            className={`so-grid-item ${isDimmed ? 'dimmed' : ''} ${isHovered ? 'hovered' : ''}`}
+                            onMouseEnter={() => setHoveredItemName(item.name)}
+                            onMouseLeave={() => setHoveredItemName(null)}
+                            onClick={(e) => e.preventDefault()}
+                          >
+                            <span className="so-item-name">{item.name}</span>
+                            <span className="so-item-count">{item.count.toLocaleString()}</span>
+                          </a>
+                        );
+                      })}
                     </div>
                   </div>
                 ))
