@@ -296,36 +296,74 @@ const SearchOverlay = ({ isOpen, onClose }) => {
   const [activeTab, setActiveTab] = useState('web');
   const [activeSidebar, setActiveSidebar] = useState('page-types');
   const [hoveredItemName, setHoveredItemName] = useState(null);
-  const [isClosing, setIsClosing] = useState(false);
-  const [shouldRender, setShouldRender] = useState(isOpen);
-  const inputRef = useRef(null);
-  const overlayRef = useRef(null);
-
-  useEffect(() => {
-    if (isOpen) {
-      setShouldRender(true);
-      setIsClosing(false);
-    } else if (shouldRender) {
-      // Start closing animation
-      setIsClosing(true);
-      const timer = setTimeout(() => {
-        setShouldRender(false);
-        setIsClosing(false);
-      }, 300); // match CSS duration
-      return () => clearTimeout(timer);
-    }
-  }, [isOpen, shouldRender]);
+  const [suggestions, setSuggestions] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
+  // No longer needed: shouldRender and isClosing are removed for instant transitions
 
   useEffect(() => {
     if (isOpen && inputRef.current) {
       setTimeout(() => inputRef.current.focus(), 100);
     }
-    if (!isOpen) setQuery('');
+    if (!isOpen) {
+      setQuery('');
+      setSuggestions([]);
+    }
   }, [isOpen]);
+
+  // Debounced search logic for suggestions
+  useEffect(() => {
+    if (!query.trim()) {
+      setSuggestions([]);
+      return;
+    }
+
+    setIsSearching(true);
+    const timer = setTimeout(() => {
+      // Mock suggestions based on query
+      const websites = [
+        { id: 1, name: 'Vivid Money', subtitle: 'Style in websites', type: 'website', domain: 'vivid.money', count: '4,089 results' },
+        { id: 2, name: 'Big Type', subtitle: 'Style in websites', type: 'website', domain: 'bigtype.com', count: '1,156 results' },
+        { id: 3, name: 'Linear', subtitle: 'Style in websites', type: 'website', domain: 'linear.app', count: '2,934 results' },
+      ].filter(s => s.name.toLowerCase().includes(query.toLowerCase()));
+
+      const sections = [
+        { id: 4, name: 'DM Sans', subtitle: 'Style in sections', type: 'font', count: '891 results' },
+        { id: 5, name: 'Onboarding Flow', subtitle: 'Style in sections', type: 'flow', count: '1,243 results' },
+      ].filter(s => s.name.toLowerCase().includes(query.toLowerCase()));
+
+      const other = [
+        { id: 'search', name: query, subtitle: 'Text in title or website url', type: 'other' }
+      ];
+      
+      setSuggestions({
+        Websites: websites,
+        Sections: sections,
+        Other: other
+      });
+      setIsSearching(false);
+    }, 200);
+
+    return () => clearTimeout(timer);
+  }, [query]);
+
+  // Helper to highlight matching text
+  const highlightMatch = (text, q) => {
+    if (!q) return text;
+    const parts = text.split(new RegExp(`(${q})`, 'gi'));
+    return (
+      <>
+        {parts.map((part, i) => 
+          part.toLowerCase() === q.toLowerCase() ? <b key={i}>{part}</b> : part
+        )}
+      </>
+    );
+  };
 
   useEffect(() => {
     const handleKey = (e) => {
-      if (e.key === 'Escape' && isOpen) onClose();
+      if (e.key === 'Escape' && isOpen) {
+        onClose();
+      }
     };
     window.addEventListener('keydown', handleKey);
     return () => window.removeEventListener('keydown', handleKey);
@@ -338,7 +376,7 @@ const SearchOverlay = ({ isOpen, onClose }) => {
       document.body.classList.add('search-open');
     } else {
       document.body.style.overflow = '';
-      document.body.classList.remove('search-open');
+      // We no longer remove search-open here; it's handled in onTransitionEnd
     }
     return () => { 
       document.body.style.overflow = '';
@@ -347,22 +385,32 @@ const SearchOverlay = ({ isOpen, onClose }) => {
   }, [isOpen]);
 
   const handleClose = () => {
-    setIsClosing(true);
-    const timer = setTimeout(() => {
-      onClose();
-      setIsClosing(false);
-    }, 300);
+    onClose();
+  };
+
+  const inputRef = useRef(null);
+  const overlayRef = useRef(null);
+
+  const handleTransitionEnd = (e) => {
+    // Only cleanup when closing (isOpen is false) and the backdrop itself finishes transitioning
+    if (!isOpen && e.target === overlayRef.current) {
+      document.body.classList.remove('search-open');
+    }
   };
 
   const handleBackdropClick = (e) => {
     if (e.target === overlayRef.current) handleClose();
   };
 
-  if (!shouldRender && !isOpen) return null;
-
+  // Always render portal to avoid remount flicker, use CSS for visibility
   return createPortal(
-    <div className={`so-backdrop ${isClosing ? 'closing' : ''}`} ref={overlayRef} onClick={handleBackdropClick}>
-      <div className={`so-container ${isClosing ? 'closing' : ''}`}>
+    <div 
+      className={`so-backdrop ${isOpen ? 'is-open' : ''}`} 
+      ref={overlayRef} 
+      onClick={handleBackdropClick}
+      onTransitionEnd={handleTransitionEnd}
+    >
+      <div className={`so-container ${isOpen ? 'is-open' : ''}`}>
 
         <div className="so-topbar">
           <div className="so-topbar-left">
@@ -375,6 +423,45 @@ const SearchOverlay = ({ isOpen, onClose }) => {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
             />
+
+            {/* ── Suggestions Dropdown ── */}
+            {Object.values(suggestions).some(arr => arr.length > 0) && (
+              <div className="so-suggestions">
+                {Object.entries(suggestions).map(([section, items]) => (
+                  items.length > 0 && (
+                    <div key={section} className="so-sug-section">
+                      <div className="so-sug-header">{section}</div>
+                      {items.map((sug) => (
+                        <a key={sug.id} href="#" className="so-suggestion-row" onClick={(e) => e.preventDefault()}>
+                          <div className="so-sug-icon-wrap">
+                            {sug.type === 'website' ? (
+                              <img src={`https://www.google.com/s2/favicons?domain=${sug.domain}&sz=64`} alt="" />
+                            ) : sug.type === 'font' ? (
+                              <Type size={22} />
+                            ) : sug.type === 'flow' ? (
+                              <Activity size={22} />
+                            ) : (
+                              <Search size={22} />
+                            )}
+                          </div>
+                          <div className="so-sug-center">
+                            <span className="so-sug-name">{highlightMatch(sug.name, query)}</span>
+                            <span className="so-sug-subtitle">{sug.subtitle}</span>
+                          </div>
+                          <div className="so-sug-right">
+                            {sug.type === 'other' ? (
+                              <span className="so-enter-pill">Enter</span>
+                            ) : (
+                              <span className="so-sug-count">{sug.count}</span>
+                            )}
+                          </div>
+                        </a>
+                      ))}
+                    </div>
+                  )
+                ))}
+              </div>
+            )}
           </div>
           <div className="so-topbar-right">
             <button className="so-close" onClick={handleClose} title="Close"><X size={28} /></button>
