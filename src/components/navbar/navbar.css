@@ -12,7 +12,11 @@
     border-bottom: 1px solid rgba(0,0,0,0.06);
     display: flex;
     align-items: center;
-    transition: background var(--transition-smooth), border-color var(--transition-smooth);
+    transition: 
+        background var(--transition-smooth), 
+        border-color var(--transition-smooth),
+        opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+        transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 body.search-open .navbar-header {

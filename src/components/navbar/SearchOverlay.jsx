@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { Search, X, ChevronRight, Layout, Activity, Component, Layers, Grid, Type } from 'lucide-react';
 import './search-overlay.css';
@@ -291,98 +291,14 @@ const TAB_CONTENT = {
   ],
 };
 
-/* ── Flat searchable index built from all TAB_CONTENT ── */
-const buildSearchIndex = () => {
-  const index = [];
-  const typeMap = {
-    'fonts': 'Font',
-    'categories': 'Website',
-    'flows': 'Flow',
-    'ui-elements': 'UI Component',
-    'ux-patterns': 'UI Component',
-    'page-types': 'Page Type',
-  };
-  Object.entries(TAB_CONTENT).forEach(([tabId, sections]) => {
-    const type = typeMap[tabId] || 'Result';
-    sections.forEach(section => {
-      section.items.forEach(item => {
-        index.push({ name: item.name, type, count: item.count, tabId });
-      });
-    });
-  });
-  return index;
-};
-
-const SEARCH_INDEX = buildSearchIndex();
-
-/* Priority order for result types */
-const TYPE_PRIORITY = { 'Font': 1, 'Website': 2, 'Flow': 3, 'UI Component': 4, 'Page Type': 5 };
-
-function getSuggestions(query) {
-  if (!query || query.trim().length === 0) return [];
-  const q = query.trim().toLowerCase();
-
-  // Always first: Semantic Search row
-  const suggestions = [
-    { name: query.trim(), type: 'Semantic Search', isSemantic: true },
-  ];
-
-  // Fuzzy match: starts-with scores higher than contains
-  const matches = SEARCH_INDEX.filter(item =>
-    item.name.toLowerCase().includes(q)
-  ).map(item => ({
-    ...item,
-    score: item.name.toLowerCase().startsWith(q) ? 0 : 1,
-  }));
-
-  // Sort by score then type priority
-  matches.sort((a, b) => {
-    if (a.score !== b.score) return a.score - b.score;
-    return (TYPE_PRIORITY[a.type] || 9) - (TYPE_PRIORITY[b.type] || 9);
-  });
-
-  // Deduplicate by name+type, take top 5
-  const seen = new Set();
-  for (const m of matches) {
-    const key = `${m.type}:${m.name}`;
-    if (!seen.has(key)) {
-      seen.add(key);
-      suggestions.push(m);
-      if (suggestions.length >= 6) break;
-    }
-  }
-
-  return suggestions;
-}
-
 const SearchOverlay = ({ isOpen, onClose }) => {
   const [query, setQuery] = useState('');
   const [activeTab, setActiveTab] = useState('web');
   const [activeSidebar, setActiveSidebar] = useState('page-types');
   const [hoveredItemName, setHoveredItemName] = useState(null);
-  const [isClosing, setIsClosing] = useState(false);
-  const [shouldRender, setShouldRender] = useState(isOpen);
   const [suggestions, setSuggestions] = useState([]);
-  const [activeIndex, setActiveIndex] = useState(-1);
-  const debounceRef = useRef(null);
-  const inputRef = useRef(null);
-  const overlayRef = useRef(null);
-  const dropdownRef = useRef(null);
-
-  useEffect(() => {
-    if (isOpen) {
-      setShouldRender(true);
-      setIsClosing(false);
-    } else if (shouldRender) {
-      // Start closing animation
-      setIsClosing(true);
-      const timer = setTimeout(() => {
-        setShouldRender(false);
-        setIsClosing(false);
-      }, 300); // match CSS duration
-      return () => clearTimeout(timer);
-    }
-  }, [isOpen, shouldRender]);
+  const [isSearching, setIsSearching] = useState(false);
+  // No longer needed: shouldRender and isClosing are removed for instant transitions
 
   useEffect(() => {
     if (isOpen && inputRef.current) {
@@ -391,38 +307,67 @@ const SearchOverlay = ({ isOpen, onClose }) => {
     if (!isOpen) {
       setQuery('');
       setSuggestions([]);
-      setActiveIndex(-1);
     }
   }, [isOpen]);
+
+  // Debounced search logic for suggestions
+  useEffect(() => {
+    if (!query.trim()) {
+      setSuggestions([]);
+      return;
+    }
+
+    setIsSearching(true);
+    const timer = setTimeout(() => {
+      // Mock suggestions based on query
+      const websites = [
+        { id: 1, name: 'Vivid Money', subtitle: 'Style in websites', type: 'website', domain: 'vivid.money', count: '4,089 results' },
+        { id: 2, name: 'Big Type', subtitle: 'Style in websites', type: 'website', domain: 'bigtype.com', count: '1,156 results' },
+        { id: 3, name: 'Linear', subtitle: 'Style in websites', type: 'website', domain: 'linear.app', count: '2,934 results' },
+      ].filter(s => s.name.toLowerCase().includes(query.toLowerCase()));
+
+      const sections = [
+        { id: 4, name: 'DM Sans', subtitle: 'Style in sections', type: 'font', count: '891 results' },
+        { id: 5, name: 'Onboarding Flow', subtitle: 'Style in sections', type: 'flow', count: '1,243 results' },
+      ].filter(s => s.name.toLowerCase().includes(query.toLowerCase()));
+
+      const other = [
+        { id: 'search', name: query, subtitle: 'Text in title or website url', type: 'other' }
+      ];
+      
+      setSuggestions({
+        Websites: websites,
+        Sections: sections,
+        Other: other
+      });
+      setIsSearching(false);
+    }, 200);
+
+    return () => clearTimeout(timer);
+  }, [query]);
+
+  // Helper to highlight matching text
+  const highlightMatch = (text, q) => {
+    if (!q) return text;
+    const parts = text.split(new RegExp(`(${q})`, 'gi'));
+    return (
+      <>
+        {parts.map((part, i) => 
+          part.toLowerCase() === q.toLowerCase() ? <b key={i}>{part}</b> : part
+        )}
+      </>
+    );
+  };
 
   useEffect(() => {
     const handleKey = (e) => {
       if (e.key === 'Escape' && isOpen) {
-        if (suggestions.length > 0) {
-          setSuggestions([]);
-          setQuery('');
-        } else {
-          onClose();
-        }
-      }
-      if (suggestions.length > 0) {
-        if (e.key === 'ArrowDown') {
-          e.preventDefault();
-          setActiveIndex(i => Math.min(i + 1, suggestions.length - 1));
-        } else if (e.key === 'ArrowUp') {
-          e.preventDefault();
-          setActiveIndex(i => Math.max(i - 1, 0));
-        } else if (e.key === 'Enter' && activeIndex >= 0) {
-          e.preventDefault();
-          // Navigate to suggestion — for now just clear
-          setSuggestions([]);
-          setQuery('');
-        }
+        onClose();
       }
     };
     window.addEventListener('keydown', handleKey);
     return () => window.removeEventListener('keydown', handleKey);
-  }, [isOpen, onClose, suggestions, activeIndex]);
+  }, [isOpen, onClose]);
 
   // Prevent body scroll when open
   useEffect(() => {
@@ -431,7 +376,7 @@ const SearchOverlay = ({ isOpen, onClose }) => {
       document.body.classList.add('search-open');
     } else {
       document.body.style.overflow = '';
-      document.body.classList.remove('search-open');
+      // We no longer remove search-open here; it's handled in onTransitionEnd
     }
     return () => { 
       document.body.style.overflow = '';
@@ -440,84 +385,83 @@ const SearchOverlay = ({ isOpen, onClose }) => {
   }, [isOpen]);
 
   const handleClose = () => {
-    setIsClosing(true);
-    const timer = setTimeout(() => {
-      onClose();
-      setIsClosing(false);
-    }, 300);
+    onClose();
+  };
+
+  const inputRef = useRef(null);
+  const overlayRef = useRef(null);
+
+  const handleTransitionEnd = (e) => {
+    // Only cleanup when closing (isOpen is false) and the backdrop itself finishes transitioning
+    if (!isOpen && e.target === overlayRef.current) {
+      document.body.classList.remove('search-open');
+    }
   };
 
   const handleBackdropClick = (e) => {
     if (e.target === overlayRef.current) handleClose();
   };
 
-  if (!shouldRender && !isOpen) return null;
-
+  // Always render portal to avoid remount flicker, use CSS for visibility
   return createPortal(
-    <div className={`so-backdrop ${isClosing ? 'closing' : ''}`} ref={overlayRef} onClick={handleBackdropClick}>
-      <div className={`so-container ${isClosing ? 'closing' : ''}`}>
+    <div 
+      className={`so-backdrop ${isOpen ? 'is-open' : ''}`} 
+      ref={overlayRef} 
+      onClick={handleBackdropClick}
+      onTransitionEnd={handleTransitionEnd}
+    >
+      <div className={`so-container ${isOpen ? 'is-open' : ''}`}>
 
         <div className="so-topbar">
           <div className="so-topbar-left">
             <Search size={22} strokeWidth={2.5} className="so-topbar-icon" />
-            <div className="so-input-wrapper">
-              <input
-                ref={inputRef}
-                type="text"
-                className="so-topbar-input"
-                placeholder="Search Web Products, Screens, UI Elements, Flows"
-                value={query}
-                onChange={(e) => {
-                  const val = e.target.value;
-                  setQuery(val);
-                  setActiveIndex(-1);
-                  clearTimeout(debounceRef.current);
-                  debounceRef.current = setTimeout(() => {
-                    setSuggestions(getSuggestions(val));
-                  }, 200);
-                }}
-                autoComplete="off"
-              />
-              {/* Live suggestion dropdown */}
-              {suggestions.length > 0 && (
-                <div className="so-suggestions" ref={dropdownRef}>
-                  {suggestions.map((s, idx) => (
-                    <div
-                      key={`${s.type}:${s.name}`}
-                      className={`so-suggestion-row ${activeIndex === idx ? 'active' : ''}`}
-                      onMouseEnter={() => setActiveIndex(idx)}
-                      onMouseLeave={() => setActiveIndex(-1)}
-                      onClick={() => { setSuggestions([]); setQuery(''); }}
-                    >
-                      <div className="so-sug-icon">
-                        {s.isSemantic ? (
-                          /* Mobbin-style orange star/flame icon */
-                          <svg width="20" height="20" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect width="32" height="32" rx="8" fill="#FF6B35"/>
-                            <path d="M16 6C16 6 20 10 20 15C20 18 18 20 16 21C14 20 12 18 12 15C12 10 16 6 16 6Z" fill="white" opacity="0.9"/>
-                            <path d="M16 14C16 14 18 16.5 18 18.5C18 20 17 21 16 21C15 21 14 20 14 18.5C14 16.5 16 14 16 14Z" fill="white"/>
-                          </svg>
-                        ) : s.type === 'Font' ? (
-                          <div className="so-sug-type-icon so-sug-font">A</div>
-                        ) : s.type === 'Website' ? (
-                          <div className="so-sug-type-icon so-sug-website">W</div>
-                        ) : s.type === 'Flow' ? (
-                          <div className="so-sug-type-icon so-sug-flow">F</div>
-                        ) : s.type === 'Page Type' ? (
-                          <div className="so-sug-type-icon so-sug-page">P</div>
-                        ) : (
-                          <div className="so-sug-type-icon so-sug-ui">UI</div>
-                        )}
-                      </div>
-                      <div className="so-sug-text">
-                        <span className="so-sug-label">{s.type}</span>
-                        <span className="so-sug-name">{s.name}</span>
-                      </div>
+            <input
+              ref={inputRef}
+              type="text"
+              className="so-topbar-input"
+              placeholder="Search Web Products, Screens, UI Elements, Flows"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+
+            {/* ── Suggestions Dropdown ── */}
+            {Object.values(suggestions).some(arr => arr.length > 0) && (
+              <div className="so-suggestions">
+                {Object.entries(suggestions).map(([section, items]) => (
+                  items.length > 0 && (
+                    <div key={section} className="so-sug-section">
+                      <div className="so-sug-header">{section}</div>
+                      {items.map((sug) => (
+                        <a key={sug.id} href="#" className="so-suggestion-row" onClick={(e) => e.preventDefault()}>
+                          <div className="so-sug-icon-wrap">
+                            {sug.type === 'website' ? (
+                              <img src={`https://www.google.com/s2/favicons?domain=${sug.domain}&sz=64`} alt="" />
+                            ) : sug.type === 'font' ? (
+                              <Type size={22} />
+                            ) : sug.type === 'flow' ? (
+                              <Activity size={22} />
+                            ) : (
+                              <Search size={22} />
+                            )}
+                          </div>
+                          <div className="so-sug-center">
+                            <span className="so-sug-name">{highlightMatch(sug.name, query)}</span>
+                            <span className="so-sug-subtitle">{sug.subtitle}</span>
+                          </div>
+                          <div className="so-sug-right">
+                            {sug.type === 'other' ? (
+                              <span className="so-enter-pill">Enter</span>
+                            ) : (
+                              <span className="so-sug-count">{sug.count}</span>
+                            )}
+                          </div>
+                        </a>
+                      ))}
                     </div>
-                  ))}
-                </div>
-              )}
-            </div>
+                  )
+                ))}
+              </div>
+            )}
           </div>
           <div className="so-topbar-right">
             <button className="so-close" onClick={handleClose} title="Close"><X size={28} /></button>
