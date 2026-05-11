@@ -310,6 +310,30 @@ const SearchOverlay = ({ isOpen, onClose }) => {
     }
   }, [isOpen]);
 
+  // All searchable suggestions (20 creative entries)
+  const ALL_SUGGESTIONS = [
+    { id: 'u1', name: 'Hero Image', typeLabel: 'UI Element', type: 'ui-element', count: '3,241 results' },
+    { id: 'u2', name: 'Hero Section', typeLabel: 'UI Element', type: 'ui-element', count: '1,876 results' },
+    { id: 'u3', name: 'Hero Banner', typeLabel: 'UI Element', type: 'ui-element', count: '892 results' },
+    { id: 'u4', name: 'Header Navigation', typeLabel: 'UI Element', type: 'ui-element', count: '2,109 results' },
+    { id: 'c1', name: 'Weather', typeLabel: 'Category', type: 'category', count: '487 results' },
+    { id: 'c2', name: 'Healthcare', typeLabel: 'Category', type: 'category', count: '1,204 results' },
+    { id: 'c3', name: 'E-commerce', typeLabel: 'Category', type: 'category', count: '3,891 results' },
+    { id: 'c4', name: 'Finance & Fintech', typeLabel: 'Category', type: 'category', count: '2,567 results' },
+    { id: 'f1', name: 'Merriweather', typeLabel: 'Font', type: 'font', count: '634 results' },
+    { id: 'f2', name: 'Helvetica Neue', typeLabel: 'Font', type: 'font', count: '1,129 results' },
+    { id: 'f3', name: 'Georgia Pro', typeLabel: 'Font', type: 'font', count: '512 results' },
+    { id: 'w1', name: 'Hers', typeLabel: 'Website', type: 'website', domain: 'hers.com', count: '4,089 results' },
+    { id: 'w2', name: 'Whereby', typeLabel: 'Website', type: 'website', domain: 'whereby.com', count: '1,156 results' },
+    { id: 'w3', name: 'Slite', typeLabel: 'Website', type: 'website', domain: 'slite.com', count: '982 results' },
+    { id: 'w4', name: 'Cohere', typeLabel: 'Website', type: 'website', domain: 'cohere.com', count: '2,341 results' },
+    { id: 'w5', name: 'The Weather Channel', typeLabel: 'Website', type: 'website', domain: 'weather.com', count: '5,672 results' },
+    { id: 'w6', name: 'Windy', typeLabel: 'Website', type: 'website', domain: 'windy.com', count: '789 results' },
+    { id: 'w7', name: 'Heroku', typeLabel: 'Website', type: 'website', domain: 'heroku.com', count: '1,543 results' },
+    { id: 'fl1', name: 'Checkout Flow', typeLabel: 'Flow', type: 'flow', count: '843 results' },
+    { id: 'fl2', name: 'Onboarding Flow', typeLabel: 'Flow', type: 'flow', count: '1,205 results' },
+  ];
+
   // Debounced search logic for suggestions
   useEffect(() => {
     if (!query.trim()) {
@@ -319,27 +343,11 @@ const SearchOverlay = ({ isOpen, onClose }) => {
 
     setIsSearching(true);
     const timer = setTimeout(() => {
-      // Mock suggestions based on query
-      const websites = [
-        { id: 1, name: 'Vivid Money', subtitle: 'Style in websites', type: 'website', domain: 'vivid.money', count: '4,089 results' },
-        { id: 2, name: 'Big Type', subtitle: 'Style in websites', type: 'website', domain: 'bigtype.com', count: '1,156 results' },
-        { id: 3, name: 'Linear', subtitle: 'Style in websites', type: 'website', domain: 'linear.app', count: '2,934 results' },
-      ].filter(s => s.name.toLowerCase().includes(query.toLowerCase()));
-
-      const sections = [
-        { id: 4, name: 'DM Sans', subtitle: 'Style in sections', type: 'font', count: '891 results' },
-        { id: 5, name: 'Onboarding Flow', subtitle: 'Style in sections', type: 'flow', count: '1,243 results' },
-      ].filter(s => s.name.toLowerCase().includes(query.toLowerCase()));
-
-      const other = [
-        { id: 'search', name: query, subtitle: 'Text in title or website url', type: 'other' }
-      ];
-      
-      setSuggestions({
-        Websites: websites,
-        Sections: sections,
-        Other: other
-      });
+      const q = query.toLowerCase();
+      const matched = ALL_SUGGESTIONS.filter(s => s.name.toLowerCase().includes(q));
+      // Semantic search entry always first
+      const semantic = { id: 'semantic', name: query, typeLabel: 'Semantic Search', type: 'semantic' };
+      setSuggestions([semantic, ...matched].slice(0, 11));
       setIsSearching(false);
     }, 200);
 
@@ -352,7 +360,7 @@ const SearchOverlay = ({ isOpen, onClose }) => {
     const parts = text.split(new RegExp(`(${q})`, 'gi'));
     return (
       <>
-        {parts.map((part, i) => 
+        {parts.map((part, i) =>
           part.toLowerCase() === q.toLowerCase() ? <b key={i}>{part}</b> : part
         )}
       </>
@@ -378,7 +386,7 @@ const SearchOverlay = ({ isOpen, onClose }) => {
       document.body.style.overflow = '';
       // We no longer remove search-open here; it's handled in onTransitionEnd
     }
-    return () => { 
+    return () => {
       document.body.style.overflow = '';
       document.body.classList.remove('search-open');
     };
@@ -404,9 +412,9 @@ const SearchOverlay = ({ isOpen, onClose }) => {
 
   // Always render portal to avoid remount flicker, use CSS for visibility
   return createPortal(
-    <div 
-      className={`so-backdrop ${isOpen ? 'is-open' : ''}`} 
-      ref={overlayRef} 
+    <div
+      className={`so-backdrop ${isOpen ? 'is-open' : ''}`}
+      ref={overlayRef}
       onClick={handleBackdropClick}
       onTransitionEnd={handleTransitionEnd}
     >
@@ -423,128 +431,142 @@ const SearchOverlay = ({ isOpen, onClose }) => {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
             />
-
-            {/* ── Suggestions Dropdown ── */}
-            {Object.values(suggestions).some(arr => arr.length > 0) && (
-              <div className="so-suggestions">
-                {Object.entries(suggestions).map(([section, items]) => (
-                  items.length > 0 && (
-                    <div key={section} className="so-sug-section">
-                      <div className="so-sug-header">{section}</div>
-                      {items.map((sug) => (
-                        <a key={sug.id} href="#" className="so-suggestion-row" onClick={(e) => e.preventDefault()}>
-                          <div className="so-sug-icon-wrap">
-                            {sug.type === 'website' ? (
-                              <img src={`https://www.google.com/s2/favicons?domain=${sug.domain}&sz=64`} alt="" />
-                            ) : sug.type === 'font' ? (
-                              <Type size={22} />
-                            ) : sug.type === 'flow' ? (
-                              <Activity size={22} />
-                            ) : (
-                              <Search size={22} />
-                            )}
-                          </div>
-                          <div className="so-sug-center">
-                            <span className="so-sug-name">{highlightMatch(sug.name, query)}</span>
-                            <span className="so-sug-subtitle">{sug.subtitle}</span>
-                          </div>
-                          <div className="so-sug-right">
-                            {sug.type === 'other' ? (
-                              <span className="so-enter-pill">Enter</span>
-                            ) : (
-                              <span className="so-sug-count">{sug.count}</span>
-                            )}
-                          </div>
-                        </a>
-                      ))}
-                    </div>
-                  )
-                ))}
-              </div>
-            )}
           </div>
           <div className="so-topbar-right">
             <button className="so-close" onClick={handleClose} title="Close"><X size={28} /></button>
           </div>
         </div>
 
-        <div className="so-body">
-          <aside className="so-sidebar">
-            <nav className="so-sidebar-nav">
-              {SIDEBAR_ITEMS.map((item) => (
-                <button
-                  key={item.id}
-                  className={`so-sb-item ${activeSidebar === item.id ? 'active' : ''}`}
-                  onClick={() => setActiveSidebar(item.id)}
-                >
-                  <SidebarIcon icon={item.icon} />
-                  <span className="so-sb-label">{item.label}</span>
-                  {item.badge && <span className="so-sb-badge">{item.badge}</span>}
-                  <ChevronRight size={16} className="so-sb-arrow" />
-                </button>
-              ))}
-            </nav>
-            <div className="so-sb-card">
-              <div className="so-sb-card-icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M10 15L15 12L10 9V15Z" fill="#FF4D4D"/>
-                  <rect x="2" y="4" width="20" height="16" rx="4" stroke="#FF4D4D" strokeWidth="2"/>
-                </svg>
-              </div>
-              <span className="so-sb-card-text">Learn How to Search<br/>Better and Faster</span>
-            </div>
-          </aside>
-
-          <main className="so-main">
-            <div className="so-main-scroll">
-              {TAB_CONTENT[activeSidebar] ? (
-                TAB_CONTENT[activeSidebar].map((section, idx) => (
-                  <div key={section.title || idx} className="so-section">
-                    {section.title && <h3 className="so-section-title">{section.title}</h3>}
-                    <div className="so-grid">
-                      {section.items.map((item) => {
-                        const isHovered = hoveredItemName === item.name;
-                        const isDimmed = hoveredItemName !== null && hoveredItemName !== item.name;
-                        return (
-                          <a 
-                            key={item.name} 
-                            href="#" 
-                            className={`so-grid-item ${isDimmed ? 'dimmed' : ''} ${isHovered ? 'hovered' : ''}`}
-                            onMouseEnter={() => setHoveredItemName(item.name)}
-                            onMouseLeave={() => setHoveredItemName(null)}
-                            onClick={(e) => e.preventDefault()}
-                          >
-                            <span className="so-item-name">{item.name}</span>
-                            <span className="so-item-count">{item.count.toLocaleString()}</span>
-                          </a>
-                        );
-                      })}
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <div className="so-placeholder">
-                  <h3 className="so-section-title">Coming soon</h3>
-                  <p className="so-hint">We're currently curating the best {activeSidebar.replace('-', ' ')} for you.</p>
+        {suggestions.length > 0 ? (
+          <div className="so-suggestions">
+            {suggestions.map((sug) => (
+              <a key={sug.id} href="#" className="so-suggestion-row" onClick={(e) => e.preventDefault()}>
+                <div className={`so-sug-icon-wrap so-icon-${sug.type}`}>
+                  {sug.type === 'semantic' && (
+                    <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+                      <rect x="0" y="0" width="9" height="9" rx="2" fill="#FF6B35" />
+                      <rect x="13" y="0" width="9" height="9" rx="2" fill="#845EF7" />
+                      <rect x="0" y="13" width="9" height="9" rx="2" fill="#20C997" />
+                      <rect x="13" y="13" width="9" height="9" rx="2" fill="#F7B731" />
+                    </svg>
+                  )}
+                  {sug.type === 'website' && (
+                    <img src={`https://www.google.com/s2/favicons?domain=${sug.domain}&sz=64`} alt="" />
+                  )}
+                  {sug.type === 'font' && <Type size={20} />}
+                  {sug.type === 'flow' && <Activity size={20} />}
+                  {sug.type === 'ui-element' && <Layers size={20} />}
+                  {sug.type === 'category' && <Grid size={20} />}
                 </div>
-              )}
-            </div>
-          </main>
-        </div>
+                <div className="so-sug-center">
+                  <span className="so-sug-type-label">{sug.typeLabel}</span>
+                  <span className="so-sug-name">{highlightMatch(sug.name, query)}</span>
+                </div>
+                <div className="so-sug-right">
+                  {sug.type === 'semantic' ? (
+                    <span className="so-enter-pill">Enter</span>
+                  ) : (
+                    <span className="so-sug-count">{sug.count}</span>
+                  )}
+                </div>
+              </a>
+            ))}
+          </div>
+        ) : (
+          <div className="so-body">
+            <aside className="so-sidebar">
+              <nav className="so-sidebar-nav">
+                {SIDEBAR_ITEMS.map((item) => (
+                  <button
+                    key={item.id}
+                    className={`so-sb-item ${activeSidebar === item.id ? 'active' : ''}`}
+                    onClick={() => setActiveSidebar(item.id)}
+                  >
+                    <SidebarIcon icon={item.icon} />
+                    <span className="so-sb-label">{item.label}</span>
+                    {item.badge && <span className="so-sb-badge">{item.badge}</span>}
+                    <ChevronRight size={16} className="so-sb-arrow" />
+                  </button>
+                ))}
+              </nav>
+              <div className="so-sb-card">
+                <div className="so-sb-card-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10 15L15 12L10 9V15Z" fill="#FF4D4D" />
+                    <rect x="2" y="4" width="20" height="16" rx="4" stroke="#FF4D4D" strokeWidth="2" />
+                  </svg>
+                </div>
+                <span className="so-sb-card-text">Learn How to Search<br />Better and Faster</span>
+              </div>
+            </aside>
+
+            <main className="so-main">
+              <div className="so-main-scroll">
+                {TAB_CONTENT[activeSidebar] ? (
+                  TAB_CONTENT[activeSidebar].map((section, idx) => (
+                    <div key={section.title || idx} className="so-section">
+                      {section.title && <h3 className="so-section-title">{section.title}</h3>}
+                      <div className="so-grid">
+                        {section.items.map((item) => {
+                          const isHovered = hoveredItemName === item.name;
+                          const isDimmed = hoveredItemName !== null && hoveredItemName !== item.name;
+                          return (
+                            <a
+                              key={item.name}
+                              href="#"
+                              className={`so-grid-item ${isDimmed ? 'dimmed' : ''} ${isHovered ? 'hovered' : ''}`}
+                              onMouseEnter={() => setHoveredItemName(item.name)}
+                              onMouseLeave={() => setHoveredItemName(null)}
+                              onClick={(e) => e.preventDefault()}
+                            >
+                              <span className="so-item-name">{item.name}</span>
+                              <span className="so-item-count">{item.count.toLocaleString()}</span>
+                            </a>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="so-placeholder">
+                    <h3 className="so-section-title">Coming soon</h3>
+                    <p className="so-hint">We're currently curating the best {activeSidebar.replace('-', ' ')} for you.</p>
+                  </div>
+                )}
+              </div>
+            </main>
+          </div>
+        )}
 
         <div className="so-bottombar">
-          <div className="so-shortcut">
-            <kbd>Tab</kbd> <kbd>Tab + Shift</kbd>
-            <span className="so-hint">Switch Tabs</span>
-          </div>
-          <div className="so-shortcut">
-            <kbd>←</kbd> <kbd>↑</kbd> <kbd>→</kbd> <kbd>↓</kbd>
-            <span className="so-hint">Navigate</span>
-          </div>
-          <div className="so-shortcut">
-            <kbd>Enter</kbd>
-            <span className="so-hint">Select</span>
-          </div>
+          {suggestions.length > 0 ? (
+            <>
+              <div className="so-shortcut">
+                <kbd>↑</kbd> <kbd>↓</kbd>
+                <span className="so-hint">Navigate</span>
+              </div>
+              <div className="so-sep">·</div>
+              <div className="so-shortcut">
+                <kbd>Enter</kbd>
+                <span className="so-hint">Select</span>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="so-shortcut">
+                <kbd>Tab</kbd> <kbd>Tab + Shift</kbd>
+                <span className="so-hint">Switch Tabs</span>
+              </div>
+              <div className="so-shortcut">
+                <kbd>←</kbd> <kbd>↑</kbd> <kbd>→</kbd> <kbd>↓</kbd>
+                <span className="so-hint">Navigate</span>
+              </div>
+              <div className="so-shortcut">
+                <kbd>Enter</kbd>
+                <span className="so-hint">Select</span>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>,

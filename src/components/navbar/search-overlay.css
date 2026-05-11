@@ -143,28 +143,28 @@
   font-weight: 500 !important;
 }
 
-/* ── Suggestions Dropdown ── */
+/* ── Suggestions Dropdown (Now Full-Screen View) ── */
 .so-suggestions {
   position: absolute;
-  top: 100%;
+  top: 80px; /* Directly below topbar */
   left: 0;
   width: 100%;
+  height: calc(100% - 80px - 60px); /* Fill space between topbar and bottombar */
   background: #ffffff;
-  z-index: 1000;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.10);
+  z-index: 100;
+  box-shadow: none; /* Flat as requested */
   border-radius: 0;
-  overflow: hidden;
-  margin-top: 0;
-  padding: 8px 0;
+  overflow-y: auto;
+  padding: 12px 0;
 }
 
 [data-theme="dark"] .so-suggestions {
-  background: #1a1a1a;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  background: #111111;
+  box-shadow: none;
 }
 
 .so-sug-section {
-  margin-bottom: 8px;
+  margin-bottom: 0;
 }
 .so-sug-section:last-child {
   margin-bottom: 0;
@@ -182,21 +182,21 @@
   display: flex;
   align-items: center;
   gap: 16px;
-  padding: 12px 16px;
-  margin: 0 8px;
+  padding: 14px 40px; /* Matched to topbar padding */
+  margin: 0;
   cursor: pointer;
   transition: background 0.12s ease;
   text-decoration: none;
-  border-radius: 8px;
-  border-bottom: none !important; /* Overriding previous border style */
+  border-radius: 0;
+  border-bottom: 1px solid #f8f8f8 !important;
 }
 
 .so-suggestion-row:hover {
-  background: #EEF5F4;
+  background: #fcfcfd;
 }
 
 [data-theme="dark"] .so-suggestion-row:hover {
-  background: #1e2a28;
+  background: #1a1a1a;
 }
 
 .so-sug-icon-wrap {
@@ -230,9 +230,9 @@
 }
 
 .so-sug-name {
-  font-size: 15px;
+  font-size: 19px;
   font-weight: 400;
-  color: #555; /* Normal parts are slightly gray */
+  color: #555; /* Keep slightly gray for non-matched parts */
   letter-spacing: -0.01em;
   white-space: nowrap;
   overflow: hidden;
@@ -267,6 +267,35 @@
 .so-sug-count {
   font-size: 13px;
   color: #999;
+}
+
+/* ── Type label (above suggestion name) ── */
+.so-sug-type-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: #aaa;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+[data-theme="dark"] .so-sug-type-label {
+  color: #666;
+}
+
+/* ── Per-type icon background colors ── */
+.so-icon-semantic  { background: #111111; }
+.so-icon-ui-element{ background: #3B6FE0; }
+.so-icon-category  { background: #0D9F7A; }
+.so-icon-font      { background: #7C3AED; }
+.so-icon-flow      { background: #D6446A; }
+.so-icon-website   { background: #fff; border: 1px solid #ebebeb; }
+
+[data-theme="dark"] .so-icon-website {
+  background: #2a2a2a;
+  border-color: #333;
 }
 
 .so-enter-pill {
