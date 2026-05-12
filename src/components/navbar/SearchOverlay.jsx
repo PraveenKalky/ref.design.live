@@ -13,6 +13,60 @@ const SIDEBAR_ITEMS = [
   { id: 'fonts', label: 'Fonts', icon: Type },
 ];
 
+/* ── Mock Rich Preview Data ── */
+const RICH_PREVIEW_DATA = [
+  {
+    type: 'website',
+    title: 'Binance',
+    category: 'Website',
+    items: [
+      { id: 'rp1', name: 'Mercury', tagline: 'Banking for Startups', image: 'https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=800&auto=format&fit=crop', logo: 'https://www.google.com/s2/favicons?domain=mercury.com&sz=64' },
+      { id: 'rp2', name: 'Linear', tagline: 'A better way to build products', image: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?q=80&w=800&auto=format&fit=crop', logo: 'https://www.google.com/s2/favicons?domain=linear.app&sz=64' },
+      { id: 'rp3', name: 'Vercel', tagline: 'Develop. Preview. Ship.', image: 'https://images.unsplash.com/photo-1618477388954-7852f32655ec?q=80&w=800&auto=format&fit=crop', logo: 'https://www.google.com/s2/favicons?domain=vercel.com&sz=64' },
+    ]
+  },
+  {
+    type: 'ux-pattern',
+    title: 'Trash & Archive',
+    category: 'UX Pattern',
+    items: [
+      { id: 'rp4', name: 'Mercury', tagline: 'Banking for Startups', image: 'https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=800&auto=format&fit=crop', logo: 'https://www.google.com/s2/favicons?domain=mercury.com&sz=64' },
+      { id: 'rp5', name: 'Linear', tagline: 'A better way to build products', image: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?q=80&w=800&auto=format&fit=crop', logo: 'https://www.google.com/s2/favicons?domain=linear.app&sz=64' },
+    ]
+  },
+  {
+    type: 'font',
+    title: 'Bebas Neue / BeFont',
+    category: 'Font',
+    items: [
+      { id: 'f1', name: 'Neue Montreal', styles: '14 styles + Variable font', label: 'Update', color: '#FFF8E1' },
+      { id: 'f2', name: 'PP Fragment', styles: '22 styles + Variable font', label: 'New', color: '#F5F5F5' },
+      { id: 'f3', name: 'Right Grotesk', styles: '133 styles + Variable font', label: '', color: '#F0F0F0' },
+      { id: 'f4', name: 'Mori', styles: '16 styles', label: '', color: '#F9F9F9' },
+    ]
+  },
+  {
+    type: 'ux-pattern',
+    title: 'Trash Bin',
+    category: 'UX Pattern',
+    items: [
+      { id: 'rp6', name: 'Mercury', tagline: 'Banking for Startups', image: 'https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=800&auto=format&fit=crop', logo: 'https://www.google.com/s2/favicons?domain=mercury.com&sz=64' },
+      { id: 'rp7', name: 'Linear', tagline: 'A better way to build products', image: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?q=80&w=800&auto=format&fit=crop', logo: 'https://www.google.com/s2/favicons?domain=linear.app&sz=64' },
+      { id: 'rp8', name: 'Vercel', tagline: 'Develop. Preview. Ship.', image: 'https://images.unsplash.com/photo-1618477388954-7852f32655ec?q=80&w=800&auto=format&fit=crop', logo: 'https://www.google.com/s2/favicons?domain=vercel.com&sz=64' },
+    ]
+  },
+  {
+    type: 'flow',
+    title: 'Subscription Billing',
+    category: 'Flow',
+    items: [
+      { id: 'rp9', name: 'Mercury', tagline: 'Banking for Startups', image: 'https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=800&auto=format&fit=crop', logo: 'https://www.google.com/s2/favicons?domain=mercury.com&sz=64' },
+      { id: 'rp10', name: 'Linear', tagline: 'A better way to build products', image: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?q=80&w=800&auto=format&fit=crop', logo: 'https://www.google.com/s2/favicons?domain=linear.app&sz=64' },
+      { id: 'rp11', name: 'Vercel', tagline: 'Develop. Preview. Ship.', image: 'https://images.unsplash.com/photo-1618477388954-7852f32655ec?q=80&w=800&auto=format&fit=crop', logo: 'https://www.google.com/s2/favicons?domain=vercel.com&sz=64' },
+    ]
+  }
+];
+
 /* Small colored icon for sidebar */
 const SidebarIcon = ({ icon: IconComponent }) => {
   if (!IconComponent) return null;
@@ -296,8 +350,9 @@ const SearchOverlay = ({ isOpen, onClose }) => {
   const [activeTab, setActiveTab] = useState('web');
   const [activeSidebar, setActiveSidebar] = useState('page-types');
   const [hoveredItemName, setHoveredItemName] = useState(null);
-  const [suggestions, setSuggestions] = useState([]);
+  const [richResults, setRichResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
+  const [showRichPreview, setShowRichPreview] = useState(false);
   // No longer needed: shouldRender and isClosing are removed for instant transitions
 
   useEffect(() => {
@@ -306,52 +361,34 @@ const SearchOverlay = ({ isOpen, onClose }) => {
     }
     if (!isOpen) {
       setQuery('');
-      setSuggestions([]);
+      setRichResults([]);
     }
   }, [isOpen]);
 
-  // All searchable suggestions (20 creative entries)
-  const ALL_SUGGESTIONS = [
-    { id: 'u1', name: 'Hero Image', typeLabel: 'UI Element', type: 'ui-element', count: '3,241 results' },
-    { id: 'u2', name: 'Hero Section', typeLabel: 'UI Element', type: 'ui-element', count: '1,876 results' },
-    { id: 'u3', name: 'Hero Banner', typeLabel: 'UI Element', type: 'ui-element', count: '892 results' },
-    { id: 'u4', name: 'Header Navigation', typeLabel: 'UI Element', type: 'ui-element', count: '2,109 results' },
-    { id: 'c1', name: 'Weather', typeLabel: 'Category', type: 'category', count: '487 results' },
-    { id: 'c2', name: 'Healthcare', typeLabel: 'Category', type: 'category', count: '1,204 results' },
-    { id: 'c3', name: 'E-commerce', typeLabel: 'Category', type: 'category', count: '3,891 results' },
-    { id: 'c4', name: 'Finance & Fintech', typeLabel: 'Category', type: 'category', count: '2,567 results' },
-    { id: 'f1', name: 'Merriweather', typeLabel: 'Font', type: 'font', count: '634 results' },
-    { id: 'f2', name: 'Helvetica Neue', typeLabel: 'Font', type: 'font', count: '1,129 results' },
-    { id: 'f3', name: 'Georgia Pro', typeLabel: 'Font', type: 'font', count: '512 results' },
-    { id: 'w1', name: 'Hers', typeLabel: 'Website', type: 'website', domain: 'hers.com', count: '4,089 results' },
-    { id: 'w2', name: 'Whereby', typeLabel: 'Website', type: 'website', domain: 'whereby.com', count: '1,156 results' },
-    { id: 'w3', name: 'Slite', typeLabel: 'Website', type: 'website', domain: 'slite.com', count: '982 results' },
-    { id: 'w4', name: 'Cohere', typeLabel: 'Website', type: 'website', domain: 'cohere.com', count: '2,341 results' },
-    { id: 'w5', name: 'The Weather Channel', typeLabel: 'Website', type: 'website', domain: 'weather.com', count: '5,672 results' },
-    { id: 'w6', name: 'Windy', typeLabel: 'Website', type: 'website', domain: 'windy.com', count: '789 results' },
-    { id: 'w7', name: 'Heroku', typeLabel: 'Website', type: 'website', domain: 'heroku.com', count: '1,543 results' },
-    { id: 'fl1', name: 'Checkout Flow', typeLabel: 'Flow', type: 'flow', count: '843 results' },
-    { id: 'fl2', name: 'Onboarding Flow', typeLabel: 'Flow', type: 'flow', count: '1,205 results' },
-  ];
-
-  // Debounced search logic for suggestions
+  // Debounced search logic for rich preview
   useEffect(() => {
     if (!query.trim()) {
-      setSuggestions([]);
+      setRichResults([]);
+      setShowRichPreview(false);
       return;
     }
 
     setIsSearching(true);
-    const timer = setTimeout(() => {
-      const q = query.toLowerCase();
-      const matched = ALL_SUGGESTIONS.filter(s => s.name.toLowerCase().includes(q));
-      // Semantic search entry always first
-      const semantic = { id: 'semantic', name: query, typeLabel: 'Semantic Search', type: 'semantic' };
-      setSuggestions([semantic, ...matched].slice(0, 11));
-      setIsSearching(false);
-    }, 200);
+    setShowRichPreview(false);
 
-    return () => clearTimeout(timer);
+    // Filter rich results based on query (400ms debounce)
+    const richTimer = setTimeout(() => {
+      const q = query.toLowerCase();
+      const matchedRich = RICH_PREVIEW_DATA.filter(group =>
+        group.title.toLowerCase().startsWith(q) ||
+        group.category.toLowerCase().startsWith(q)
+      );
+      setRichResults(matchedRich.length > 0 ? matchedRich : RICH_PREVIEW_DATA.slice(0, 3));
+      setShowRichPreview(true);
+      setIsSearching(false);
+    }, 400);
+
+    return () => clearTimeout(richTimer);
   }, [query]);
 
   // Helper to highlight matching text
@@ -437,40 +474,58 @@ const SearchOverlay = ({ isOpen, onClose }) => {
           </div>
         </div>
 
-        {suggestions.length > 0 ? (
+        {query.trim() ? (
           <div className="so-suggestions">
-            {suggestions.map((sug) => (
-              <a key={sug.id} href="#" className="so-suggestion-row" onClick={(e) => e.preventDefault()}>
-                <div className={`so-sug-icon-wrap so-icon-${sug.type}`}>
-                  {sug.type === 'semantic' && (
-                    <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-                      <rect x="0" y="0" width="9" height="9" rx="2" fill="#FF6B35" />
-                      <rect x="13" y="0" width="9" height="9" rx="2" fill="#845EF7" />
-                      <rect x="0" y="13" width="9" height="9" rx="2" fill="#20C997" />
-                      <rect x="13" y="13" width="9" height="9" rx="2" fill="#F7B731" />
-                    </svg>
-                  )}
-                  {sug.type === 'website' && (
-                    <img src={`https://www.google.com/s2/favicons?domain=${sug.domain}&sz=64`} alt="" />
-                  )}
-                  {sug.type === 'font' && <Type size={20} />}
-                  {sug.type === 'flow' && <Activity size={20} />}
-                  {sug.type === 'ui-element' && <Layers size={20} />}
-                  {sug.type === 'category' && <Grid size={20} />}
-                </div>
-                <div className="so-sug-center">
-                  <span className="so-sug-type-label">{sug.typeLabel}</span>
-                  <span className="so-sug-name">{highlightMatch(sug.name, query)}</span>
-                </div>
-                <div className="so-sug-right">
-                  {sug.type === 'semantic' ? (
-                    <span className="so-enter-pill">Enter</span>
-                  ) : (
-                    <span className="so-sug-count">{sug.count}</span>
-                  )}
-                </div>
-              </a>
-            ))}
+            {showRichPreview && richResults.length > 0 ? (
+              <div className="so-rich-preview">
+                {richResults.map((group, gIdx) => (
+                  <div key={gIdx} className="so-rp-section" data-type={group.type}>
+                    <div className="so-rp-header">
+                      <div className="so-rp-header-left">
+                        <h2 className="so-rp-title">{group.title}</h2>
+                        <span className="so-rp-category">{group.category}</span>
+                      </div>
+                      <button className="so-rp-view-all">View Results</button>
+                    </div>
+
+                    <div className="so-rp-grid">
+                      {group.items.slice(0, 3).map((item) => (
+                        <div key={item.id} className="so-rp-card">
+                          {group.type === 'font' ? (
+                            <div className="so-rp-font-card" style={{ backgroundColor: item.color || '#F5F5F5' }}>
+                              <div className="so-rp-font-top">
+                                <span className="so-rp-font-name">{item.name}</span>
+                                {item.label && <span className={`so-rp-font-badge ${item.label.toLowerCase()}`}>{item.label}</span>}
+                              </div>
+                              <div className="so-rp-font-sample">Aa</div>
+                              <div className="so-rp-font-meta">Including Italic & Bold</div>
+                            </div>
+                          ) : (
+                            <div className="so-rp-image-wrapper">
+                              <img src={item.image} alt={item.name} className="so-rp-image" />
+                              <div className="so-rp-item-footer">
+                                <div className="so-rp-item-logo">
+                                  <img src={item.logo} alt="" />
+                                </div>
+                                <div className="so-rp-item-info">
+                                  <span className="so-rp-item-name">{item.name}</span>
+                                  <span className="so-rp-item-tagline">{item.tagline}</span>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="so-searching-placeholder">
+                <Search size={24} className="so-pulse-icon" />
+                <span>Searching for "{query}"...</span>
+              </div>
+            )}
           </div>
         ) : (
           <div className="so-body">
@@ -492,8 +547,8 @@ const SearchOverlay = ({ isOpen, onClose }) => {
               <div className="so-sb-card">
                 <div className="so-sb-card-icon">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M10 15L15 12L10 9V15Z" fill="#FF4D4D" />
-                    <rect x="2" y="4" width="20" height="16" rx="4" stroke="#FF4D4D" strokeWidth="2" />
+                    <path d="M10 15L15 12L10 9V15Z" fill="#888" />
+                    <rect x="2" y="4" width="20" height="16" rx="4" stroke="#888" strokeWidth="2" />
                   </svg>
                 </div>
                 <span className="so-sb-card-text">Learn How to Search<br />Better and Faster</span>
@@ -539,16 +594,11 @@ const SearchOverlay = ({ isOpen, onClose }) => {
         )}
 
         <div className="so-bottombar">
-          {suggestions.length > 0 ? (
+          {query.trim() ? (
             <>
               <div className="so-shortcut">
-                <kbd>↑</kbd> <kbd>↓</kbd>
-                <span className="so-hint">Navigate</span>
-              </div>
-              <div className="so-sep">·</div>
-              <div className="so-shortcut">
                 <kbd>Enter</kbd>
-                <span className="so-hint">Select</span>
+                <span className="so-hint">View All Results</span>
               </div>
             </>
           ) : (
