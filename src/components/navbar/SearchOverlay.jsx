@@ -44,27 +44,13 @@ const RICH_PREVIEW_DATA = [
       { id: 'f3', name: 'Right Grotesk', styles: '133 styles + Variable font', label: '', color: '#F0F0F0' },
       { id: 'f4', name: 'Mori', styles: '16 styles', label: '', color: '#F9F9F9' },
     ]
-  },
-  {
-    type: 'ux-pattern',
-    title: 'Trash Bin',
-    category: 'UX Pattern',
-    items: [
-      { id: 'rp6', name: 'Mercury', tagline: 'Banking for Startups', image: 'https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=800&auto=format&fit=crop', logo: 'https://www.google.com/s2/favicons?domain=mercury.com&sz=64' },
-      { id: 'rp7', name: 'Linear', tagline: 'A better way to build products', image: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?q=80&w=800&auto=format&fit=crop', logo: 'https://www.google.com/s2/favicons?domain=linear.app&sz=64' },
-      { id: 'rp8', name: 'Vercel', tagline: 'Develop. Preview. Ship.', image: 'https://images.unsplash.com/photo-1618477388954-7852f32655ec?q=80&w=800&auto=format&fit=crop', logo: 'https://www.google.com/s2/favicons?domain=vercel.com&sz=64' },
-    ]
-  },
-  {
-    type: 'flow',
-    title: 'Subscription Billing',
-    category: 'Flow',
-    items: [
-      { id: 'rp9', name: 'Mercury', tagline: 'Banking for Startups', image: 'https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=800&auto=format&fit=crop', logo: 'https://www.google.com/s2/favicons?domain=mercury.com&sz=64' },
-      { id: 'rp10', name: 'Linear', tagline: 'A better way to build products', image: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?q=80&w=800&auto=format&fit=crop', logo: 'https://www.google.com/s2/favicons?domain=linear.app&sz=64' },
-      { id: 'rp11', name: 'Vercel', tagline: 'Develop. Preview. Ship.', image: 'https://images.unsplash.com/photo-1618477388954-7852f32655ec?q=80&w=800&auto=format&fit=crop', logo: 'https://www.google.com/s2/favicons?domain=vercel.com&sz=64' },
-    ]
   }
+];
+
+const MOCK_IMAGE_CARDS = [
+  { id: 'mock1', name: 'Mercury', tagline: 'Banking for Startups', image: 'https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=800&auto=format&fit=crop', logo: 'https://www.google.com/s2/favicons?domain=mercury.com&sz=64' },
+  { id: 'mock2', name: 'Linear', tagline: 'A better way to build products', image: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?q=80&w=800&auto=format&fit=crop', logo: 'https://www.google.com/s2/favicons?domain=linear.app&sz=64' },
+  { id: 'mock3', name: 'Vercel', tagline: 'Develop. Preview. Ship.', image: 'https://images.unsplash.com/photo-1618477388954-7852f32655ec?q=80&w=800&auto=format&fit=crop', logo: 'https://www.google.com/s2/favicons?domain=vercel.com&sz=64' },
 ];
 
 /* Small colored icon for sidebar */
@@ -379,11 +365,37 @@ const SearchOverlay = ({ isOpen, onClose }) => {
     // Filter rich results based on query (400ms debounce)
     const richTimer = setTimeout(() => {
       const q = query.toLowerCase();
+      
+      // 1. Website and Font matches from RICH_PREVIEW_DATA
       const matchedRich = RICH_PREVIEW_DATA.filter(group =>
         group.title.toLowerCase().startsWith(q) ||
         group.category.toLowerCase().startsWith(q)
       );
-      setRichResults(matchedRich.length > 0 ? matchedRich : RICH_PREVIEW_DATA.slice(0, 3));
+
+      // 2. Dynamic matches from TAB_CONTENT
+      const dynamicResults = [];
+      const searchTabContent = (tabKey, categoryLabel, type) => {
+        if (!TAB_CONTENT[tabKey]) return;
+        TAB_CONTENT[tabKey].forEach(section => {
+          section.items.forEach(item => {
+            if (item.name.toLowerCase().includes(q)) {
+              dynamicResults.push({
+                type: type,
+                title: item.name,
+                category: categoryLabel,
+                items: MOCK_IMAGE_CARDS
+              });
+            }
+          });
+        });
+      };
+
+      searchTabContent('ux-patterns', 'UX Pattern', 'ux-pattern');
+      searchTabContent('ui-elements', 'UI Element', 'ui-element');
+      searchTabContent('flows', 'Flow', 'flow');
+
+      const combined = [...matchedRich, ...dynamicResults];
+      setRichResults(combined.length > 0 ? combined : RICH_PREVIEW_DATA.slice(0, 3));
       setShowRichPreview(true);
       setIsSearching(false);
     }, 400);
@@ -547,8 +559,8 @@ const SearchOverlay = ({ isOpen, onClose }) => {
               <div className="so-sb-card">
                 <div className="so-sb-card-icon">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M10 15L15 12L10 9V15Z" fill="#888" />
-                    <rect x="2" y="4" width="20" height="16" rx="4" stroke="#888" strokeWidth="2" />
+                    <path d="M10 15L15 12L10 9V15Z" fill="#FF4D4D" />
+                    <rect x="2" y="4" width="20" height="16" rx="4" stroke="#FF4D4D" strokeWidth="2" />
                   </svg>
                 </div>
                 <span className="so-sb-card-text">Learn How to Search<br />Better and Faster</span>

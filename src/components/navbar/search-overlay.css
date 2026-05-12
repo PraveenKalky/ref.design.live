@@ -88,13 +88,13 @@
   justify-content: space-between;
   padding: 0 40px;
   height: 80px;
-  border-bottom: none;
+  border-bottom: 1px solid #f0f0f0;
   flex-shrink: 0;
   gap: 24px;
 }
 
 [data-theme="dark"] .so-topbar {
-  border-bottom: none;
+  border-bottom-color: #2a2a2a;
 }
 
 .so-topbar-left {
@@ -145,11 +145,8 @@
 
 /* ── Suggestions Dropdown (Now Full-Screen View) ── */
 .so-suggestions {
-  position: absolute;
-  top: 80px; /* Directly below topbar */
-  left: 0;
+  flex: 1;
   width: 100%;
-  height: calc(100% - 80px - 60px); /* Fill space between topbar and bottombar */
   background: #ffffff;
   z-index: 100;
   box-shadow: none; /* Flat as requested */
@@ -853,7 +850,7 @@
 /* ── Font Preview Cards ── */
 .so-rp-font-card {
   width: 100%;
-  aspect-ratio: 1 / 1.1;
+  aspect-ratio: 16 / 10;
   border-radius: 12px;
   padding: 20px;
   display: flex;
