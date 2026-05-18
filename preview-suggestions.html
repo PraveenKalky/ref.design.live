@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Search Suggestions — Live Preview</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: #f2f2f2;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 48px 24px 80px;
+    gap: 40px;
+  }
+
+  h1 {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #aaa;
+  }
+
+  /* ── Search card ── */
+  .card {
+    width: 100%;
+    max-width: 680px;
+    background: #fff;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow:
+      0 2px 8px rgba(0,0,0,0.06),
+      0 16px 40px rgba(0,0,0,0.10);
+  }
+
+  /* ── Topbar ── */
+  .topbar {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 0 24px;
+    height: 72px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .topbar-icon { color: #bbb; flex-shrink: 0; }
+
+  .topbar input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-family: 'Outfit', sans-serif;
+    font-size: 17px;
+    font-weight: 400;
+    color: #111;
+    background: transparent;
+    caret-color: #111;
+  }
+  .topbar input::placeholder { color: #ccc; }
+
+  .tabs {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+  .tab {
+    padding: 7px 18px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    color: #999;
+    font-family: 'Outfit', sans-serif;
+    transition: background 0.15s, color 0.15s;
+  }
+  .tab.active {
+    background: #111;
+    color: #fff;
+  }
+
+  /* ── Suggestion list ── */
+  .suggestions {
+    padding: 8px 0 12px;
+  }
+
+  .suggestion-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 10px 16px;
+    margin: 0 8px;
+    border-radius: 10px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.12s;
+  }
+  .suggestion-row:hover { background: #F0F7F6; }
+  .suggestion-row.highlighted { background: #EAF4F2; }
+
+  /* Icon */
+  .icon-wrap {
+    width: 48px;
+    height: 48px;
+    border-radius: 11px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .icon-wrap img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    border-radius: 4px;
+  }
+  .icon-wrap svg { display: block; }
+
+  /* per-type colors */
+  .icon-semantic   { background: #111; }
+  .icon-ui-element { background: #3B6FE0; }
+  .icon-category   { background: #0D9F7A; }
+  .icon-font       { background: #7C3AED; }
+  .icon-flow       { background: #D6446A; }
+  .icon-website    { background: #fff; border: 1.5px solid #ebebeb; }
+
+  /* Center text */
+  .center {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 0;
+  }
+  .type-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: #bbb;
+    letter-spacing: 0.01em;
+    line-height: 1.2;
+  }
+  .name {
+    font-size: 15px;
+    font-weight: 400;
+    color: #444;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.4;
+  }
+  .name b { font-weight: 700; color: #111; }
+
+  /* Right */
+  .right { flex-shrink: 0; }
+  .count { font-size: 13px; color: #bbb; }
+  .enter-pill {
+    font-size: 11px;
+    font-weight: 600;
+    color: #888;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 2px 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* kbd hint footer */
+  .footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding: 12px 24px;
+    border-top: 1px solid #f5f5f5;
+  }
+  .hint {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #bbb;
+  }
+  .hint kbd {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #f5f5f5;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 11px;
+    color: #888;
+    gap: 2px;
+  }
+
+  /* ── Divider label ── */
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #ccc;
+    padding: 16px 24px 4px;
+  }
+
+  /* ── Dark toggle ── */
+  .toggle-bar {
+    display: flex;
+    gap: 10px;
+  }
+  .toggle-btn {
+    padding: 8px 20px;
+    border-radius: 999px;
+    border: 1.5px solid #ddd;
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: #666;
+    background: #fff;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .toggle-btn.active {
+    background: #111;
+    border-color: #111;
+    color: #fff;
+  }
+
+  /* ── Dark mode ── */
+  body.dark { background: #0e0e0e; }
+  body.dark .card { background: #161616; box-shadow: 0 2px 8px rgba(0,0,0,0.4), 0 16px 40px rgba(0,0,0,0.5); }
+  body.dark .topbar { border-bottom-color: #242424; }
+  body.dark .topbar input { color: #eee; }
+  body.dark .topbar input::placeholder { color: #444; }
+  body.dark .topbar-icon { color: #555; }
+  body.dark .tab { color: #666; }
+  body.dark .tab.active { background: #eee; color: #111; }
+  body.dark .suggestion-row:hover { background: #1d2b29; }
+  body.dark .suggestion-row.highlighted { background: #1a2624; }
+  body.dark .icon-website { background: #2a2a2a; border-color: #333; }
+  body.dark .type-label { color: #555; }
+  body.dark .name { color: #888; }
+  body.dark .name b { color: #eee; }
+  body.dark .count { color: #555; }
+  body.dark .enter-pill { border-color: #333; color: #666; }
+  body.dark .footer { border-top-color: #242424; }
+  body.dark .hint { color: #444; }
+  body.dark .hint kbd { background: #222; border-color: #333; color: #666; }
+  body.dark .section-label { color: #333; }
+  body.dark h1 { color: #444; }
+  body.dark .toggle-btn { border-color: #333; color: #666; background: #1a1a1a; }
+  body.dark .toggle-btn.active { background: #eee; border-color: #eee; color: #111; }
+</style>
+</head>
+<body>
+
+<div class="toggle-bar">
+  <button class="toggle-btn active" onclick="setTheme('light')">Light</button>
+  <button class="toggle-btn" onclick="setTheme('dark')">Dark</button>
+</div>
+
+<h1>Search Suggestions — 20 Creative Entries</h1>
+
+<div class="card" id="card">
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <!-- search icon -->
+    <svg class="topbar-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+    </svg>
+    <input type="text" id="searchInput" placeholder="Search Web Products, Screens, UI Elements, Flows" oninput="filterSuggestions(this.value)" autocomplete="off"/>
+    <div class="tabs">
+      <button class="tab active">Web</button>
+      <button class="tab">iOS</button>
+    </div>
+  </div>
+
+  <!-- Suggestions list -->
+  <div class="suggestions" id="suggestionsList"></div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="hint">
+      <kbd>↑</kbd><kbd>↓</kbd> Navigate
+    </div>
+    <div class="hint">
+      <kbd>Enter</kbd> Select
+    </div>
+    <div class="hint">
+      <kbd>Esc</kbd> Close
+    </div>
+  </div>
+</div>
+
+<script>
+const ALL = [
+  { id:'u1',  name:'Hero Image',           typeLabel:'UI Element',      type:'ui-element', count:'3,241 results' },
+  { id:'u2',  name:'Hero Section',         typeLabel:'UI Element',      type:'ui-element', count:'1,876 results' },
+  { id:'u3',  name:'Hero Banner',          typeLabel:'UI Element',      type:'ui-element', count:'892 results'   },
+  { id:'u4',  name:'Header Navigation',    typeLabel:'UI Element',      type:'ui-element', count:'2,109 results' },
+  { id:'c1',  name:'Weather',              typeLabel:'Category',        type:'category',   count:'487 results'   },
+  { id:'c2',  name:'Healthcare',           typeLabel:'Category',        type:'category',   count:'1,204 results' },
+  { id:'c3',  name:'E-commerce',           typeLabel:'Category',        type:'category',   count:'3,891 results' },
+  { id:'c4',  name:'Finance & Fintech',    typeLabel:'Category',        type:'category',   count:'2,567 results' },
+  { id:'f1',  name:'Merriweather',         typeLabel:'Font',            type:'font',       count:'634 results'   },
+  { id:'f2',  name:'Helvetica Neue',       typeLabel:'Font',            type:'font',       count:'1,129 results' },
+  { id:'f3',  name:'Georgia Pro',          typeLabel:'Font',            type:'font',       count:'512 results'   },
+  { id:'w1',  name:'Hers',                 typeLabel:'Website',         type:'website',    domain:'hers.com',         count:'4,089 results' },
+  { id:'w2',  name:'Whereby',              typeLabel:'Website',         type:'website',    domain:'whereby.com',      count:'1,156 results' },
+  { id:'w3',  name:'Slite',                typeLabel:'Website',         type:'website',    domain:'slite.com',        count:'982 results'   },
+  { id:'w4',  name:'Cohere',               typeLabel:'Website',         type:'website',    domain:'cohere.com',       count:'2,341 results' },
+  { id:'w5',  name:'The Weather Channel',  typeLabel:'Website',         type:'website',    domain:'weather.com',      count:'5,672 results' },
+  { id:'w6',  name:'Windy',                typeLabel:'Website',         type:'website',    domain:'windy.com',        count:'789 results'   },
+  { id:'w7',  name:'Heroku',               typeLabel:'Website',         type:'website',    domain:'heroku.com',       count:'1,543 results' },
+  { id:'fl1', name:'Checkout Flow',        typeLabel:'Flow',            type:'flow',       count:'843 results'   },
+  { id:'fl2', name:'Onboarding Flow',      typeLabel:'Flow',            type:'flow',       count:'1,205 results' },
+];
+
+const ICONS = {
+  semantic: `<svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+    <rect x="0"  y="0"  width="9" height="9" rx="2" fill="#FF6B35"/>
+    <rect x="13" y="0"  width="9" height="9" rx="2" fill="#845EF7"/>
+    <rect x="0"  y="13" width="9" height="9" rx="2" fill="#20C997"/>
+    <rect x="13" y="13" width="9" height="9" rx="2" fill="#F7B731"/>
+  </svg>`,
+  'ui-element': `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="2" y="3" width="20" height="14" rx="2"/><polyline points="8 21 12 17 16 21"/>
+  </svg>`,
+  category: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+    <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+  </svg>`,
+  font: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/>
+  </svg>`,
+  flow: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+  </svg>`,
+};
+
+let activeIndex = 0;
+let currentList = [];
+
+function highlight(text, q) {
+  if (!q) return text;
+  return text.replace(new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi'),
+    '<b>$1</b>');
+}
+
+function faviconImg(domain) {
+  return `<img src="https://www.google.com/s2/favicons?domain=${domain}&sz=64" alt="" onerror="this.style.opacity=0.3"/>`;
+}
+
+function renderRow(sug, index, q) {
+  const isActive = index === activeIndex;
+  let iconContent = '';
+  if (sug.type === 'website') iconContent = faviconImg(sug.domain);
+  else iconContent = ICONS[sug.type] || '';
+
+  const right = sug.type === 'semantic'
+    ? `<span class="enter-pill">Enter</span>`
+    : `<span class="count">${sug.count}</span>`;
+
+  return `
+    <a class="suggestion-row ${isActive ? 'highlighted' : ''}" href="#" onclick="return false"
+       onmouseenter="setActive(${index})" data-index="${index}">
+      <div class="icon-wrap icon-${sug.type}">${iconContent}</div>
+      <div class="center">
+        <span class="type-label">${sug.typeLabel}</span>
+        <span class="name">${highlight(sug.name, q)}</span>
+      </div>
+      <div class="right">${right}</div>
+    </a>`;
+}
+
+function setActive(i) {
+  activeIndex = i;
+  document.querySelectorAll('.suggestion-row').forEach((el, idx) => {
+    el.classList.toggle('highlighted', idx === i);
+  });
+}
+
+function filterSuggestions(q) {
+  const list = document.getElementById('suggestionsList');
+  if (!q.trim()) {
+    list.innerHTML = renderAllSections('');
+    return;
+  }
+  const matched = ALL.filter(s => s.name.toLowerCase().includes(q.toLowerCase()));
+  const semantic = { id:'semantic', name: q, typeLabel:'Semantic Search', type:'semantic' };
+  currentList = [semantic, ...matched].slice(0, 11);
+  activeIndex = 0;
+  list.innerHTML = currentList.map((s, i) => renderRow(s, i, q)).join('');
+}
+
+function renderAllSections(q) {
+  const groups = [
+    { label: 'UI Elements',  items: ALL.filter(s => s.type === 'ui-element') },
+    { label: 'Categories',   items: ALL.filter(s => s.type === 'category')   },
+    { label: 'Fonts',        items: ALL.filter(s => s.type === 'font')        },
+    { label: 'Websites',     items: ALL.filter(s => s.type === 'website')     },
+    { label: 'Flows',        items: ALL.filter(s => s.type === 'flow')        },
+  ];
+  let idx = 0;
+  return groups.map(g => {
+    const rows = g.items.map(s => { const r = renderRow(s, idx, q); idx++; return r; }).join('');
+    return `<div class="section-label">${g.label}</div>${rows}`;
+  }).join('');
+}
+
+// Keyboard navigation
+document.addEventListener('keydown', e => {
+  const rows = document.querySelectorAll('.suggestion-row');
+  if (!rows.length) return;
+  if (e.key === 'ArrowDown') { e.preventDefault(); setActive(Math.min(activeIndex+1, rows.length-1)); }
+  if (e.key === 'ArrowUp')   { e.preventDefault(); setActive(Math.max(activeIndex-1, 0)); }
+});
+
+function setTheme(t) {
+  document.body.classList.toggle('dark', t === 'dark');
+  document.querySelectorAll('.toggle-btn').forEach(b => b.classList.toggle('active', b.textContent.toLowerCase() === t));
+}
+
+// Initial render — show all 20
+document.getElementById('suggestionsList').innerHTML = renderAllSections('');
+</script>
+</body>
+</html>

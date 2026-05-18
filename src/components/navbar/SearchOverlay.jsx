@@ -1,7 +1,17 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { Search, X, ChevronRight, Layout, Activity, Component, Layers, Grid, Type } from 'lucide-react';
+import { megaMenuData } from './mega-menu-data';
 import './search-overlay.css';
+
+/* ── Flatten megaMenuData into searchable items per navbar tab ── */
+const NAVBAR_SEARCH_SOURCES = Object.entries(megaMenuData).flatMap(([navLabel, data]) =>
+  [...(data.leftItems || []), ...(data.rightItems || [])].map(item => ({
+    name: item.label,
+    count: item.count,
+    navCategory: navLabel,      // e.g. 'Websites', 'Apps', 'Fonts'
+  }))
+);
 
 /* ── Sidebar items with colored block icons ── */
 const SIDEBAR_ITEMS = [
@@ -51,6 +61,12 @@ const MOCK_IMAGE_CARDS = [
   { id: 'mock1', name: 'Mercury', tagline: 'Banking for Startups', image: 'https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=800&auto=format&fit=crop', logo: 'https://www.google.com/s2/favicons?domain=mercury.com&sz=64' },
   { id: 'mock2', name: 'Linear', tagline: 'A better way to build products', image: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?q=80&w=800&auto=format&fit=crop', logo: 'https://www.google.com/s2/favicons?domain=linear.app&sz=64' },
   { id: 'mock3', name: 'Vercel', tagline: 'Develop. Preview. Ship.', image: 'https://images.unsplash.com/photo-1618477388954-7852f32655ec?q=80&w=800&auto=format&fit=crop', logo: 'https://www.google.com/s2/favicons?domain=vercel.com&sz=64' },
+];
+
+const MOCK_FONT_CARDS = [
+  { id: 'mf1', name: 'Neue Montreal', styles: '36 styles + Variable font', label: 'Update', color: '#FFF8E1' },
+  { id: 'mf2', name: 'PP Fragment', styles: '32 styles + Variable font', label: 'New', color: '#F5F5F5' },
+  { id: 'mf3', name: 'Right Grotesk', styles: '130 styles + Variable font', label: '', color: '#F0F0F0' },
 ];
 
 /* Small colored icon for sidebar */
@@ -365,34 +381,54 @@ const SearchOverlay = ({ isOpen, onClose }) => {
     // Filter rich results based on query (400ms debounce)
     const richTimer = setTimeout(() => {
       const q = query.toLowerCase();
-      
-      // 1. Website and Font matches from RICH_PREVIEW_DATA
-      const matchedRich = RICH_PREVIEW_DATA.filter(group =>
-        group.title.toLowerCase().startsWith(q) ||
-        group.category.toLowerCase().startsWith(q)
-      );
 
-      // 2. Dynamic matches from TAB_CONTENT
+      // Match individual item names across all TAB_CONTENT tabs
+      const TAB_LABELS = {
+        'page-types': 'Page Type',
+        'flows': 'Flow',
+        'ux-patterns': 'UX Pattern',
+        'ui-elements': 'UI Element',
+        'categories': 'Category',
+        'fonts': 'Font',
+      };
+
       const dynamicResults = [];
-      const searchTabContent = (tabKey, categoryLabel, type) => {
-        if (!TAB_CONTENT[tabKey]) return;
-        TAB_CONTENT[tabKey].forEach(section => {
+
+      // 1. Search TAB_CONTENT (page types, flows, ux-patterns, ui-elements, categories, fonts)
+      Object.entries(TAB_CONTENT).forEach(([tabKey, sections]) => {
+        const isFont = tabKey === 'fonts';
+        sections.forEach(section => {
           section.items.forEach(item => {
             if (item.name.toLowerCase().includes(q)) {
               dynamicResults.push({
-                type: type,
+                type: isFont ? 'font' : (TAB_LABELS[tabKey] || tabKey),
                 title: item.name,
-                category: categoryLabel,
-                items: MOCK_IMAGE_CARDS
+                category: section.title || TAB_LABELS[tabKey] || tabKey,
+                items: isFont ? MOCK_FONT_CARDS : MOCK_IMAGE_CARDS,
               });
             }
           });
         });
-      };
+      });
 
-      searchTabContent('ux-patterns', 'UX Pattern', 'ux-pattern');
-      searchTabContent('ui-elements', 'UI Element', 'ui-element');
-      searchTabContent('flows', 'Flow', 'flow');
+      // 2. Search all navbar mega-menu categories (Websites, Apps, Resources, Fonts styles, UI/UX Tastes)
+      NAVBAR_SEARCH_SOURCES.forEach(item => {
+        if (item.name.toLowerCase().includes(q)) {
+          const isFontStyle = item.navCategory === 'Fonts';
+          dynamicResults.push({
+            type: isFontStyle ? 'font' : item.navCategory,
+            title: item.name,
+            category: item.navCategory,
+            items: isFontStyle ? MOCK_FONT_CARDS : MOCK_IMAGE_CARDS,
+          });
+        }
+      });
+
+      // Also match RICH_PREVIEW_DATA group titles
+      const matchedRich = RICH_PREVIEW_DATA.filter(group =>
+        group.title.toLowerCase().includes(q) ||
+        group.category.toLowerCase().includes(q)
+      );
 
       const combined = [...matchedRich, ...dynamicResults];
       setRichResults(combined.length > 0 ? combined : RICH_PREVIEW_DATA.slice(0, 3));
@@ -406,11 +442,12 @@ const SearchOverlay = ({ isOpen, onClose }) => {
   // Helper to highlight matching text
   const highlightMatch = (text, q) => {
     if (!q) return text;
-    const parts = text.split(new RegExp(`(${q})`, 'gi'));
+    const escapedQ = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const parts = text.split(new RegExp(`(${escapedQ})`, 'gi'));
     return (
       <>
         {parts.map((part, i) =>
-          part.toLowerCase() === q.toLowerCase() ? <b key={i}>{part}</b> : part
+          part.toLowerCase() === q.toLowerCase() ? <mark key={i} className="so-highlight">{part}</mark> : part
         )}
       </>
     );
@@ -495,7 +532,6 @@ const SearchOverlay = ({ isOpen, onClose }) => {
                     <div className="so-rp-header">
                       <div className="so-rp-header-left">
                         <h2 className="so-rp-title">{group.title}</h2>
-                        <span className="so-rp-category">{group.category}</span>
                       </div>
                       <button className="so-rp-view-all">View Results</button>
                     </div>
@@ -520,7 +556,7 @@ const SearchOverlay = ({ isOpen, onClose }) => {
                                   <img src={item.logo} alt="" />
                                 </div>
                                 <div className="so-rp-item-info">
-                                  <span className="so-rp-item-name">{item.name}</span>
+                                  <span className="so-rp-item-name">{highlightMatch(item.name, query)}</span>
                                   <span className="so-rp-item-tagline">{item.tagline}</span>
                                 </div>
                               </div>
@@ -549,22 +585,13 @@ const SearchOverlay = ({ isOpen, onClose }) => {
                     className={`so-sb-item ${activeSidebar === item.id ? 'active' : ''}`}
                     onClick={() => setActiveSidebar(item.id)}
                   >
-                    <SidebarIcon icon={item.icon} />
                     <span className="so-sb-label">{item.label}</span>
                     {item.badge && <span className="so-sb-badge">{item.badge}</span>}
                     <ChevronRight size={16} className="so-sb-arrow" />
                   </button>
                 ))}
               </nav>
-              <div className="so-sb-card">
-                <div className="so-sb-card-icon">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M10 15L15 12L10 9V15Z" fill="#FF4D4D" />
-                    <rect x="2" y="4" width="20" height="16" rx="4" stroke="#FF4D4D" strokeWidth="2" />
-                  </svg>
-                </div>
-                <span className="so-sb-card-text">Learn How to Search<br />Better and Faster</span>
-              </div>
+
             </aside>
 
             <main className="so-main">
@@ -605,31 +632,7 @@ const SearchOverlay = ({ isOpen, onClose }) => {
           </div>
         )}
 
-        <div className="so-bottombar">
-          {query.trim() ? (
-            <>
-              <div className="so-shortcut">
-                <kbd>Enter</kbd>
-                <span className="so-hint">View All Results</span>
-              </div>
-            </>
-          ) : (
-            <>
-              <div className="so-shortcut">
-                <kbd>Tab</kbd> <kbd>Tab + Shift</kbd>
-                <span className="so-hint">Switch Tabs</span>
-              </div>
-              <div className="so-shortcut">
-                <kbd>←</kbd> <kbd>↑</kbd> <kbd>→</kbd> <kbd>↓</kbd>
-                <span className="so-hint">Navigate</span>
-              </div>
-              <div className="so-shortcut">
-                <kbd>Enter</kbd>
-                <span className="so-hint">Select</span>
-              </div>
-            </>
-          )}
-        </div>
+
       </div>
     </div>,
     document.body
