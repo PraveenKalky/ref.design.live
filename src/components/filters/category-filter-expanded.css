@@ -4,7 +4,7 @@
   flex-direction: column;
   gap: 12px;
   width: 100%;
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Urbanist', sans-serif;
 }
 
 /* Row 1: Tab Bar */
@@ -70,7 +70,7 @@
   background: none;
   border: none;
   padding: 0;
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Urbanist', sans-serif;
   font-size: 24px;
   font-weight: 400;
   color: #999;
@@ -97,7 +97,7 @@
   justify-content: center;
   background: #f0f0f2;
   color: #666;
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Urbanist', sans-serif;
   font-size: 14px;
   font-weight: 500;
   padding: 4px 12px;
