@@ -764,9 +764,9 @@
 
 /* Highlight matched text */
 .so-highlight {
-  background: #FFF3B0;
-  color: inherit;
-  padding: 0 1px;
+  background: #FFE500;
+  color: #111;
+  padding: 0 2px;
   border-radius: 2px;
 }
 
@@ -796,8 +796,8 @@
 
 .so-rp-header-left {
   display: flex;
-  flex-direction: column;
-  gap: 2px;
+  flex-direction: row;
+  align-items: center;
 }
 
 .so-rp-title {
@@ -813,9 +813,7 @@
 }
 
 .so-rp-category {
-  font-size: 13px;
-  color: #888;
-  font-weight: 400;
+  display: none;
 }
 
 .so-rp-view-all {
