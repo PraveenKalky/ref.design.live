@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { Search, X, ChevronRight, Layout, Activity, Component, Layers, Grid, Type } from 'lucide-react';
 import { megaMenuData } from './mega-menu-data';
+import { cardsData } from '../card-grid/cards-data';
 import './search-overlay.css';
 
 /* ── Flatten megaMenuData into searchable items per navbar tab ── */
@@ -57,11 +58,31 @@ const RICH_PREVIEW_DATA = [
   }
 ];
 
-const MOCK_IMAGE_CARDS = [
-  { id: 'mock1', name: 'Mercury', tagline: 'Banking for Startups', image: 'https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=800&auto=format&fit=crop', logo: 'https://www.google.com/s2/favicons?domain=mercury.com&sz=64' },
-  { id: 'mock2', name: 'Linear', tagline: 'A better way to build products', image: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?q=80&w=800&auto=format&fit=crop', logo: 'https://www.google.com/s2/favicons?domain=linear.app&sz=64' },
-  { id: 'mock3', name: 'Vercel', tagline: 'Develop. Preview. Ship.', image: 'https://images.unsplash.com/photo-1618477388954-7852f32655ec?q=80&w=800&auto=format&fit=crop', logo: 'https://www.google.com/s2/favicons?domain=vercel.com&sz=64' },
-];
+/* ── Deterministic card picker ──────────────────────────────────────────────
+   Hashes an item name to a stable offset into cardsData so every matched
+   section shows a unique, consistent trio of real website cards.
+─────────────────────────────────────────────────────────────────────────── */
+const hashName = (str) => {
+  let h = 0;
+  for (let i = 0; i < str.length; i++) h = (Math.imul(31, h) + str.charCodeAt(i)) | 0;
+  return Math.abs(h);
+};
+
+const getCardsForItem = (itemName) => {
+  const total = cardsData.length;
+  const start = hashName(itemName) % total;
+  // pick 3 unique entries, wrapping around the pool
+  return [0, 1, 2].map(offset => {
+    const src = cardsData[(start + offset) % total];
+    return {
+      id: `${itemName}-${offset}`,
+      name: itemName,
+      tagline: src.subtitle,
+      image: src.image,
+      logo: src.logo,
+    };
+  });
+};
 
 const MOCK_FONT_CARDS = [
   { id: 'mf1', name: 'Neue Montreal', styles: '36 styles + Variable font', label: 'Update', color: '#FFF8E1' },
@@ -382,46 +403,64 @@ const SearchOverlay = ({ isOpen, onClose }) => {
     const richTimer = setTimeout(() => {
       const q = query.toLowerCase();
 
-      // Match individual item names across all TAB_CONTENT tabs
-      const TAB_LABELS = {
-        'page-types': 'Page Type',
-        'flows': 'Flow',
-        'ux-patterns': 'UX Pattern',
-        'ui-elements': 'UI Element',
-        'categories': 'Category',
-        'fonts': 'Font',
+      // Group matches by category — one section per category, matched items as cards
+      const TAB_SECTION_LABELS = {
+        'page-types': 'Page Types',
+        'flows': 'Flows',
+        'ux-patterns': 'UX Patterns',
+        'ui-elements': 'UI Elements',
+        'categories': 'Categories',
+        'fonts': 'Fonts',
       };
+      const FONT_COLORS = ['#FFF8E1', '#F5F5F5', '#F0F0F0'];
 
       const dynamicResults = [];
 
-      // 1. Search TAB_CONTENT (page types, flows, ux-patterns, ui-elements, categories, fonts)
+      // 1. Group TAB_CONTENT matches by their parent category (one section per category)
+      const tabGroups = {};
       Object.entries(TAB_CONTENT).forEach(([tabKey, sections]) => {
         const isFont = tabKey === 'fonts';
+        const categoryLabel = TAB_SECTION_LABELS[tabKey] || tabKey;
         sections.forEach(section => {
           section.items.forEach(item => {
             if (item.name.toLowerCase().includes(q)) {
-              dynamicResults.push({
-                type: isFont ? 'font' : (TAB_LABELS[tabKey] || tabKey),
-                title: item.name,
-                category: section.title || TAB_LABELS[tabKey] || tabKey,
-                items: isFont ? MOCK_FONT_CARDS : MOCK_IMAGE_CARDS,
-              });
+              if (!tabGroups[categoryLabel]) {
+                tabGroups[categoryLabel] = { type: isFont ? 'font' : tabKey, isFont, matchedNames: [] };
+              }
+              tabGroups[categoryLabel].matchedNames.push(item.name);
             }
           });
         });
       });
 
-      // 2. Search all navbar mega-menu categories (Websites, Apps, Resources, Fonts styles, UI/UX Tastes)
+      Object.entries(tabGroups).forEach(([categoryLabel, { type, isFont, matchedNames }]) => {
+        const items = matchedNames.slice(0, 3).map((name, i) => {
+          if (isFont) return { id: `font-${name}-${i}`, name, styles: 'Variable font', label: '', color: FONT_COLORS[i % 3] };
+          const src = cardsData[hashName(name) % cardsData.length];
+          return { id: `${name}-${i}`, name, tagline: src.subtitle, image: src.image, logo: src.logo };
+        });
+        dynamicResults.push({ type, title: categoryLabel, category: categoryLabel, items });
+      });
+
+      // 2. Group navbar mega-menu matches by navCategory (one section per navCategory)
+      const navGroups = {};
       NAVBAR_SEARCH_SOURCES.forEach(item => {
         if (item.name.toLowerCase().includes(q)) {
           const isFontStyle = item.navCategory === 'Fonts';
-          dynamicResults.push({
-            type: isFontStyle ? 'font' : item.navCategory,
-            title: item.name,
-            category: item.navCategory,
-            items: isFontStyle ? MOCK_FONT_CARDS : MOCK_IMAGE_CARDS,
-          });
+          if (!navGroups[item.navCategory]) {
+            navGroups[item.navCategory] = { type: isFontStyle ? 'font' : item.navCategory, isFontStyle, matchedNames: [] };
+          }
+          navGroups[item.navCategory].matchedNames.push(item.name);
         }
+      });
+
+      Object.entries(navGroups).forEach(([navCat, { type, isFontStyle, matchedNames }]) => {
+        const items = matchedNames.slice(0, 3).map((name, i) => {
+          if (isFontStyle) return { id: `font-${name}-${i}`, name, styles: 'Variable font', label: '', color: FONT_COLORS[i % 3] };
+          const src = cardsData[hashName(name) % cardsData.length];
+          return { id: `${name}-${i}`, name, tagline: src.subtitle, image: src.image, logo: src.logo };
+        });
+        dynamicResults.push({ type, title: navCat, category: navCat, items });
       });
 
       // Also match RICH_PREVIEW_DATA group titles
@@ -530,9 +569,7 @@ const SearchOverlay = ({ isOpen, onClose }) => {
                 {richResults.map((group, gIdx) => (
                   <div key={gIdx} className="so-rp-section" data-type={group.type}>
                     <div className="so-rp-header">
-                      <div className="so-rp-header-left">
-                        <h2 className="so-rp-title">{group.title}</h2>
-                      </div>
+                      <h2 className="so-rp-title">{group.title}</h2>
                       <button className="so-rp-view-all">View Results</button>
                     </div>
 
@@ -542,7 +579,9 @@ const SearchOverlay = ({ isOpen, onClose }) => {
                           {group.type === 'font' ? (
                             <div className="so-rp-font-card" style={{ backgroundColor: item.color || '#F5F5F5' }}>
                               <div className="so-rp-font-top">
-                                <span className="so-rp-font-name">{item.name}</span>
+                                <span className="so-rp-font-name">
+                                  {highlightMatch(item.name, query)}
+                                </span>
                                 {item.label && <span className={`so-rp-font-badge ${item.label.toLowerCase()}`}>{item.label}</span>}
                               </div>
                               <div className="so-rp-font-sample">Aa</div>
@@ -556,7 +595,9 @@ const SearchOverlay = ({ isOpen, onClose }) => {
                                   <img src={item.logo} alt="" />
                                 </div>
                                 <div className="so-rp-item-info">
-                                  <span className="so-rp-item-name">{highlightMatch(item.name, query)}</span>
+                                  <span className="so-rp-item-name">
+                                    {highlightMatch(item.name, query)}
+                                  </span>
                                   <span className="so-rp-item-tagline">{item.tagline}</span>
                                 </div>
                               </div>
