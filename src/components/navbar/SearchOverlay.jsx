@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import { useNavigate } from 'react-router-dom';
 import { Search, X, ChevronRight, Layout, Activity, Component, Layers, Grid, Type } from 'lucide-react';
 import { megaMenuData } from './mega-menu-data';
 import { cardsData } from '../card-grid/cards-data';
@@ -101,7 +102,7 @@ const SidebarIcon = ({ icon: IconComponent }) => {
 };
 
 /* ── Content for each sidebar tab ── */
-const TAB_CONTENT = {
+export const TAB_CONTENT = {
   'page-types': [
     {
       title: 'Business & Legal Pages',
@@ -369,6 +370,7 @@ const TAB_CONTENT = {
 };
 
 const SearchOverlay = ({ isOpen, onClose }) => {
+  const navigate = useNavigate();
   const [query, setQuery] = useState('');
   const [activeTab, setActiveTab] = useState('web');
   const [activeSidebar, setActiveSidebar] = useState('page-types');
@@ -377,6 +379,13 @@ const SearchOverlay = ({ isOpen, onClose }) => {
   const [isSearching, setIsSearching] = useState(false);
   const [showRichPreview, setShowRichPreview] = useState(false);
   // No longer needed: shouldRender and isClosing are removed for instant transitions
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && query.trim()) {
+      onClose();
+      navigate(`/search-results?q=${encodeURIComponent(query)}`);
+    }
+  };
 
   useEffect(() => {
     if (isOpen && inputRef.current) {
@@ -486,7 +495,7 @@ const SearchOverlay = ({ isOpen, onClose }) => {
     return (
       <>
         {parts.map((part, i) =>
-          part.toLowerCase() === q.toLowerCase() ? <mark key={i} className="so-highlight">{part}</mark> : part
+          part.toLowerCase() === q.toLowerCase() ? <mark key={i} style={{ backgroundColor: '#FFE500', color: '#000000' }} className="so-highlight">{part}</mark> : part
         )}
       </>
     );
@@ -555,6 +564,7 @@ const SearchOverlay = ({ isOpen, onClose }) => {
               placeholder="Search Web Products, Screens, UI Elements, Flows"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={handleKeyDown}
             />
           </div>
           <div className="so-topbar-right">

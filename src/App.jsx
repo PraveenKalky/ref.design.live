@@ -8,6 +8,7 @@ import Footer from './components/footer/Footer';
 import { Agentation } from 'agentation';
 import { Routes, Route } from 'react-router-dom';
 import Fonts from './pages/Fonts';
+import SearchResults from './pages/search-results/SearchResults';
 
 function App() {
   const [savedItems, setSavedItems] = useState(() => {
@@ -64,6 +65,7 @@ function App() {
           </>
         } />
         <Route path="/fonts" element={<Fonts />} />
+        <Route path="/search-results" element={<SearchResults savedItems={savedItems} toggleSave={toggleSave} />} />
       </Routes>
       <Footer />
       <Agentation />
