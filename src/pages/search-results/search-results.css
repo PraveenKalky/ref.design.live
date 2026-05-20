@@ -1,0 +1,289 @@
+@import url('https://fonts.googleapis.com/css2?family=Urbanist:wght@100..900&display=swap');
+
+/* ═══════════════════════════════════════════════════
+   SEARCH RESULTS PAGE CSS
+   ═══════════════════════════════════════════════════ */
+
+.search-results-page {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 120px 40px 60px; /* Offset fixed header */
+  font-family: 'Urbanist', sans-serif !important;
+  color: var(--dv-text);
+  background-color: var(--dv-bg);
+  min-height: 100vh;
+}
+
+.search-results-page * {
+  font-family: 'Urbanist', sans-serif !important;
+}
+
+/* --- Filter Tabs --- */
+.sr-filter-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 40px;
+}
+
+.sr-filter-tab {
+  font-family: 'Urbanist', sans-serif !important;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--dv-text-ghost);
+  border: none !important;
+  outline: none !important;
+  padding: 10px 22px;
+  border-radius: 99px;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-smooth);
+}
+
+.sr-filter-tab:hover {
+  color: var(--dv-text);
+  background: rgba(255, 255, 255, 0.12);
+  border: none !important;
+  outline: none !important;
+}
+
+.sr-filter-tab.active {
+  background: #ffffff;
+  color: #000000;
+  font-weight: 700;
+  border: none !important;
+  outline: none !important;
+}
+
+[data-theme="light"] .sr-filter-tab {
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--dv-text-ghost);
+  border: none !important;
+  outline: none !important;
+}
+
+[data-theme="light"] .sr-filter-tab:hover {
+  background: rgba(0, 0, 0, 0.1);
+  color: var(--dv-text);
+  border: none !important;
+  outline: none !important;
+}
+
+[data-theme="light"] .sr-filter-tab.active {
+  background: #000000;
+  color: #ffffff;
+  border: none !important;
+  outline: none !important;
+}
+
+/* --- Header Section --- */
+.sr-header-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 48px;
+}
+
+.sr-title {
+  font-family: var(--font-display), sans-serif;
+  font-size: 36px;
+  font-weight: 500;
+  color: var(--dv-text);
+  letter-spacing: -0.02em;
+}
+
+.sr-title em {
+  font-style: normal;
+  font-weight: 900;
+}
+
+/* Query Tag / Chip */
+.sr-query-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--dv-text);
+  padding: 8px 16px;
+  border-radius: 8px;
+  width: fit-content;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-smooth);
+}
+
+.sr-query-chip:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.sr-query-chip-clear {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--dv-text);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.2s ease;
+}
+
+.sr-query-chip-clear:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+[data-theme="light"] .sr-query-chip {
+  background: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.1);
+  color: var(--dv-text);
+}
+
+[data-theme="light"] .sr-query-chip:hover {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .sr-query-chip-clear {
+  background: rgba(0, 0, 0, 0.1);
+  color: var(--dv-text);
+}
+
+[data-theme="light"] .sr-query-chip-clear:hover {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+/* Related Row */
+.sr-related-row {
+  font-size: 15px;
+  color: var(--dv-text-ghost);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.sr-related-label {
+  color: var(--dv-text-ghost);
+}
+
+.sr-related-item {
+  color: var(--dv-text);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+  cursor: pointer;
+}
+
+.sr-related-item:hover {
+  color: var(--dv-brand-yellow, #ffe500);
+}
+
+/* --- Section Layout --- */
+.sr-category-section {
+  margin-bottom: 64px;
+}
+
+.sr-section-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.sr-section-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sr-section-title {
+  font-family: var(--font-display), sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--dv-text);
+  letter-spacing: -0.01em;
+}
+
+.sr-section-count {
+  font-size: 14px;
+  color: var(--dv-text-ghost);
+  font-weight: 400;
+}
+
+.sr-view-all-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #ffffff;
+  color: #000000;
+  border: 1px solid #ffffff;
+  padding: 10px 24px;
+  border-radius: 99px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition-smooth);
+}
+
+.sr-view-all-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+[data-theme="light"] .sr-view-all-btn {
+  background: #000000;
+  color: #ffffff;
+  border-color: #000000;
+}
+
+/* --- Padlock/Lock Badge for Grammarly Card --- */
+.sr-card-premium-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  width: 28px;
+  height: 28px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  z-index: 5;
+}
+
+/* --- Empty Search State --- */
+.sr-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 80px 20px;
+  gap: 16px;
+}
+
+.sr-empty-icon {
+  color: var(--dv-text-ghost);
+  margin-bottom: 8px;
+}
+
+.sr-empty-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--dv-text);
+}
+
+.sr-empty-text {
+  font-size: 16px;
+  color: var(--dv-text-ghost);
+  max-width: 480px;
+}

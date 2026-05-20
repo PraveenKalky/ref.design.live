@@ -4,7 +4,7 @@ import { cardsData } from './cards-data';
 import Pagination from '../pagination/Pagination';
 import './card-grid.css';
 
-const Card = ({ id, name, title, subtitle, image, logo, link, isSaved, toggleSave }) => {
+export const Card = ({ id, name, title, subtitle, image, logo, link, isSaved, toggleSave }) => {
   return (
     <div className="card-container">
       <div className="card-image-wrapper">
