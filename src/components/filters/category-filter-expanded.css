@@ -181,3 +181,16 @@
 .cfe-chip-remove:hover {
   color: #E8323C;
 }
+
+[data-theme="dark"] .cfe-chip {
+  background: #2a2a2a;
+  color: #ddd;
+}
+
+[data-theme="dark"] .cfe-chip-remove {
+  color: #666;
+}
+
+[data-theme="dark"] .cfe-chip-remove:hover {
+  color: #E8323C;
+}
