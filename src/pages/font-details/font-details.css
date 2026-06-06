@@ -113,6 +113,45 @@
   transform: scale(1.02);
 }
 
+.font-details-specs {
+  background-color: #050505;
+  padding: 80px 8%;
+  border-top: 1px solid #1a1a1a;
+  border-bottom: 1px solid #1a1a1a;
+}
+
+.specs-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 48px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.spec-item {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.spec-label {
+  font-family: 'Urbanist', 'Outfit', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #666;
+  letter-spacing: 0.1em;
+}
+
+.spec-value {
+  font-family: 'Urbanist', 'Outfit', sans-serif;
+  font-size: 28px;
+  font-weight: 500;
+  color: #ffffff;
+  margin: 0;
+  line-height: 1.3;
+}
+
 .font-details-content-placeholder {
   min-height: 50vh;
   background: #000;
@@ -121,5 +160,15 @@
 @media (max-width: 1024px) {
   .hero-font-name {
     font-size: clamp(60px, 12vw, 120px);
+  }
+}
+
+@media (max-width: 768px) {
+  .specs-container {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .spec-value {
+    font-size: 24px;
   }
 }

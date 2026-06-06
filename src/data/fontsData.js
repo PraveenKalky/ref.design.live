@@ -16,6 +16,9 @@ export const initialFontsData = [
     badge: "Update", 
     isVariable: true, 
     googleFont: "'Inter', sans-serif",
+    weightsAndStyles: "5 weights / 10 styles",
+    languageSupport: "European Language Support",
+    releaseYear: "Release 2019",
     stylesList: [
       { name: "Thin", weight: 100, italic: false },
       { name: "Thin Italic", weight: 100, italic: true },
@@ -42,6 +45,9 @@ export const initialFontsData = [
     badge: "New", 
     isVariable: true, 
     googleFont: "'Playfair Display', serif",
+    weightsAndStyles: "4 weights / 32 styles",
+    languageSupport: "Latin & Greek Support",
+    releaseYear: "Release 2021",
     stylesList: [
       { name: "Glare Light", weight: 300, italic: false },
       { name: "Glare Regular", weight: 400, italic: false },
@@ -64,6 +70,9 @@ export const initialFontsData = [
     category: "Sans-Serif", 
     isVariable: true, 
     googleFont: "'Space Grotesk', sans-serif",
+    weightsAndStyles: "7 weights / 130 styles",
+    languageSupport: "Cyrillic & Latin Support",
+    releaseYear: "Release 2020",
     stylesList: [
       { name: "Compact Fine", weight: 200, italic: false },
       { name: "Compact Regular", weight: 400, italic: false },
@@ -84,6 +93,9 @@ export const initialFontsData = [
     stylesInfo: "16 styles\nIncluding Italics", 
     category: "Sans-Serif", 
     googleFont: "'Gothic A1', sans-serif",
+    weightsAndStyles: "8 weights / 16 styles",
+    languageSupport: "Japanese & Latin Support",
+    releaseYear: "Release 2022",
     stylesList: [
       { name: "ExtraLight", weight: 200, italic: false },
       { name: "Light", weight: 300, italic: false },
@@ -104,6 +116,9 @@ export const initialFontsData = [
     category: "Geometric", 
     isVariable: true, 
     googleFont: "'Plus Jakarta Sans', sans-serif",
+    weightsAndStyles: "7 weights / 28 styles",
+    languageSupport: "Global Language Support",
+    releaseYear: "Release 2017",
     stylesList: [
       { name: "Thin", weight: 100, italic: false },
       { name: "Light", weight: 300, italic: false },
@@ -122,6 +137,9 @@ export const initialFontsData = [
     stylesInfo: "20 styles\nIncluding Condensed", 
     category: "Display", 
     googleFont: "'Bebas Neue', sans-serif",
+    weightsAndStyles: "10 weights / 20 styles",
+    languageSupport: "Extended Latin Support",
+    releaseYear: "Release 2018",
     stylesList: [
       { name: "Condensed Light", weight: 300, italic: false },
       { name: "Condensed Regular", weight: 400, italic: false },
@@ -142,6 +160,9 @@ export const initialFontsData = [
     badge: "Update", 
     isVariable: true, 
     googleFont: "'Newsreader', serif",
+    weightsAndStyles: "8 weights / 16 styles",
+    languageSupport: "European Language Support",
+    releaseYear: "Release 2019",
     stylesList: [
       { name: "Ultralight", weight: 200, italic: false },
       { name: "Ultralight Italic", weight: 200, italic: true },
@@ -162,6 +183,9 @@ export const initialFontsData = [
     stylesInfo: "16 styles\nIncluding Italics", 
     category: "Sans-Serif", 
     googleFont: "'Work Sans', sans-serif",
+    weightsAndStyles: "8 weights / 16 styles",
+    languageSupport: "Western European Support",
+    releaseYear: "Release 2020",
     stylesList: [
       { name: "Light", weight: 300, italic: false },
       { name: "Regular", weight: 400, italic: false },
