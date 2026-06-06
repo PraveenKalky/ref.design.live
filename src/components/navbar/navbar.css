@@ -198,11 +198,11 @@ body.search-open .navbar-header {
 }
 
 [data-theme="dark"] .nav-link.active {
-    color: #ffffff;
+    color: #000000;
 }
 
 [data-theme="dark"] .nav-active-pill {
-    background: #333333;
+    background: #ffffff;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
