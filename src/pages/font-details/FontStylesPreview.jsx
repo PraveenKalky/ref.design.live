@@ -49,7 +49,6 @@ const FontStylesPreview = ({ font }) => {
                 <span 
                   className="style-name"
                   style={{
-                    fontFamily: font?.googleFont || 'inherit',
                     fontWeight: style.weight,
                     fontStyle: style.italic ? 'italic' : 'normal',
                   }}
@@ -71,7 +70,6 @@ const FontStylesPreview = ({ font }) => {
                 <span 
                   className="style-name"
                   style={{
-                    fontFamily: font?.googleFont || 'inherit',
                     fontWeight: style.weight,
                     fontStyle: style.italic ? 'italic' : 'normal',
                   }}
