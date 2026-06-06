@@ -36,7 +36,7 @@
 /* Content Layout */
 .preview-content-layout {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 4fr 7fr;
   gap: 80px;
   align-items: start;
 }
@@ -46,7 +46,7 @@
   background-color: #050505;
   color: #ffffff;
   border-radius: 12px;
-  padding: 80px 40px;
+  padding: 60px 40px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -63,7 +63,7 @@
 }
 
 .preview-text {
-  font-size: clamp(36px, 4vw, 64px);
+  font-size: clamp(32px, 3.5vw, 56px);
   margin: 0;
   letter-spacing: -0.02em;
 }
