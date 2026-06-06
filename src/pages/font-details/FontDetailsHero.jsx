@@ -12,7 +12,7 @@ const FontDetailsHero = ({ font }) => {
       <div className="hero-content">
         <h1 
           className="hero-font-name" 
-          style={{ fontFamily: font?.googleFont || 'inherit', fontSize: '140px' }}
+          style={{ fontFamily: font?.googleFont || 'inherit', fontSize: '140px', color: '#ffffff' }}
         >
           {font?.name || 'Font Name'}
         </h1>
