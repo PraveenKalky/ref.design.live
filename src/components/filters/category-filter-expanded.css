@@ -75,17 +75,12 @@
   font-weight: 400;
   color: #999;
   cursor: pointer;
-  transition: color 0.25s ease, font-weight 0.2s ease, opacity 0.25s ease;
+  transition: color 0.25s ease, font-weight 0.2s ease;
   white-space: nowrap;
-}
-
-.cfe-tags-grid:hover .cfe-tag {
-  opacity: 0.4;
 }
 
 .cfe-tag:hover {
   color: #000000;
-  opacity: 1 !important;
 }
 
 [data-theme="dark"] .cfe-tag {
