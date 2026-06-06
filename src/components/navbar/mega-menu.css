@@ -101,13 +101,30 @@
   font-size: 0.32em;
   font-weight: 400;
   vertical-align: super;
-  color: #000000;
+  color: inherit;
   letter-spacing: 0;
   margin-left: 3px;
+  transition: color 0.2s ease;
 }
 
-/* Always dark panel stays green regardless of light/dark theme */
-[data-theme="light"] .mega-menu,
-[data-theme="dark"] .mega-menu {
+/* ── Light Mode Base (Optional explicit) ── */
+[data-theme="light"] .mega-menu {
   background-color: #FFFFFF;
+}
+
+/* ── Dark Mode Overrides ── */
+[data-theme="dark"] .mega-menu {
+  background-color: #111111; /* Match general dark mode background */
+}
+
+[data-theme="dark"] .mega-menu__item {
+  color: #FFFFFF;
+}
+
+[data-theme="dark"] .mega-menu__item--hovered {
+  color: #FFFFFF;
+}
+
+[data-theme="dark"] .mega-menu__item--dimmed {
+  color: rgba(255, 255, 255, 0.2);
 }

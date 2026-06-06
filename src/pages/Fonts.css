@@ -221,6 +221,25 @@
   background: #1a1a1a;
 }
 
+[data-theme="dark"] .font-card:hover {
+  background: #fff;
+  color: #111;
+}
+
+[data-theme="dark"] .font-card:hover .font-card-name {
+  color: #111;
+}
+
+[data-theme="dark"] .font-card:hover .font-card-preview {
+  color: #111;
+}
+
+[data-theme="dark"] .font-card:hover .font-check-out-btn {
+  border-color: #111;
+  color: #fff;
+  background: #111;
+}
+
 .font-card-top {
   display: flex;
   justify-content: space-between;
@@ -318,8 +337,13 @@
 .font-check-out-btn {
   font-family: 'Urbanist', sans-serif;
   border: 1.5px solid #ccc;
-  border-radius: 0;
-  padding: 8px 20px;
+  border-radius: 9999px;
+  padding: 0 20px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
   font-size: 16px;
   background: transparent;
   color: #111;
@@ -330,8 +354,9 @@
 }
 
 .font-check-out-btn.icon-only {
-  padding: 8px 12px;
-  display: flex;
+  width: 40px;
+  padding: 0;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
 }
@@ -391,7 +416,7 @@
   background: #1a1a1a;
   color: #fff;
   border: 1.5px solid #333;
-  border-radius: 0;
+  border-radius: 9999px;
   padding: 8px 16px;
   font-family: 'Urbanist', sans-serif;
   font-size: 16px;
@@ -495,6 +520,47 @@
 
 .slider-undo-btn:hover {
   opacity: 1;
+}
+
+/* ── DARK MODE: Hover controls inversion ── */
+[data-theme="dark"] .font-card:hover .fchc-dropdown {
+  background: #f0f0f0;
+  color: #111;
+  border-color: #ccc;
+}
+
+[data-theme="dark"] .font-card:hover .fchc-slider-label {
+  color: #111;
+}
+
+[data-theme="dark"] .font-card:hover .fchc-slider-input::-webkit-slider-runnable-track {
+  background: #ccc;
+}
+
+[data-theme="dark"] .font-card:hover .fchc-slider-input::-moz-range-track {
+  background: #ccc;
+}
+
+[data-theme="dark"] .font-card:hover .fchc-slider-input::-webkit-slider-thumb {
+  background: #fff;
+  border-color: #111;
+}
+
+[data-theme="dark"] .font-card:hover .fchc-slider-input::-moz-range-thumb {
+  background: #fff;
+  border-color: #111;
+}
+
+[data-theme="dark"] .font-card:hover .tracking-center-tick {
+  background-color: #bbb;
+}
+
+[data-theme="dark"] .font-card:hover .slider-undo-btn {
+  color: #555;
+}
+
+[data-theme="dark"] .font-card:hover .slider-undo-btn:hover {
+  color: #111;
 }
 
 .font-card-preview {
@@ -907,7 +973,7 @@
   background: #fff;
   color: #000;
   border: none;
-  border-radius: 0;
+  border-radius: 9999px;
   padding: 0 24px;
   height: 48px;
   font-size: 16px;

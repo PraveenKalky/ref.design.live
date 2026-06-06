@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Bookmark, Download, Plus, ChevronDown, ChevronUp, X, Type, RotateCcw, LayoutGrid, Menu, Maximize2, MoveHorizontal } from 'lucide-react';
+import { Plus, ChevronDown, ChevronUp, X, Type, RotateCcw, LayoutGrid, Menu, Maximize2, MoveHorizontal } from 'lucide-react';
+import { DownloadSimple, BookmarkSimple } from '@phosphor-icons/react';
 import Pagination from '../components/pagination/Pagination';
 import '../components/filter-bar/filter-bar.css';
 import '../components/filters/category-filter-expanded.css';
@@ -11,28 +12,13 @@ const FONT_CATEGORIES = [
   'Wide', 'Retro', 'Futuristic', 'Decorative', 'Transitional', 'Bold & Heavy', 'Thin & Light'
 ];
 
-const FONT_CATEGORY_COUNTS = {
-  'Sans-Serif': '1842', 'Serif': '1203', 'Display': '874', 'Monospace': '312',
-  'Handwritten': '547', 'Script': '693', 'Geometric': '428', 'Humanist': '376',
-  'Slab Serif': '284', 'Condensed': '196', 'Variable': '318', 'Rounded': '241',
-  'Wide': '167', 'Retro': '432', 'Futuristic': '289', 'Decorative': '514',
-  'Transitional': '193', 'Bold & Heavy': '621', 'Thin & Light': '398'
-};
-
-const initialFontsData = [
-  { id: 1, name: "Neue Montreal", description: "The only Grotesk you'll ever need.", stylesInfo: "36 styles + Variable cut\nIncluding Italics & Text", category: "Sans-Serif", badge: "Update", isVariable: true, googleFont: "'Inter', sans-serif" },
-  { id: 2, name: "PP Fragment", description: "Classic serifs with a contemporary twist.", stylesInfo: "32 styles + Variable cut\nIncluding Italic & Bold", category: "Serif", badge: "New", isVariable: true, googleFont: "'Playfair Display', serif" },
-  { id: 3, name: "Right Grotesk", description: "Neutral, but not boring.", stylesInfo: "130 styles + Variable cut\nCompact to Wide", category: "Sans-Serif", isVariable: true, googleFont: "'Space Grotesk', sans-serif" },
-  { id: 4, name: "Mori", description: "A versatile gothic sans-serif.", stylesInfo: "16 styles\nIncluding Italics", category: "Sans-Serif", googleFont: "'Gothic A1', sans-serif" },
-  { id: 5, name: "Pangram Sans", description: "The geometric workhorse.", stylesInfo: "28 styles + Variable cut\nIncluding Rounded", category: "Geometric", isVariable: true, googleFont: "'Plus Jakarta Sans', sans-serif" },
-  { id: 6, name: "Formula", description: "A highly versatile display font.", stylesInfo: "20 styles\nIncluding Condensed", category: "Display", googleFont: "'Bebas Neue', sans-serif" },
-  { id: 7, name: "Editorial New", description: "Elegant retro editorial serif.", stylesInfo: "16 styles + Variable cut\nIncluding Italics", category: "Serif", badge: "Update", isVariable: true, googleFont: "'Newsreader', serif" },
-  { id: 8, name: "Telegraph", description: "A sturdy workhorse with character.", stylesInfo: "16 styles\nIncluding Italics", category: "Sans-Serif", googleFont: "'Work Sans', sans-serif" },
-];
+import { useNavigate } from 'react-router-dom';
+import { FONT_CATEGORY_COUNTS, initialFontsData } from '../data/fontsData';
 
 const FontCard = ({ font, globalText, globalFontSize, viewMode }) => {
   const [fontSize, setFontSize] = useState(globalFontSize || 120);
   const [letterSpacing, setLetterSpacing] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (globalFontSize !== undefined) {
@@ -40,8 +26,16 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode }) => {
     }
   }, [globalFontSize]);
 
+  const handleCardClick = (e) => {
+    // Prevent navigation if the user is interacting with sliders or buttons
+    if (e.target.closest('.font-card-hover-controls') || e.target.closest('button')) {
+      return;
+    }
+    navigate(`/fonts/${font.id}`);
+  };
+
   return (
-    <div className="font-card">
+    <div className="font-card" onClick={handleCardClick} style={{ cursor: 'pointer' }}>
       <div className="font-card-top">
         <div className="card-top-left">
           <h3 className="font-card-name">{font.name}</h3>
@@ -101,8 +95,8 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode }) => {
         
         <div className="card-top-right">
           {viewMode === 'list' && <p className="font-card-styles">{font.stylesInfo}</p>}
-          <button className="font-check-out-btn">Download</button>
-          <button className="font-check-out-btn icon-only"><Bookmark size={20} /></button>
+          <button className="font-check-out-btn icon-only"><DownloadSimple size={20} /></button>
+          <button className="font-check-out-btn icon-only"><BookmarkSimple size={20} /></button>
         </div>
       </div>
       
@@ -348,30 +342,6 @@ const Fonts = () => {
                     ))}
                   </div>
                 )}
-              </div>
-              <div className="gpb-right">
-                <span className="gpb-label">Font size</span>
-                <div className="gpb-slider-wrap">
-                  <input 
-                    type="range" 
-                    min="24" 
-                    max="200" 
-                    value={globalFontSize}
-                    onChange={(e) => setGlobalFontSize(Number(e.target.value))}
-                    className="gpb-slider" 
-                    style={{
-                      background: `linear-gradient(to right, #3B5BFF 0%, #3B5BFF ${(globalFontSize - 24) / (200 - 24) * 100}%, #e0e0e0 ${(globalFontSize - 24) / (200 - 24) * 100}%, #e0e0e0 100%)`
-                    }}
-                  />
-                </div>
-                <button 
-                  type="button" 
-                  className="slider-undo-btn gpb-undo-btn" 
-                  onClick={() => setGlobalFontSize(64)}
-                  title="Reset Font Size"
-                >
-                  <RotateCcw size={16} />
-                </button>
               </div>
             </div>
 

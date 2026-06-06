@@ -26,7 +26,7 @@ const CATEGORY_COUNTS = {
 };
 
 const CategoryFilterExpanded = () => {
-  const [selectedItems, setSelectedItems] = useState(['Agencies & Consultancies', 'Minimal', 'Portfolio']);
+  const [selectedItems, setSelectedItems] = useState([]);
 
   const toggleItem = (item) => {
     setSelectedItems(prev =>

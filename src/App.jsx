@@ -8,6 +8,7 @@ import Footer from './components/footer/Footer';
 import { Agentation } from 'agentation';
 import { Routes, Route } from 'react-router-dom';
 import Fonts from './pages/Fonts';
+import FontDetails from './pages/font-details/FontDetails';
 import SearchResults from './pages/search-results/SearchResults';
 
 function App() {
@@ -65,6 +66,7 @@ function App() {
           </>
         } />
         <Route path="/fonts" element={<Fonts />} />
+        <Route path="/fonts/:fontId" element={<FontDetails />} />
         <Route path="/search-results" element={<SearchResults savedItems={savedItems} toggleSave={toggleSave} />} />
       </Routes>
       <Footer />
