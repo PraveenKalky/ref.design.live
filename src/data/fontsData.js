@@ -10,7 +10,7 @@ export const initialFontsData = [
   { 
     id: 1, 
     name: "Neue Montreal", 
-    description: "The only Grotesk you'll ever need.", 
+    description: "A classic neo-grotesk sans-serif by Mathieu Desjardins & Sebastien Tremblay. Inspired by Helvetica but refined with tighter spacing, Neue Montreal excels in display settings and modern branding — clean, versatile, and timeless.", 
     stylesInfo: "36 styles + Variable cut\nIncluding Italics & Text", 
     category: "Sans-Serif", 
     badge: "Update", 
@@ -36,7 +36,7 @@ export const initialFontsData = [
   { 
     id: 2, 
     name: "PP Fragment", 
-    description: "Classic serifs with a contemporary twist.", 
+    description: "A versatile typeface inspired by vintage lettering and 19th-century sign painting, blending retro elegance with contemporary typography. PP Fragment oscillates between refined and modern, making it ideal for editorial and branding.", 
     stylesInfo: "32 styles + Variable cut\nIncluding Italic & Bold", 
     category: "Serif", 
     badge: "New", 
@@ -59,7 +59,7 @@ export const initialFontsData = [
   { 
     id: 3, 
     name: "Right Grotesk", 
-    description: "Neutral, but not boring.", 
+    description: "Designed by Alexander Slobzheninov, Right Grotesk balances neutrality with distinct personality. Featuring subtle ink traps and unusual reversed terminals, it spans 7 weights × 7 widths — from Compact to Wide — for maximum versatility.", 
     stylesInfo: "130 styles + Variable cut\nCompact to Wide", 
     category: "Sans-Serif", 
     isVariable: true, 
@@ -80,7 +80,7 @@ export const initialFontsData = [
   { 
     id: 4, 
     name: "Mori", 
-    description: "A versatile gothic sans-serif.", 
+    description: "A geometric sans-serif inspired by contemporary Japanese design. PP Mori is clean, crisp, and neutral — a go-to choice for editorial layouts, branding systems, and graphic design projects that demand quiet sophistication.", 
     stylesInfo: "16 styles\nIncluding Italics", 
     category: "Sans-Serif", 
     googleFont: "'Gothic A1', sans-serif",
@@ -99,7 +99,7 @@ export const initialFontsData = [
   { 
     id: 5, 
     name: "Pangram Sans", 
-    description: "The geometric workhorse.", 
+    description: "A comprehensive geometric sans-serif workhorse with over 2,800 glyphs. Built for flexibility across every weight, Pangram Sans includes a Rounded version for a more playful aesthetic — covering every design need.", 
     stylesInfo: "28 styles + Variable cut\nIncluding Rounded", 
     category: "Geometric", 
     isVariable: true, 
@@ -118,7 +118,7 @@ export const initialFontsData = [
   { 
     id: 6, 
     name: "Formula", 
-    description: "A highly versatile display font.", 
+    description: "A bold, flexible grotesk by Mathieu Desjardins & Hugo Jourdan. Designed to be functional and performant across print and digital, PP Formula features a wide range of weights and widths for maximum impact.", 
     stylesInfo: "20 styles\nIncluding Condensed", 
     category: "Display", 
     googleFont: "'Bebas Neue', sans-serif",
@@ -136,7 +136,7 @@ export const initialFontsData = [
   { 
     id: 7, 
     name: "Editorial New", 
-    description: "Elegant retro editorial serif.", 
+    description: "A precise, high-contrast narrow serif by Mathieu Desjardins & Francesca Bolognini. Drawing from 80s and 90s editorial typography, PP Editorial New is made for fashion headlines, long-form content, and sophisticated display.", 
     stylesInfo: "16 styles + Variable cut\nIncluding Italics", 
     category: "Serif", 
     badge: "Update", 
@@ -158,7 +158,7 @@ export const initialFontsData = [
   { 
     id: 8, 
     name: "Telegraph", 
-    description: "A sturdy workhorse with character.", 
+    description: "A sturdy sans-serif by Nick Losacco, inspired by mid-twentieth-century neo-grotesques. PP Telegraf is balanced, functional, and slightly geometric — widely used in branding and digital design for its clean readability.", 
     stylesInfo: "16 styles\nIncluding Italics", 
     category: "Sans-Serif", 
     googleFont: "'Work Sans', sans-serif",

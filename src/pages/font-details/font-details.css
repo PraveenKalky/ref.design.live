@@ -40,13 +40,23 @@
 }
 
 .hero-font-name {
-  font-size: 360px;
+  font-size: 140px;
   font-weight: 600;
-  color: #f4f0e6; /* Off-white, slightly warm to match reference */
+  color: #ffffff; /* White font color */
   letter-spacing: -0.02em;
   line-height: 1;
   margin: 0;
+  white-space: nowrap;
   text-shadow: 0 4px 24px rgba(0, 0, 0, 0.15); /* Soft drop shadow for legibility */
+}
+
+.hero-font-about {
+  font-family: 'Urbanist', 'Outfit', sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: rgba(244, 240, 230, 0.7);
+  margin: 16px 0 0 0;
+  letter-spacing: 0.02em;
 }
 
 /* ── BOTTOM NAV PILL ── */
