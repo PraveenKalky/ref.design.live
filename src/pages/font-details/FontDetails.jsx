@@ -31,8 +31,6 @@ const FontDetails = () => {
     <div className="font-details-page">
       <FontDetailsHero font={font} />
       
-      <FontStylesPreview font={font} />
-      
       <section className="font-details-specs" id="information">
         <div className="specs-container">
           <div className="spec-item">
@@ -49,6 +47,8 @@ const FontDetails = () => {
           </div>
         </div>
       </section>
+
+      <FontStylesPreview font={font} />
       
       <section className="font-details-content-placeholder">
         {/* Placeholder for future content scrolling */}
