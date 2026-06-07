@@ -45,7 +45,7 @@ const ShowcaseColumn = ({ font, defaultStyleName, defaultText, defaultFontSize, 
     <div className="showcase-column">
       {/* Controls Area */}
       <div className="showcase-controls-area">
-        {/* Row 1: Dropdown + Toggles */}
+        {/* Single Row: Dropdown + Toggles + Sliders */}
         <div className="showcase-controls-row">
           {/* Dropdown */}
           <div className="specimen-dropdown" ref={dropdownRef}>
@@ -142,10 +142,8 @@ const ShowcaseColumn = ({ font, defaultStyleName, defaultText, defaultFontSize, 
               </button>
             </div>
           </div>
-        </div>
 
-        {/* Row 2: Sliders (revealed on hover) */}
-        <div className="showcase-sliders-row">
+          {/* Sliders */}
           <div className="fchc-slider-group">
             <label className="fchc-slider-label">Size</label>
             <div className="fchc-slider-track-wrap">
