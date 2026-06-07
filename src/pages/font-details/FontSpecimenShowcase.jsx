@@ -43,9 +43,8 @@ const ShowcaseColumn = ({ font, defaultStyleName, defaultText, defaultFontSize, 
 
   return (
     <div className="showcase-column">
-      {/* Controls Area */}
+      {/* Controls: pill row on top, sliders row below (sliders fade in on hover) */}
       <div className="showcase-controls-area">
-        {/* Row 1: Dropdown + Toggles */}
         <div className="showcase-controls-row">
           {/* Dropdown */}
           <div className="specimen-dropdown" ref={dropdownRef}>
@@ -60,7 +59,7 @@ const ShowcaseColumn = ({ font, defaultStyleName, defaultText, defaultFontSize, 
                 className={`dropdown-chevron ${dropdownOpen ? 'is-open' : ''}`}
                 width="12" height="12" viewBox="0 0 12 12" fill="none"
               >
-                <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </button>
 
@@ -112,10 +111,10 @@ const ShowcaseColumn = ({ font, defaultStyleName, defaultText, defaultFontSize, 
                 onClick={() => setTextAlign('left')}
               >
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <line x1="2" y1="3" x2="14" y2="3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                  <line x1="2" y1="7" x2="10" y2="7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                  <line x1="2" y1="11" x2="14" y2="11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                  <line x1="2" y1="15" x2="8" y2="15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                  <line x1="2" y1="3" x2="14" y2="3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                  <line x1="2" y1="7" x2="10" y2="7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                  <line x1="2" y1="11" x2="14" y2="11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                  <line x1="2" y1="15" x2="8" y2="15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                 </svg>
               </button>
               <button
@@ -123,10 +122,10 @@ const ShowcaseColumn = ({ font, defaultStyleName, defaultText, defaultFontSize, 
                 onClick={() => setTextAlign('center')}
               >
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <line x1="2" y1="3" x2="14" y2="3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                  <line x1="4" y1="7" x2="12" y2="7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                  <line x1="2" y1="11" x2="14" y2="11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                  <line x1="5" y1="15" x2="11" y2="15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                  <line x1="2" y1="3" x2="14" y2="3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                  <line x1="4" y1="7" x2="12" y2="7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                  <line x1="2" y1="11" x2="14" y2="11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                  <line x1="5" y1="15" x2="11" y2="15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                 </svg>
               </button>
               <button
@@ -134,17 +133,18 @@ const ShowcaseColumn = ({ font, defaultStyleName, defaultText, defaultFontSize, 
                 onClick={() => setTextAlign('right')}
               >
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <line x1="2" y1="3" x2="14" y2="3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                  <line x1="6" y1="7" x2="14" y2="7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                  <line x1="2" y1="11" x2="14" y2="11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                  <line x1="8" y1="15" x2="14" y2="15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                  <line x1="2" y1="3" x2="14" y2="3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                  <line x1="6" y1="7" x2="14" y2="7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                  <line x1="2" y1="11" x2="14" y2="11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                  <line x1="8" y1="15" x2="14" y2="15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                 </svg>
               </button>
             </div>
           </div>
+
         </div>
 
-        {/* Row 2: Sliders (revealed on hover) */}
+        {/* Sliders row — hidden by default, fades in on column hover */}
         <div className="showcase-sliders-row">
           <div className="fchc-slider-group">
             <label className="fchc-slider-label">Size</label>
@@ -191,7 +191,7 @@ const ShowcaseColumn = ({ font, defaultStyleName, defaultText, defaultFontSize, 
       </div>
 
       {/* Content Preview */}
-      <div 
+      <div
         className="showcase-content-preview"
         style={{
           fontFamily: font?.googleFont || 'inherit',
@@ -233,7 +233,7 @@ const FontSpecimenShowcase = ({ font }) => {
       <div className="font-specimen-showcase-container">
         <div className="showcase-grid">
           {/* Column 1: Left */}
-          <ShowcaseColumn 
+          <ShowcaseColumn
             font={font}
             defaultStyleName="Bold"
             defaultText={leftColText}
@@ -244,7 +244,7 @@ const FontSpecimenShowcase = ({ font }) => {
           />
 
           {/* Column 2: Middle */}
-          <ShowcaseColumn 
+          <ShowcaseColumn
             font={font}
             defaultStyleName="Black"
             defaultText={middleColText}
@@ -255,7 +255,7 @@ const FontSpecimenShowcase = ({ font }) => {
           />
 
           {/* Column 3: Right */}
-          <ShowcaseColumn 
+          <ShowcaseColumn
             font={font}
             defaultStyleName="Light"
             defaultText={rightColText}

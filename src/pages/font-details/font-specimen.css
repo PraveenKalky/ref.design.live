@@ -216,7 +216,7 @@
   font-family: 'Urbanist', 'Outfit', sans-serif;
   font-size: 16px;
   font-weight: 500;
-  color: #999;
+  color: #0d0d0d;
   text-transform: capitalize;
   letter-spacing: 0.02em;
   text-align: left;
@@ -325,4 +325,70 @@
   .specimen-preview {
     font-size: 48px !important;
   }
+}
+
+/* ═══════════════════════════════════════════
+   Dark Mode Overrides
+   ═══════════════════════════════════════════ */
+[data-theme="dark"] .font-specimen-section {
+  background-color: #0a0a0a;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .specimen-title,
+[data-theme="dark"] .specimen-preview,
+[data-theme="dark"] .fchc-slider-label {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .specimen-divider {
+  background-color: #333333;
+}
+
+[data-theme="dark"] .fchc-dropdown {
+  background: #1a1a1a;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .fchc-dropdown:hover {
+  background: #222222;
+}
+
+[data-theme="dark"] .specimen-dropdown-menu {
+  background: #1a1a1a;
+  border-color: #333333;
+}
+
+[data-theme="dark"] .specimen-dropdown-item {
+  color: #e0e0e0;
+}
+
+[data-theme="dark"] .specimen-dropdown-item:hover {
+  background: #222222;
+}
+
+[data-theme="dark"] .specimen-dropdown-item.is-selected {
+  background: #333333;
+}
+
+[data-theme="dark"] .toggle-btn-specimen.is-active {
+  background: #1a1a1a;
+  color: #ffffff;
+  box-shadow: 0 1px 3px rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .fchc-slider-input::-webkit-slider-runnable-track {
+  background: #333333;
+}
+
+[data-theme="dark"] .fchc-slider-input::-moz-range-track {
+  background: #333333;
+}
+
+[data-theme="dark"] .fchc-slider-input::-webkit-slider-thumb {
+  background: #ffffff;
+}
+
+[data-theme="dark"] .fchc-slider-input::-moz-range-thumb {
+  background: #ffffff;
 }

@@ -33,33 +33,99 @@
 }
 
 /* ═══════════════════════════════════════════
-   Showcase Controls Area (hover reveal sliders)
+   Showcase Controls — pill row + sliders row below
    ═══════════════════════════════════════════ */
 .showcase-controls-area {
   display: flex;
   flex-direction: column;
-  gap: 0;
-  width: 100%;
+  gap: 24px;          /* breathing room between pills and sliders */
+  margin-bottom: 16px; /* spacing below the sliders before the content */
+  width: min-content;
+  max-width: 100%;
 }
 
+/* Everything in one single horizontal line */
 .showcase-controls-row {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  min-height: 44px;
+  flex-wrap: nowrap;
+  gap: 8px;
   width: 100%;
-  flex-wrap: wrap;
-  gap: 12px;
+  min-height: 36px;
 }
 
-/* ── Sliders Row (Always Visible) ── */
+/* Dropdown should not shrink to show full name */
+.showcase-controls-row .specimen-dropdown {
+  flex-shrink: 0;
+}
+
+.showcase-controls-row .fchc-dropdown {
+  flex-shrink: 0;
+}
+
+.showcase-controls-row .dropdown-label {
+  white-space: nowrap;
+}
+
+/* Toggles don't shrink */
+.showcase-controls-row .specimen-toggles {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* ── Sliders row — below the pill row, hidden by default, aligned to pills width ── */
 .showcase-sliders-row {
   display: flex;
-  gap: 16px;
   align-items: center;
-  padding-top: 16px;
+  align-self: flex-start;
+  gap: 16px;
+  flex-wrap: nowrap;
   width: 100%;
-  flex-wrap: wrap;
+  box-sizing: border-box;
+  min-width: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 150ms ease;
+}
+
+/* Show sliders when the column is hovered */
+.showcase-column:hover .showcase-sliders-row {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Each slider group stretches equally */
+.showcase-sliders-row .fchc-slider-group {
+  flex: 1 !important;
+  min-width: 0 !important;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.showcase-sliders-row .fchc-slider-label {
+  font-size: 16px;
+  font-weight: 500;
+  color: #0d0d0d;
+  letter-spacing: 0.02em;
+  text-transform: capitalize;
+  line-height: 1;
+}
+
+.showcase-sliders-row .fchc-slider-track-wrap {
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+.showcase-sliders-row .fchc-slider-input {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
 }
 
 /* ═══════════════════════════════════════════
@@ -133,17 +199,53 @@
   .showcase-column {
     width: 100%;
   }
+
+  /* On touch devices always show sliders */
+  .showcase-sliders-row {
+    opacity: 1;
+    pointer-events: auto;
+  }
 }
 
 @media (max-width: 640px) {
   .showcase-controls-row {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
+    flex-wrap: wrap;
+    gap: 8px;
   }
 
   .showcase-sliders-row {
-    flex-direction: column;
-    gap: 16px;
+    flex-wrap: wrap;
+    gap: 12px;
   }
+}
+
+/* ═══════════════════════════════════════════
+   Dark Mode Overrides
+   ═══════════════════════════════════════════ */
+[data-theme="dark"] .font-specimen-showcase-section {
+  background-color: #0a0a0a;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .showcase-content-preview {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .showcase-sliders-row .fchc-slider-label {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .showcase-controls-row .fchc-dropdown {
+  background: #1a1a1a;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .showcase-controls-row .fchc-dropdown:hover {
+  background: #222222;
+}
+
+[data-theme="dark"] .showcase-controls-row .toggle-btn-specimen.is-active {
+  background: #1a1a1a;
+  color: #ffffff;
+  box-shadow: 0 1px 3px rgba(255, 255, 255, 0.1);
 }
