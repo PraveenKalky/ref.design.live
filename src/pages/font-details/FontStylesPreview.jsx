@@ -1,28 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './font-styles-preview.css';
 
 const stylesData = [
-  { id: 1, name: 'Thin', fontWeight: 100, fontStyle: 'normal' },
-  { id: 2, name: 'Thin Italic', fontWeight: 100, fontStyle: 'italic' },
-  { id: 3, name: 'Light', fontWeight: 300, fontStyle: 'normal' },
-  { id: 4, name: 'Light Italic', fontWeight: 300, fontStyle: 'italic' },
-  { id: 5, name: 'Regular', fontWeight: 400, fontStyle: 'normal' },
-  { id: 6, name: 'Italic', fontWeight: 400, fontStyle: 'italic' },
-  { id: 7, name: 'Medium', fontWeight: 500, fontStyle: 'normal' },
-  { id: 8, name: 'Medium Italic', fontWeight: 500, fontStyle: 'italic' },
-  { id: 9, name: 'SemiBold', fontWeight: 600, fontStyle: 'normal' },
-  { id: 10, name: 'SemiBold Italic', fontWeight: 600, fontStyle: 'italic' },
-  { id: 11, name: 'Bold', fontWeight: 700, fontStyle: 'normal' },
-  { id: 12, name: 'Bold Italic', fontWeight: 700, fontStyle: 'italic' },
-  { id: 13, name: 'Black', fontWeight: 900, fontStyle: 'normal' },
-  { id: 14, name: 'Black Italic', fontWeight: 900, fontStyle: 'italic' }
+  { id: 1, name: 'Thin', weight: 100, italic: false },
+  { id: 2, name: 'Thin Italic', weight: 100, italic: true },
+  { id: 3, name: 'Light', weight: 300, italic: false },
+  { id: 4, name: 'Light Italic', weight: 300, italic: true },
+  { id: 5, name: 'Regular', weight: 400, italic: false },
+  { id: 6, name: 'Italic', weight: 400, italic: true },
+  { id: 7, name: 'Medium', weight: 500, italic: false },
+  { id: 8, name: 'Medium Italic', weight: 500, italic: true },
+  { id: 9, name: 'SemiBold', weight: 600, italic: false },
+  { id: 10, name: 'SemiBold Italic', weight: 600, italic: true },
+  { id: 11, name: 'Bold', weight: 700, italic: false },
+  { id: 12, name: 'Bold Italic', weight: 700, italic: true },
+  { id: 13, name: 'Black', weight: 900, italic: false },
+  { id: 14, name: 'Black Italic', weight: 900, italic: true }
 ];
 
 const FontStylesPreview = ({ font }) => {
   const [hoveredStyle, setHoveredStyle] = useState(stylesData[0]);
 
-  const uprightStyles = stylesData.filter(s => s.fontStyle === 'normal');
-  const italicStyles = stylesData.filter(s => s.fontStyle === 'italic');
+  // Log full styles array once on load
+  useEffect(() => {
+    console.log('Full styles array (14 items check):', stylesData);
+  }, []);
+
+  const uprightStyles = stylesData.filter(s => !s.italic);
+  const italicStyles = stylesData.filter(s => s.italic);
 
   return (
     <section className="font-styles-preview-section" id="styles">
@@ -40,8 +45,8 @@ const FontStylesPreview = ({ font }) => {
               className="preview-box"
               style={{
                 fontFamily: font?.googleFont || 'inherit',
-                fontWeight: hoveredStyle.fontWeight,
-                fontStyle: hoveredStyle.fontStyle,
+                fontWeight: hoveredStyle.weight,
+                fontStyle: hoveredStyle.italic ? 'italic' : 'normal',
               }}
             >
               <div className="preview-text">AaBbCc</div>
@@ -50,59 +55,56 @@ const FontStylesPreview = ({ font }) => {
             </div>
           </div>
 
-        {/* Right: Styles List */}
-        <div className="styles-list-container">
-          {Array.from({ length: Math.max(uprightStyles.length, italicStyles.length) }).map((_, index) => {
-            const uprightStyle = uprightStyles[index];
-            const italicStyle = italicStyles[index];
-            
-            return (
-              <div key={index} className="style-row-full">
-                {/* Left Column (Upright) */}
+          {/* Right: Styles List */}
+          <div className="styles-list-container">
+            <div className="styles-column">
+              {uprightStyles.map((style) => (
                 <div 
+                  key={style.id} 
                   className="style-half"
-                  onMouseEnter={() => uprightStyle && setHoveredStyle(uprightStyle)}
+                  onMouseEnter={() => {
+                    console.log('Hovered style:', style);
+                    setHoveredStyle(style);
+                  }}
                 >
-                  {uprightStyle ? (
-                    <>
-                      <span 
-                        className="style-name"
-                        style={{
-                          fontWeight: uprightStyle.fontWeight,
-                          fontStyle: uprightStyle.fontStyle,
-                        }}
-                      >
-                        {uprightStyle.name}
-                      </span>
-                      <span className="style-weight">{uprightStyle.fontWeight}</span>
-                    </>
-                  ) : <span />}
+                  <span 
+                    className="style-name"
+                    style={{
+                      fontWeight: style.weight,
+                      fontStyle: style.italic ? 'italic' : 'normal',
+                    }}
+                  >
+                    {style.name}
+                  </span>
+                  <span className="style-weight">{style.weight}</span>
                 </div>
+              ))}
+            </div>
 
-                {/* Right Column (Italic) */}
+            <div className="styles-column">
+              {italicStyles.map((style) => (
                 <div 
+                  key={style.id} 
                   className="style-half"
-                  onMouseEnter={() => italicStyle && setHoveredStyle(italicStyle)}
+                  onMouseEnter={() => {
+                    console.log('Hovered style:', style);
+                    setHoveredStyle(style);
+                  }}
                 >
-                  {italicStyle ? (
-                    <>
-                      <span 
-                        className="style-name"
-                        style={{
-                          fontWeight: italicStyle.fontWeight,
-                          fontStyle: italicStyle.fontStyle,
-                        }}
-                      >
-                        {italicStyle.name}
-                      </span>
-                      <span className="style-weight">{italicStyle.fontWeight}</span>
-                    </>
-                  ) : <span />}
+                  <span 
+                    className="style-name"
+                    style={{
+                      fontWeight: style.weight,
+                      fontStyle: style.italic ? 'italic' : 'normal',
+                    }}
+                  >
+                    {style.name}
+                  </span>
+                  <span className="style-weight">{style.weight}</span>
                 </div>
-              </div>
-            );
-          })}
-        </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>
