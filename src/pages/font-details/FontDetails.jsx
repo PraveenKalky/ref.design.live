@@ -3,6 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { initialFontsData } from '../../data/fontsData';
 import FontDetailsHero from './FontDetailsHero';
 import FontStylesPreview from './FontStylesPreview';
+import FontSpecimen from './FontSpecimen';
+import FontSpecimenShowcase from './FontSpecimenShowcase';
 import './font-details.css';
 
 const FontDetails = () => {
@@ -31,8 +33,6 @@ const FontDetails = () => {
     <div className="font-details-page">
       <FontDetailsHero font={font} />
       
-      <FontStylesPreview font={font} />
-      
       <section className="font-details-specs" id="information">
         <div className="specs-container">
           <div className="spec-item">
@@ -49,6 +49,12 @@ const FontDetails = () => {
           </div>
         </div>
       </section>
+
+      <FontStylesPreview font={font} />
+      
+      <FontSpecimen font={font} />
+      
+      <FontSpecimenShowcase font={font} />
       
       <section className="font-details-content-placeholder">
         {/* Placeholder for future content scrolling */}

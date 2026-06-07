@@ -14,7 +14,9 @@
     <!-- Typography: Google Fonts for Previews -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Gothic+A1:wght@400;700&family=Inter:wght@400;600&family=Newsreader:ital,wght@0,400;0,600;1,400&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Plus+Jakarta+Sans:wght@400;600&family=Space+Grotesk:wght@400;600&family=Work+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Gothic+A1:wght@400;700&family=Inter:ital,wght@0,100;0,300;0,400;0,500;0,600;0,700;0,900;1,100;1,300;1,400;1,500;1,600;1,700;1,900&family=Newsreader:ital,wght@0,400;0,600;1,400&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Plus+Jakarta+Sans:wght@400;600&family=Space+Grotesk:wght@400;600&family=Work+Sans:wght@400;600&display=swap"
+        rel="stylesheet">
 
     <!-- Icons: Lucide CDN -->
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -557,11 +559,13 @@
             display: flex;
             gap: 8px;
             overflow-x: auto;
-            scrollbar-width: none; /* Firefox */
+            scrollbar-width: none;
+            /* Firefox */
         }
 
         .tag-row::-webkit-scrollbar {
-            display: none; /* Chrome/Safari */
+            display: none;
+            /* Chrome/Safari */
         }
 
         .tag-pill {
@@ -717,7 +721,7 @@
             transform: translateY(10px);
             transition: all 400ms cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 2000;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
         }
 
         [data-theme="dark"] .scroll-btn {
@@ -747,7 +751,8 @@
 
         @media (max-width: 768px) {
             .scroll-btn {
-                bottom: 100px; /* Avoid mobile bottom nav */
+                bottom: 100px;
+                /* Avoid mobile bottom nav */
             }
         }
 
@@ -1106,7 +1111,7 @@
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(html, 'text/html');
                 const content = doc.body ? doc.body.innerHTML : html;
-                
+
                 const container = document.getElementById(id);
                 container.innerHTML = content;
 
@@ -1264,7 +1269,7 @@
             currentPage = page;
             const activeSortTab = document.querySelector('.filter-tab.active');
             handleSort(activeSortTab, false); // false to avoid resetting currentPage
-            
+
             // Smooth scroll to top of grid
             const grid = document.getElementById('design-feed');
             grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
