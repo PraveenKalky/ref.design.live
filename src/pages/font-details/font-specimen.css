@@ -1,0 +1,328 @@
+/* ═══════════════════════════════════════════
+   Specimen Section
+   ═══════════════════════════════════════════ */
+
+.font-specimen-section {
+  background-color: #ffffff;
+  color: #0d0d0d;
+  padding: 80px 0 120px;
+  font-family: 'Urbanist', 'Outfit', sans-serif;
+}
+
+.font-specimen-container {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+/* ── Title ── */
+.specimen-title {
+  font-size: 28px;
+  font-weight: 500;
+  color: #0d0d0d;
+  margin: 0 0 24px 0;
+  letter-spacing: -0.01em;
+}
+
+/* ── Divider ── */
+.specimen-divider {
+  width: 100%;
+  height: 1px;
+  background-color: #e0e0e0;
+  margin-bottom: 24px;
+}
+
+/* ═══════════════════════════════════════════
+   Controls Area (hover reveal for sliders)
+   ═══════════════════════════════════════════ */
+.specimen-controls-area {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-bottom: 48px;
+}
+
+/* ── Row 1: Dropdown + Toggles ── */
+.specimen-controls-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 44px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* ── Font Style Dropdown ── */
+.specimen-dropdown {
+  position: relative;
+}
+
+.fchc-dropdown {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f5f5f5;
+  border: none;
+  border-radius: 9999px;
+  padding: 0 16px;
+  height: 36px;
+  font-family: 'Urbanist', 'Outfit', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: #0d0d0d;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  min-width: 180px;
+  justify-content: space-between;
+}
+
+.fchc-dropdown:hover {
+  background: #eaeaea;
+}
+
+.dropdown-chevron {
+  transition: transform 0.2s ease;
+  color: #666;
+}
+
+.dropdown-chevron.is-open {
+  transform: rotate(180deg);
+}
+
+.specimen-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  min-width: 240px;
+  max-height: 320px;
+  overflow-y: auto;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  z-index: 100;
+  padding: 4px;
+}
+
+.specimen-dropdown-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 10px 12px;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background 0.15s ease;
+  text-align: left;
+}
+
+.specimen-dropdown-item:hover {
+  background: #f5f5f5;
+}
+
+.specimen-dropdown-item.is-selected {
+  background: #f0f0f0;
+  font-weight: 600;
+}
+
+.dropdown-item-weight {
+  font-size: 12px;
+  color: #999;
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* ── Toggles (Case + Alignment) ── */
+.specimen-toggles {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.toggle-group {
+  display: flex;
+  align-items: center;
+  background: #f5f5f5;
+  border-radius: 9999px;
+  padding: 2px;
+  gap: 1px;
+  height: 36px;
+}
+
+.toggle-group + .toggle-group {
+  margin-left: 6px;
+}
+
+.toggle-btn-specimen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  border-radius: 9999px;
+  font-family: 'Urbanist', 'Outfit', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: #999;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.toggle-btn-specimen:hover {
+  color: #555;
+}
+
+.toggle-btn-specimen.is-active {
+  background: #ffffff;
+  color: #0d0d0d;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.toggle-btn-specimen svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* ═══════════════════════════════════════════
+   Row 2: Sliders (Always Visible)
+   ═══════════════════════════════════════════ */
+.specimen-sliders-row {
+  display: flex;
+  align-items: center;
+  padding-top: 24px;
+  width: 100%;
+  flex-wrap: wrap;
+  gap: 40px 24px;
+}
+
+.fchc-slider-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+  min-width: 140px;
+}
+
+.fchc-slider-label {
+  font-family: 'Urbanist', 'Outfit', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: #999;
+  text-transform: capitalize;
+  letter-spacing: 0.02em;
+  text-align: left;
+}
+
+.fchc-slider-track-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 20px;
+}
+
+.fchc-slider-input {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  background: transparent;
+  outline: none;
+  margin: 0;
+  cursor: pointer;
+}
+
+.fchc-slider-input::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 2px;
+  background: #e0e0e0;
+  border: none;
+}
+
+.fchc-slider-input::-moz-range-track {
+  width: 100%;
+  height: 2px;
+  background: #e0e0e0;
+  border: none;
+}
+
+.fchc-slider-input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #0d0d0d;
+  cursor: pointer;
+  margin-top: -6px; /* center thumb on 2px height track */
+  border: none;
+  transition: transform 0.15s ease;
+}
+
+.fchc-slider-input::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+.fchc-slider-input::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #0d0d0d;
+  cursor: pointer;
+  border: none;
+}
+
+/* ═══════════════════════════════════════════
+   Specimen Preview Text
+   ═══════════════════════════════════════════ */
+.specimen-preview {
+  color: #0d0d0d;
+  word-break: break-word;
+  transition: font-size 0.1s ease,
+              line-height 0.1s ease,
+              letter-spacing 0.1s ease;
+  min-height: 200px;
+  padding: 16px 0;
+}
+
+/* ═══════════════════════════════════════════
+   Responsive
+   ═══════════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .font-specimen-section {
+    padding: 60px 0 80px;
+  }
+
+  .font-specimen-container {
+    padding: 0 16px;
+  }
+
+  .specimen-sliders-row {
+    gap: 24px;
+  }
+}
+
+@media (max-width: 640px) {
+  .specimen-controls-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .specimen-sliders-row {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .specimen-preview {
+    font-size: 48px !important;
+  }
+}

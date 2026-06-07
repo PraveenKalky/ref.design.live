@@ -1,33 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './font-styles-preview.css';
 
-const stylesData = [
-  { id: 1, name: 'Thin', weight: 100, italic: false },
-  { id: 2, name: 'Thin Italic', weight: 100, italic: true },
-  { id: 3, name: 'Light', weight: 300, italic: false },
-  { id: 4, name: 'Light Italic', weight: 300, italic: true },
-  { id: 5, name: 'Regular', weight: 400, italic: false },
-  { id: 6, name: 'Italic', weight: 400, italic: true },
-  { id: 7, name: 'Medium', weight: 500, italic: false },
-  { id: 8, name: 'Medium Italic', weight: 500, italic: true },
-  { id: 9, name: 'SemiBold', weight: 600, italic: false },
-  { id: 10, name: 'SemiBold Italic', weight: 600, italic: true },
-  { id: 11, name: 'Bold', weight: 700, italic: false },
-  { id: 12, name: 'Bold Italic', weight: 700, italic: true },
-  { id: 13, name: 'Black', weight: 900, italic: false },
-  { id: 14, name: 'Black Italic', weight: 900, italic: true }
+const styles = [
+  { id: 1, name: 'Thin', weight: 100, isItalic: false },
+  { id: 2, name: 'Thin Italic', weight: 100, isItalic: true },
+  { id: 3, name: 'Light', weight: 300, isItalic: false },
+  { id: 4, name: 'Light Italic', weight: 300, isItalic: true },
+  { id: 5, name: 'Regular', weight: 400, isItalic: false },
+  { id: 6, name: 'Italic', weight: 400, isItalic: true },
+  { id: 7, name: 'Medium', weight: 500, isItalic: false },
+  { id: 8, name: 'Medium Italic', weight: 500, isItalic: true },
+  { id: 9, name: 'SemiBold', weight: 600, isItalic: false },
+  { id: 10, name: 'SemiBold Italic', weight: 600, isItalic: true },
+  { id: 11, name: 'Bold', weight: 700, isItalic: false },
+  { id: 12, name: 'Bold Italic', weight: 700, isItalic: true },
+  { id: 13, name: 'Black', weight: 900, isItalic: false },
+  { id: 14, name: 'Black Italic', weight: 900, isItalic: true },
 ];
 
 const FontStylesPreview = ({ font }) => {
-  const [hoveredStyle, setHoveredStyle] = useState(stylesData[0]);
+  const [hoveredStyle, setHoveredStyle] = useState(styles[0]);
 
-  // Log full styles array once on load
-  useEffect(() => {
-    console.log('Full styles array (14 items check):', stylesData);
-  }, []);
-
-  const uprightStyles = stylesData.filter(s => !s.italic);
-  const italicStyles = stylesData.filter(s => s.italic);
+  const uprightStyles = styles.filter(s => !s.isItalic);
+  const italicStyles = styles.filter(s => s.isItalic);
 
   return (
     <section className="font-styles-preview-section" id="styles">
@@ -35,18 +30,18 @@ const FontStylesPreview = ({ font }) => {
         {/* Header Row */}
         <div className="preview-header">
           <h2 className="preview-font-name">{font?.name || 'Font Name'}</h2>
-          <span className="preview-style-count">14 Styles</span>
+          <span className="preview-style-count">{styles.length} Styles</span>
         </div>
 
         <div className="preview-content-layout">
           {/* Left: Preview Box */}
           <div className="preview-box-container">
-            <div 
+            <div
               className="preview-box"
               style={{
                 fontFamily: font?.googleFont || 'inherit',
                 fontWeight: hoveredStyle.weight,
-                fontStyle: hoveredStyle.italic ? 'italic' : 'normal',
+                fontStyle: hoveredStyle.isItalic ? 'italic' : 'normal',
               }}
             >
               <div className="preview-text">AaBbCc</div>
@@ -57,53 +52,56 @@ const FontStylesPreview = ({ font }) => {
 
           {/* Right: Styles List */}
           <div className="styles-list-container">
-            <div className="styles-column">
-              {uprightStyles.map((style) => (
-                <div 
-                  key={style.id} 
-                  className="style-half"
-                  onMouseEnter={() => {
-                    console.log('Hovered style:', style);
-                    setHoveredStyle(style);
-                  }}
-                >
-                  <span 
-                    className="style-name"
-                    style={{
-                      fontWeight: style.weight,
-                      fontStyle: style.italic ? 'italic' : 'normal',
-                    }}
-                  >
-                    {style.name}
-                  </span>
-                  <span className="style-weight">{style.weight}</span>
-                </div>
-              ))}
-            </div>
+            {Array.from({ length: Math.max(uprightStyles.length, italicStyles.length) }).map((_, index) => {
+              const upright = uprightStyles[index];
+              const italic = italicStyles[index];
 
-            <div className="styles-column">
-              {italicStyles.map((style) => (
-                <div 
-                  key={style.id} 
-                  className="style-half"
-                  onMouseEnter={() => {
-                    console.log('Hovered style:', style);
-                    setHoveredStyle(style);
-                  }}
-                >
-                  <span 
-                    className="style-name"
-                    style={{
-                      fontWeight: style.weight,
-                      fontStyle: style.italic ? 'italic' : 'normal',
-                    }}
+              return (
+                <div key={index} className="style-row-full">
+                  {/* Left Column (Upright) */}
+                  <div
+                    className="style-half"
+                    onMouseEnter={() => upright && setHoveredStyle(upright)}
                   >
-                    {style.name}
-                  </span>
-                  <span className="style-weight">{style.weight}</span>
+                    {upright ? (
+                      <>
+                        <span
+                          className="style-name"
+                          style={{
+                            fontWeight: upright.weight,
+                            fontStyle: 'normal',
+                          }}
+                        >
+                          {upright.name}
+                        </span>
+                        <span className="style-weight">{upright.weight}</span>
+                      </>
+                    ) : <span />}
+                  </div>
+
+                  {/* Right Column (Italic) */}
+                  <div
+                    className="style-half"
+                    onMouseEnter={() => italic && setHoveredStyle(italic)}
+                  >
+                    {italic ? (
+                      <>
+                        <span
+                          className="style-name"
+                          style={{
+                            fontWeight: italic.weight,
+                            fontStyle: 'italic',
+                          }}
+                        >
+                          {italic.name}
+                        </span>
+                        <span className="style-weight">{italic.weight}</span>
+                      </>
+                    ) : <span />}
+                  </div>
                 </div>
-              ))}
-            </div>
+              );
+            })}
           </div>
         </div>
       </div>
