@@ -188,3 +188,27 @@
     font-size: 38px;
   }
 }
+
+/* ═══════════════════════════════════════════
+   Dark Mode Overrides
+   ═══════════════════════════════════════════ */
+[data-theme="dark"] .font-styles-preview-section {
+  background-color: #0a0a0a;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .preview-font-name,
+[data-theme="dark"] .preview-style-count,
+[data-theme="dark"] .style-name {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .style-half {
+  border-bottom-color: #333333;
+}
+
+[data-theme="dark"] .preview-box-container {
+  background-color: #111111;
+  border: 1px solid #222222;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}

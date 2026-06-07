@@ -43,105 +43,108 @@ const ShowcaseColumn = ({ font, defaultStyleName, defaultText, defaultFontSize, 
 
   return (
     <div className="showcase-column">
-      {/* Controls: single no-wrap row — dropdown + toggles + sliders (sliders fade in on hover) */}
-      <div className="showcase-controls-row">
-        {/* Dropdown */}
-        <div className="specimen-dropdown" ref={dropdownRef}>
-          <button
-            className="fchc-dropdown"
-            onClick={() => setDropdownOpen(!dropdownOpen)}
-          >
-            <span className="dropdown-label">
-              {font?.name || 'Font'} {selectedStyle.name}
-            </span>
-            <svg
-              className={`dropdown-chevron ${dropdownOpen ? 'is-open' : ''}`}
-              width="12" height="12" viewBox="0 0 12 12" fill="none"
+      {/* Controls: pill row on top, sliders row below (sliders fade in on hover) */}
+      <div className="showcase-controls-area">
+        <div className="showcase-controls-row">
+          {/* Dropdown */}
+          <div className="specimen-dropdown" ref={dropdownRef}>
+            <button
+              className="fchc-dropdown"
+              onClick={() => setDropdownOpen(!dropdownOpen)}
             >
-              <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </button>
+              <span className="dropdown-label">
+                {font?.name || 'Font'} {selectedStyle.name}
+              </span>
+              <svg
+                className={`dropdown-chevron ${dropdownOpen ? 'is-open' : ''}`}
+                width="12" height="12" viewBox="0 0 12 12" fill="none"
+              >
+                <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
 
-          {dropdownOpen && (
-            <div className="specimen-dropdown-menu">
-              {fontStyles.map((style, idx) => (
-                <button
-                  key={idx}
-                  className={`specimen-dropdown-item ${idx === selectedStyleIndex ? 'is-selected' : ''}`}
-                  onClick={() => {
-                    setSelectedStyleIndex(idx);
-                    setDropdownOpen(false);
-                  }}
-                  style={{
-                    fontWeight: style.weight,
-                    fontStyle: style.italic ? 'italic' : 'normal',
-                  }}
-                >
-                  {style.name}
-                  <span className="dropdown-item-weight">{style.weight}</span>
-                </button>
-              ))}
+            {dropdownOpen && (
+              <div className="specimen-dropdown-menu">
+                {fontStyles.map((style, idx) => (
+                  <button
+                    key={idx}
+                    className={`specimen-dropdown-item ${idx === selectedStyleIndex ? 'is-selected' : ''}`}
+                    onClick={() => {
+                      setSelectedStyleIndex(idx);
+                      setDropdownOpen(false);
+                    }}
+                    style={{
+                      fontWeight: style.weight,
+                      fontStyle: style.italic ? 'italic' : 'normal',
+                    }}
+                  >
+                    {style.name}
+                    <span className="dropdown-item-weight">{style.weight}</span>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Toggles */}
+          <div className="specimen-toggles">
+            {/* Case */}
+            <div className="toggle-group">
+              <button
+                className={`toggle-btn-specimen ${textCase === 'mixed' ? 'is-active' : ''}`}
+                onClick={() => setTextCase('mixed')}
+              >
+                Aa
+              </button>
+              <button
+                className={`toggle-btn-specimen ${textCase === 'upper' ? 'is-active' : ''}`}
+                onClick={() => setTextCase('upper')}
+              >
+                AA
+              </button>
             </div>
-          )}
-        </div>
 
-        {/* Toggles */}
-        <div className="specimen-toggles">
-          {/* Case */}
-          <div className="toggle-group">
-            <button
-              className={`toggle-btn-specimen ${textCase === 'mixed' ? 'is-active' : ''}`}
-              onClick={() => setTextCase('mixed')}
-            >
-              Aa
-            </button>
-            <button
-              className={`toggle-btn-specimen ${textCase === 'upper' ? 'is-active' : ''}`}
-              onClick={() => setTextCase('upper')}
-            >
-              AA
-            </button>
+            {/* Alignment */}
+            <div className="toggle-group">
+              <button
+                className={`toggle-btn-specimen ${textAlign === 'left' ? 'is-active' : ''}`}
+                onClick={() => setTextAlign('left')}
+              >
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <line x1="2" y1="3" x2="14" y2="3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                  <line x1="2" y1="7" x2="10" y2="7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                  <line x1="2" y1="11" x2="14" y2="11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                  <line x1="2" y1="15" x2="8" y2="15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                </svg>
+              </button>
+              <button
+                className={`toggle-btn-specimen ${textAlign === 'center' ? 'is-active' : ''}`}
+                onClick={() => setTextAlign('center')}
+              >
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <line x1="2" y1="3" x2="14" y2="3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                  <line x1="4" y1="7" x2="12" y2="7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                  <line x1="2" y1="11" x2="14" y2="11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                  <line x1="5" y1="15" x2="11" y2="15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                </svg>
+              </button>
+              <button
+                className={`toggle-btn-specimen ${textAlign === 'right' ? 'is-active' : ''}`}
+                onClick={() => setTextAlign('right')}
+              >
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <line x1="2" y1="3" x2="14" y2="3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                  <line x1="6" y1="7" x2="14" y2="7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                  <line x1="2" y1="11" x2="14" y2="11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                  <line x1="8" y1="15" x2="14" y2="15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                </svg>
+              </button>
+            </div>
           </div>
 
-          {/* Alignment */}
-          <div className="toggle-group">
-            <button
-              className={`toggle-btn-specimen ${textAlign === 'left' ? 'is-active' : ''}`}
-              onClick={() => setTextAlign('left')}
-            >
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <line x1="2" y1="3" x2="14" y2="3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                <line x1="2" y1="7" x2="10" y2="7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                <line x1="2" y1="11" x2="14" y2="11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                <line x1="2" y1="15" x2="8" y2="15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-              </svg>
-            </button>
-            <button
-              className={`toggle-btn-specimen ${textAlign === 'center' ? 'is-active' : ''}`}
-              onClick={() => setTextAlign('center')}
-            >
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <line x1="2" y1="3" x2="14" y2="3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                <line x1="4" y1="7" x2="12" y2="7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                <line x1="2" y1="11" x2="14" y2="11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                <line x1="5" y1="15" x2="11" y2="15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-              </svg>
-            </button>
-            <button
-              className={`toggle-btn-specimen ${textAlign === 'right' ? 'is-active' : ''}`}
-              onClick={() => setTextAlign('right')}
-            >
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <line x1="2" y1="3" x2="14" y2="3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                <line x1="6" y1="7" x2="14" y2="7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                <line x1="2" y1="11" x2="14" y2="11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                <line x1="8" y1="15" x2="14" y2="15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-              </svg>
-            </button>
-          </div>
         </div>
 
-        {/* Sliders — flex: 1, hidden by default, fade in on column hover */}
+        {/* Sliders row — hidden by default, fades in on column hover */}
         <div className="showcase-sliders-row">
           <div className="fchc-slider-group">
             <label className="fchc-slider-label">Size</label>
@@ -188,7 +191,7 @@ const ShowcaseColumn = ({ font, defaultStyleName, defaultText, defaultFontSize, 
       </div>
 
       {/* Content Preview */}
-      <div 
+      <div
         className="showcase-content-preview"
         style={{
           fontFamily: font?.googleFont || 'inherit',
@@ -230,7 +233,7 @@ const FontSpecimenShowcase = ({ font }) => {
       <div className="font-specimen-showcase-container">
         <div className="showcase-grid">
           {/* Column 1: Left */}
-          <ShowcaseColumn 
+          <ShowcaseColumn
             font={font}
             defaultStyleName="Bold"
             defaultText={leftColText}
@@ -241,7 +244,7 @@ const FontSpecimenShowcase = ({ font }) => {
           />
 
           {/* Column 2: Middle */}
-          <ShowcaseColumn 
+          <ShowcaseColumn
             font={font}
             defaultStyleName="Black"
             defaultText={middleColText}
@@ -252,7 +255,7 @@ const FontSpecimenShowcase = ({ font }) => {
           />
 
           {/* Column 3: Right */}
-          <ShowcaseColumn 
+          <ShowcaseColumn
             font={font}
             defaultStyleName="Light"
             defaultText={rightColText}
