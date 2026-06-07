@@ -33,118 +33,88 @@
 }
 
 /* ═══════════════════════════════════════════
-   Showcase Controls Area (hover reveal sliders)
+   Showcase Controls — single no-wrap row
    ═══════════════════════════════════════════ */
 .showcase-controls-area {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
   width: 100%;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 150ms ease, visibility 150ms ease;
 }
 
-.showcase-column:hover .showcase-controls-area {
-  opacity: 1;
-  visibility: visible;
-}
-
+/* Everything in one single horizontal line */
 .showcase-controls-row {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  min-height: 36px;
-  width: 100%;
-  flex-wrap: nowrap !important;
+  flex-wrap: nowrap;
   gap: 8px;
+  width: 100%;
+  min-height: 36px;
 }
 
-/* Make dropdown and buttons more compact for the column display */
+/* Dropdown shrinks but never hides */
 .showcase-controls-row .specimen-dropdown {
   flex-shrink: 1;
   min-width: 0;
 }
 
 .showcase-controls-row .fchc-dropdown {
-  min-width: 100px;
-  max-width: 130px;
-  height: 30px;
-  padding: 0 8px;
-  font-size: 13px;
-  border-radius: 9999px;
-  gap: 4px;
+  min-width: 0;
+  max-width: 160px;
+  overflow: hidden;
 }
 
 .showcase-controls-row .dropdown-label {
-  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: 13px;
-}
-
-.showcase-controls-row .specimen-toggles {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  flex-shrink: 0;
-}
-
-.showcase-controls-row .toggle-group {
-  height: 30px;
-  border-radius: 9999px;
-  padding: 2px;
-  gap: 1px;
-}
-
-.showcase-controls-row .toggle-btn-specimen {
-  width: 26px;
-  height: 26px;
-  font-size: 11px;
-  border-radius: 9999px;
-}
-
-.showcase-controls-row .toggle-btn-specimen svg {
-  width: 12px;
-  height: 12px;
-}
-
-/* Compact horizontal sliders inline */
-.showcase-controls-row .fchc-slider-group {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 4px;
-  min-width: 0;
-  flex: 1 1 0%;
-}
-
-.showcase-controls-row .fchc-slider-label {
-  font-size: 11px;
-  color: #999;
-  text-transform: capitalize;
-  letter-spacing: 0.01em;
-  margin: 0;
   white-space: nowrap;
 }
 
-.showcase-controls-row .fchc-slider-track-wrap {
-  flex: 1;
-  min-width: 20px;
-  height: 16px;
+/* Toggles don't shrink */
+.showcase-controls-row .specimen-toggles {
+  flex-shrink: 0;
   display: flex;
   align-items: center;
+  gap: 4px;
 }
 
-.showcase-controls-row .fchc-slider-input::-webkit-slider-thumb {
-  width: 10px;
-  height: 10px;
-  margin-top: -4px;
+/* ── Sliders inline in the same row (hidden by default, shown on hover) ── */
+.showcase-sliders-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: nowrap;
+  flex: 1;           /* take remaining space in the controls row */
+  min-width: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 150ms ease;
 }
 
-.showcase-controls-row .fchc-slider-input::-moz-range-thumb {
-  width: 10px;
-  height: 10px;
+/* Show sliders when the column is hovered */
+.showcase-column:hover .showcase-sliders-row {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Each slider group sits inline */
+.showcase-sliders-row .fchc-slider-group {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-start;
+}
+
+.showcase-sliders-row .fchc-slider-label {
+  font-size: 10px;
+  font-weight: 500;
+  color: #999;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.showcase-sliders-row .fchc-slider-track-wrap {
+  width: 100%;
 }
 
 /* ═══════════════════════════════════════════
@@ -218,8 +188,22 @@
   .showcase-column {
     width: 100%;
   }
+
+  /* On touch devices always show sliders */
+  .showcase-sliders-row {
+    opacity: 1;
+    pointer-events: auto;
+  }
 }
 
 @media (max-width: 640px) {
-  /* Keep showcase controls inline on all screen widths */
+  .showcase-controls-row {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .showcase-sliders-row {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
 }
