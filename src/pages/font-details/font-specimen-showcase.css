@@ -33,9 +33,12 @@
 }
 
 /* ═══════════════════════════════════════════
-   Showcase Controls — single no-wrap row
+   Showcase Controls — pill row + sliders row below
    ═══════════════════════════════════════════ */
 .showcase-controls-area {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;          /* breathing room between pills and sliders */
   width: 100%;
 }
 
@@ -57,13 +60,9 @@
 
 .showcase-controls-row .fchc-dropdown {
   min-width: 0;
-  max-width: 160px;
-  overflow: hidden;
 }
 
 .showcase-controls-row .dropdown-label {
-  overflow: hidden;
-  text-overflow: ellipsis;
   white-space: nowrap;
 }
 
@@ -75,13 +74,13 @@
   gap: 4px;
 }
 
-/* ── Sliders inline in the same row (hidden by default, shown on hover) ── */
+/* ── Sliders row — full width, below the pill row, hidden by default ── */
 .showcase-sliders-row {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 24px;
   flex-wrap: nowrap;
-  flex: 1;           /* take remaining space in the controls row */
+  width: 100%;
   min-width: 0;
   opacity: 0;
   pointer-events: none;
@@ -94,7 +93,7 @@
   pointer-events: auto;
 }
 
-/* Each slider group sits inline */
+/* Each slider group stretches equally */
 .showcase-sliders-row .fchc-slider-group {
   flex: 1;
   min-width: 0;
@@ -105,11 +104,11 @@
 }
 
 .showcase-sliders-row .fchc-slider-label {
-  font-size: 10px;
+  font-size: 16px;
   font-weight: 500;
   color: #999;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  text-transform: capitalize;
   line-height: 1;
 }
 
