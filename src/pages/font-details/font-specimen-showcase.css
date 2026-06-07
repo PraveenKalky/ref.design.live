@@ -38,7 +38,8 @@
 .showcase-controls-area {
   display: flex;
   flex-direction: column;
-  gap: 16px;          /* breathing room between pills and sliders */
+  gap: 24px;          /* breathing room between pills and sliders */
+  margin-bottom: 16px; /* spacing below the sliders before the content */
   width: 100%;
 }
 
@@ -78,7 +79,7 @@
 .showcase-sliders-row {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 12px;
   flex-wrap: nowrap;
   width: 100%;
   min-width: 0;
