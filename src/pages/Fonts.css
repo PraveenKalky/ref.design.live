@@ -292,10 +292,12 @@
 
 .card-top-center {
   flex: 1;
-  text-align: left;
+  text-align: center;
   display: flex;
+  justify-content: center;
   align-items: center;
   position: relative;
+  min-width: 0;
 }
 
 .font-card-desc {
@@ -304,6 +306,10 @@
   color: #888;
   margin: 0;
   transition: opacity 0.5s cubic-bezier(0.25, 1, 0.5, 1), color 0.3s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
 
 .font-card:hover .font-card-desc {

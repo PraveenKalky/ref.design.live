@@ -15,6 +15,21 @@ const FONT_CATEGORIES = [
 import { useNavigate } from 'react-router-dom';
 import { FONT_CATEGORY_COUNTS, initialFontsData } from '../data/fontsData';
 
+const getShortDescription = (fontName) => {
+  const descriptions = {
+    "Neue Montreal": "The only Grotesk you'll ever need.",
+    "PP Fragment": "Classic serifs with a contemporary twist.",
+    "Right Grotesk": "Neutral, but not boring.",
+    "Mori": "A versatile gothic sans-serif.",
+    "Pangram Sans": "A comprehensive geometric sans-serif workhorse.",
+    "Formula": "A bold, flexible grotesk for maximum impact.",
+    "Editorial New": "Precise, narrow serif for fashion and headlines.",
+    "Telegraph": "A sturdy, functional sans-serif for branding."
+  };
+  const baseName = fontName.replace(/\s\d+$/, '');
+  return descriptions[baseName] || descriptions[fontName] || "A premium high-quality typeface.";
+};
+
 const FontCard = ({ font, globalText, globalFontSize, viewMode }) => {
   const [fontSize, setFontSize] = useState(globalFontSize || 120);
   const [letterSpacing, setLetterSpacing] = useState(0);
@@ -48,7 +63,7 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode }) => {
         </div>
         
         <div className="card-top-center">
-          <p className="font-card-desc">{font.description}</p>
+          <p className="font-card-desc">{getShortDescription(font.name)}</p>
           
           <div className="font-card-hover-controls">
             <div className="fchc-widgets">
