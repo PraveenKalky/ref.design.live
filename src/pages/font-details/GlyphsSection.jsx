@@ -107,6 +107,21 @@ const GlyphsSection = ({ font }) => {
     fontStyle: selectedStyle.italic ? 'italic' : 'normal',
   };
 
+  // Dynamic glyph sizing: scale so the character fills the cap→baseline band.
+  // Lowercase letters are sized to their x-height; caps/symbols use cap-height.
+  // This keeps the top of every glyph aligned with the Cap height guide and
+  // the baseline pinned on the Baseline guide (using Urbanist's hhea desc ratio ≈ 0.2).
+  const isLowercase = /^[a-z]$/.test(selectedGlyph.char);
+  const charHeightUnits = isLowercase ? metrics.xHeight : metrics.capHeight;
+  const glyphFontSize = Math.round(250 / (charHeightUnits / 1000)); // px
+  const glyphBottom   = -(glyphFontSize * 0.2);                      // px, hhea desc offset
+
+  const glyphCharStyle = {
+    ...activeFontStyle,
+    fontSize: `${glyphFontSize}px`,
+    bottom: `${glyphBottom}px`,
+  };
+
   return (
     <section className="glyphs-section" id="glyphs">
       <div className="glyphs-container">
@@ -203,6 +218,17 @@ const GlyphsSection = ({ font }) => {
 
               {/* ── Zone 1: Toolbar ── */}
               <div className="glyph-preview-toolbar">
+                {/* Metrics toggle on the LEFT */}
+                <div 
+                  className="metric-toggle-switch"
+                  onClick={() => setShowMetrics(!showMetrics)}
+                >
+                  <span>Metrics</span>
+                  <div className={`toggle-track ${showMetrics ? 'is-active' : ''}`}>
+                    <div className="toggle-thumb" />
+                  </div>
+                </div>
+                {/* Fill / Outlines pills on the RIGHT */}
                 <div className="glyph-preview-mode-toggle">
                   <label className="glyph-radio-label">
                     <input
@@ -224,15 +250,6 @@ const GlyphsSection = ({ font }) => {
                     />
                     <span>Outlines</span>
                   </label>
-                </div>
-                <div 
-                  className="metric-toggle-switch"
-                  onClick={() => setShowMetrics(!showMetrics)}
-                >
-                  <span>Metrics</span>
-                  <div className={`toggle-track ${showMetrics ? 'is-active' : ''}`}>
-                    <div className="toggle-thumb" />
-                  </div>
                 </div>
               </div>
 
@@ -274,10 +291,10 @@ const GlyphsSection = ({ font }) => {
                     </>
                   )}
 
-                  {/* The glyph character — positioned exactly relative to the guides */}
+                  {/* The glyph character — sized so its top edge aligns with Cap height guide */}
                   <div
                     className={`glyph-preview-char ${renderMode === 'outlines' ? 'is-outline' : ''}`}
-                    style={activeFontStyle}
+                    style={glyphCharStyle}
                   >
                     {selectedGlyph.char}
                   </div>
