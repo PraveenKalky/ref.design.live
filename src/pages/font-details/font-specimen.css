@@ -371,8 +371,20 @@
   background: #333333;
 }
 
-[data-theme="dark"] .toggle-btn-specimen.is-active {
+[data-theme="dark"] .toggle-group {
   background: #1a1a1a;
+}
+
+[data-theme="dark"] .toggle-btn-specimen {
+  color: #888888;
+}
+
+[data-theme="dark"] .toggle-btn-specimen:hover {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .toggle-btn-specimen.is-active {
+  background: #333333;
   color: #ffffff;
   box-shadow: 0 1px 3px rgba(255, 255, 255, 0.1);
 }

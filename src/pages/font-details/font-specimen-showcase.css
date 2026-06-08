@@ -165,6 +165,8 @@
   letter-spacing: -0.03em;
   text-align: center;
   margin: 0;
+  color: #ffffff;
+  -webkit-text-stroke: 1.5px #0d0d0d;
 }
 
 .headline-numeric-line {
@@ -244,8 +246,24 @@
   background: #222222;
 }
 
-[data-theme="dark"] .showcase-controls-row .toggle-btn-specimen.is-active {
+[data-theme="dark"] .showcase-controls-row .toggle-group {
   background: #1a1a1a;
+}
+
+[data-theme="dark"] .showcase-controls-row .toggle-btn-specimen {
+  color: #888888;
+}
+
+[data-theme="dark"] .showcase-controls-row .toggle-btn-specimen:hover {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .showcase-controls-row .toggle-btn-specimen.is-active {
+  background: #333333;
   color: #ffffff;
   box-shadow: 0 1px 3px rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .headline-text-large {
+  -webkit-text-stroke: 1.5px #ffffff;
 }
