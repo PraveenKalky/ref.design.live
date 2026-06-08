@@ -68,7 +68,7 @@ const NavbarTabs = () => {
 
     // Sync active tab with URL
     useEffect(() => {
-        if (location.pathname === '/fonts') {
+        if (location.pathname.startsWith('/fonts')) {
             setActiveLink('Fonts');
         } else if (location.pathname === '/') {
             const homeLinks = ['Home', 'Websites', 'Apps', 'Resources', 'UI/UX Tastes'];
@@ -111,7 +111,8 @@ const NavbarTabs = () => {
 
                     {navLinks.map((item) => {
                         // Determine active state using both path and activeLink to disambiguate shared '/' paths
-                        const isActive = (location.pathname === item.path && activeLink === item.name);
+                        const isPathMatch = item.path === '/' ? location.pathname === '/' : location.pathname.startsWith(item.path);
+                        const isActive = isPathMatch && activeLink === item.name;
                         const isHome = item.name === 'Home';
 
                         // Apply hover handlers only if the item is not active and not the Home item

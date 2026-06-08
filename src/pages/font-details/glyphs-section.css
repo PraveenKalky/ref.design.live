@@ -1,0 +1,713 @@
+/* ═══════════════════════════════════════════
+   Glyphs Section
+   ═══════════════════════════════════════════ */
+
+.glyphs-section {
+  background-color: #ffffff;
+  color: #0d0d0d;
+  padding: 80px 0 120px;
+  font-family: 'Urbanist', 'Outfit', sans-serif;
+}
+
+.glyphs-container {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+/* ── Two-column layout ── */
+.glyphs-layout {
+  display: flex;
+  gap: 48px;
+  align-items: flex-start;
+}
+
+.glyphs-grid-column {
+  flex: 0 0 65%;
+  min-width: 0;
+}
+
+.glyphs-preview-column {
+  flex: 1;
+  min-width: 0;
+  position: sticky;
+  top: 100px; /* below navbar */
+  align-self: flex-start;
+}
+
+/* ═══════════════════════════════════════════
+   Header: Title + Tab Toggles
+   ═══════════════════════════════════════════ */
+.glyphs-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.glyphs-header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.glyphs-header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.glyphs-title {
+  font-size: 28px;
+  font-weight: 500;
+  color: #0d0d0d;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+/* ── Font Style Dropdown ── */
+.glyphs-dropdown {
+  position: relative;
+}
+
+.glyphs-dropdown-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f5f5f5;
+  border: none;
+  border-radius: 9999px;
+  padding: 0 16px;
+  height: 36px;
+  font-family: 'Urbanist', 'Outfit', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: #0d0d0d;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  min-width: 180px;
+  justify-content: space-between;
+}
+
+.glyphs-dropdown-btn:hover {
+  background: #eaeaea;
+}
+
+.glyphs-dropdown-chevron {
+  transition: transform 0.2s ease;
+  color: #666;
+}
+
+.glyphs-dropdown-chevron.is-open {
+  transform: rotate(180deg);
+}
+
+.glyphs-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  min-width: 240px;
+  max-height: 320px;
+  overflow-y: auto;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  z-index: 100;
+  padding: 4px;
+}
+
+.glyphs-dropdown-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 10px 12px;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background 0.15s ease;
+  text-align: left;
+}
+
+.glyphs-dropdown-item:hover {
+  background: #f5f5f5;
+}
+
+.glyphs-dropdown-item.is-selected {
+  background: #f0f0f0;
+  font-weight: 600;
+}
+
+.glyphs-dropdown-item-weight {
+  font-size: 12px;
+  color: #999;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.glyphs-tab-group {
+  display: flex;
+  align-items: center;
+  background: #f5f5f5;
+  border-radius: 9999px;
+  padding: 2px;
+  gap: 1px;
+  height: 36px;
+}
+
+.glyphs-tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  padding: 0 18px;
+  border: none;
+  background: transparent;
+  border-radius: 9999px;
+  font-family: 'Urbanist', 'Outfit', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: #999;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.glyphs-tab:hover {
+  color: #555;
+}
+
+.glyphs-tab.is-active {
+  background: #ffffff;
+  color: #0d0d0d;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* ═══════════════════════════════════════════
+   Glyph Categories & Grid
+   ═══════════════════════════════════════════ */
+.glyphs-categories {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.glyph-category-block {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.glyph-category-label {
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #0d0d0d;
+}
+
+.glyph-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 0;
+  border-top: 1px solid #e0e0e0;
+  border-left: 1px solid #e0e0e0;
+}
+
+.glyph-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 1;
+  border: none;
+  border-right: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
+  background: transparent;
+  font-size: 20px;
+  font-weight: 600;
+  color: #0d0d0d;
+  cursor: pointer;
+  border-radius: 0;
+  transition: background-color 0.12s ease, color 0.12s ease;
+  padding: 0;
+  line-height: 1;
+}
+
+.glyph-cell:hover {
+  background: #f5f5f5;
+}
+
+.glyph-cell.is-selected {
+  background: #0d0d0d;
+  color: #ffffff;
+}
+
+/* ═══════════════════════════════════════════
+   Right Panel — Glyph Preview
+   Reference layout: white card with rounded border, top toolbar,
+   centered canvas with metric guides, and footer strip.
+   ═══════════════════════════════════════════ */
+.glyphs-preview-panel {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #222222;
+  border-radius: 0;
+  background: #000000;
+  padding: 32px;
+  box-sizing: border-box;
+  min-height: 640px;
+}
+
+/* ── Zone 1: Toolbar ── */
+.glyph-preview-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0 24px 0;
+  flex-shrink: 0;
+}
+
+.glyph-preview-mode-toggle {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.glyph-radio-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #ffffff;
+  cursor: pointer;
+  font-family: 'Urbanist', 'Outfit', sans-serif;
+  user-select: none;
+}
+
+.glyph-radio-label input[type="radio"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid #555555;
+  border-radius: 50%;
+  margin: 0;
+  cursor: pointer;
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #000000;
+}
+
+.glyph-radio-label input[type="radio"]:checked {
+  border-color: #ffffff;
+}
+
+.glyph-radio-label input[type="radio"]:checked::after {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ffffff;
+  display: block;
+}
+
+.metric-toggle-switch {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #ffffff;
+  cursor: pointer;
+  font-family: 'Urbanist', 'Outfit', sans-serif;
+  user-select: none;
+}
+
+.toggle-track {
+  width: 26px;
+  height: 16px;
+  background: transparent;
+  border: 1px solid #555555;
+  border-radius: 16px;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.toggle-track.is-active {
+  border-color: #ffffff;
+}
+
+.toggle-thumb {
+  width: 10px;
+  height: 10px;
+  background: #555555;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.toggle-track.is-active .toggle-thumb {
+  left: 12px;
+  background: #ffffff;
+}
+
+/* ── Zone 2: Preview Canvas ── */
+.glyph-preview-area {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  min-height: 480px;
+  overflow: hidden;
+  background: #000000;
+}
+
+/* ── Bounding box representing cap-to-baseline area ── */
+.glyph-bbox {
+  position: absolute;
+  top: 50%;
+  height: 250px;
+  aspect-ratio: var(--glyph-width, 534) / 720;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* ── Horizontal guide lines ── */
+.glyph-guide-h {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 0;
+  border-top: 1px solid #222222;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.glyph-guide-label-left,
+.glyph-guide-label-right {
+  font-size: 13px;
+  font-weight: 500;
+  color: #666666;
+  font-family: 'Urbanist', 'Outfit', sans-serif;
+  position: absolute;
+  bottom: 4px;
+  white-space: nowrap;
+}
+
+.glyph-guide-label-left {
+  left: 0;
+}
+
+.glyph-guide-label-right {
+  right: 0;
+}
+
+/* Horizontal line vertical offsets (centered relative to 250px box) */
+.glyph-guide-cap      { top: calc(50% - 125px); }
+.glyph-guide-xheight  { top: calc(50% - 56.25px); }
+.glyph-guide-baseline { top: calc(50% + 125px); }
+.glyph-guide-descender { top: calc(50% + 221.5px); }
+
+/* ── Vertical guide lines ── */
+.glyph-guide-vertical {
+  position: absolute;
+  top: -115px;  /* Extend to top of canvas */
+  bottom: -115px; /* Extend to bottom of canvas */
+  width: 0;
+  border-left: 1px solid #222222;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.glyph-guide-v1 {
+  left: 0;
+}
+
+.glyph-guide-v2 {
+  right: 0;
+}
+
+/* ── Bottom width labels under each vertical guide ── */
+.glyph-guide-w-label {
+  position: absolute;
+  font-size: 13px;
+  font-weight: 500;
+  color: #666666;
+  font-family: 'Urbanist', 'Outfit', sans-serif;
+  bottom: -105px;
+  white-space: nowrap;
+}
+
+.glyph-guide-w-left {
+  left: 8px; /* Positioned to the right of the left vertical guide */
+}
+
+.glyph-guide-w-right {
+  right: auto;
+  left: calc(100% + 8px); /* Positioned to the right of the right vertical guide */
+}
+
+/* ── The glyph character ── */
+.glyph-preview-char {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  /* Font size calculated relative to cap-height (box height of 250px) */
+  font-size: calc(250px * 1.38889);
+  /* Offset descender (278 units) below baseline (bottom of box) */
+  bottom: calc(-250px * 0.3861);
+  line-height: 1;
+  color: #ffffff;
+  z-index: 2;
+  font-family: inherit;
+  font-weight: inherit;
+  font-style: inherit;
+  text-align: center;
+  white-space: nowrap;
+  user-select: all;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: geometricPrecision;
+}
+
+.glyph-preview-char.is-outline {
+  color: transparent;
+  -webkit-text-stroke: 1.5px #ffffff;
+}
+
+/* ── Zone 3: Unicode Footer ── */
+.glyph-preview-unicode {
+  padding: 24px 0 0 0;
+  font-size: 15px;
+  font-weight: 500;
+  color: #ffffff;
+  font-family: 'Urbanist', 'Outfit', sans-serif;
+  letter-spacing: -0.01em;
+  flex-shrink: 0;
+}
+
+/* ═══════════════════════════════════════════
+   Responsive
+   ═══════════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .glyphs-layout {
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .glyphs-grid-column {
+    flex: 1 1 auto;
+  }
+
+  .glyphs-preview-column {
+    position: static;
+    width: 100%;
+  }
+
+  .glyphs-container {
+    padding: 0 16px;
+  }
+
+  .glyph-grid {
+    grid-template-columns: repeat(8, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .glyphs-section {
+    padding: 60px 0 80px;
+  }
+
+  .glyph-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  .glyph-preview-char {
+    font-size: 120px;
+    padding: 32px 16px;
+    min-height: 200px;
+  }
+
+  .glyphs-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+}
+
+/* ═══════════════════════════════════════════
+   Dark Mode Overrides
+   ═══════════════════════════════════════════ */
+[data-theme="dark"] .glyphs-section {
+  background-color: #0a0a0a;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .glyphs-title {
+  color: #ffffff;
+}
+
+/* Dropdown */
+[data-theme="dark"] .glyphs-dropdown-btn {
+  background: #1a1a1a;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .glyphs-dropdown-btn:hover {
+  background: #222222;
+}
+
+[data-theme="dark"] .glyphs-dropdown-menu {
+  background: #1a1a1a;
+  border-color: #333333;
+}
+
+[data-theme="dark"] .glyphs-dropdown-item {
+  color: #e0e0e0;
+}
+
+[data-theme="dark"] .glyphs-dropdown-item:hover {
+  background: #222222;
+}
+
+[data-theme="dark"] .glyphs-dropdown-item.is-selected {
+  background: #333333;
+}
+
+/* Tabs */
+[data-theme="dark"] .glyphs-tab-group {
+  background: #1a1a1a;
+}
+
+[data-theme="dark"] .glyphs-tab {
+  color: #888888;
+}
+
+[data-theme="dark"] .glyphs-tab:hover {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .glyphs-tab.is-active {
+  background: #333333;
+  color: #ffffff;
+  box-shadow: 0 1px 3px rgba(255, 255, 255, 0.1);
+}
+
+/* Category labels */
+[data-theme="dark"] .glyph-category-label {
+  color: #ffffff;
+}
+
+/* Glyph grid */
+[data-theme="dark"] .glyph-grid {
+  border-top-color: #2a2a2a;
+  border-left-color: #2a2a2a;
+}
+
+/* Glyph cells */
+[data-theme="dark"] .glyph-cell {
+  color: #e0e0e0;
+  border-right-color: #2a2a2a;
+  border-bottom-color: #2a2a2a;
+}
+
+[data-theme="dark"] .glyph-cell:hover {
+  background: #1a1a1a;
+}
+
+[data-theme="dark"] .glyph-cell.is-selected {
+  background: #ffffff;
+  color: #0a0a0a;
+}
+
+/* Preview panel */
+[data-theme="dark"] .glyphs-preview-panel {
+  border-color: #222222;
+  background: #000000;
+}
+
+[data-theme="dark"] .glyph-preview-toolbar {
+  border-bottom-color: #1e1e1e;
+}
+
+[data-theme="dark"] .glyph-radio-label {
+  color: #ccc;
+}
+
+[data-theme="dark"] .glyph-radio-label input[type="radio"] {
+  border-color: #666;
+}
+
+[data-theme="dark"] .glyph-radio-label input[type="radio"]:checked {
+  border-color: #ffffff;
+}
+
+[data-theme="dark"] .glyph-radio-label input[type="radio"]:checked::after {
+  background: #ffffff;
+}
+
+[data-theme="dark"] .glyph-metrics-toggle {
+  color: #ccc;
+}
+
+[data-theme="dark"] .glyph-metrics-toggle input[type="checkbox"] {
+  border-color: #666;
+}
+
+[data-theme="dark"] .glyph-metrics-toggle input[type="checkbox"]:checked {
+  background: #ffffff;
+  border-color: #ffffff;
+}
+
+[data-theme="dark"] .glyph-metrics-toggle input[type="checkbox"]:checked::after {
+  border-color: #0a0a0a;
+}
+
+/* Zone 2: Preview canvas */
+[data-theme="dark"] .glyph-preview-area {
+  background: #000000;
+}
+
+[data-theme="dark"] .glyph-guide-h {
+  border-top-color: #2a2a2a;
+}
+
+[data-theme="dark"] .glyph-guide-vertical {
+  border-left-color: #2a2a2a;
+}
+
+[data-theme="dark"] .glyph-guide-label-left,
+[data-theme="dark"] .glyph-guide-label-right,
+[data-theme="dark"] .glyph-guide-w-label {
+  color: #444;
+}
+
+/* Glyph character — white in dark mode */
+[data-theme="dark"] .glyph-preview-char {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .glyph-preview-char.is-outline {
+  color: transparent;
+  -webkit-text-stroke-color: #ffffff;
+}
+
+/* Zone 3: Unicode footer */
+[data-theme="dark"] .glyph-preview-unicode {
+  color: #cccccc;
+  border-top-color: #1e1e1e;
+}
