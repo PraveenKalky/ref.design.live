@@ -19,17 +19,17 @@
 /* ── Two-column layout ── */
 .glyphs-layout {
   display: flex;
-  gap: 48px;
+  gap: 32px;
   align-items: flex-start;
 }
 
 .glyphs-grid-column {
-  flex: 0 0 65%;
+  flex: 1;
   min-width: 0;
 }
 
 .glyphs-preview-column {
-  flex: 1;
+  flex: 0 0 460px;
   min-width: 0;
   position: sticky;
   top: 100px;
@@ -244,7 +244,8 @@
 }
 
 .glyph-cell:hover {
-  background: #f5f5f5;
+  background: #0d0d0d;
+  color: #ffffff;
 }
 
 .glyph-cell.is-selected {
@@ -482,16 +483,20 @@
 .glyph-preview-char {
   position: absolute;
   left: 50%;
-  /* Anchor baseline to the Baseline guide (= bbox bottom at 250 px). */
-  /* font-size: bbox_h × (UPM / capHeight) = 250 × (1000/720) ≈ 347 px          */
-  /*   → cap-height ink = 250 px = bbox height, so cap-height aligns cap guide. */
-  /* bottom: −(fontSize × hhea_descender/UPM) ≈ −69 px                         */
-  /*   → baseline = bbox_bottom = Baseline guide (250 px from bbox top).         */
+  /* Align glyph to metric guides:
+   * fontSize = 250px × (UPM / capHeight) = 250 × (1000/720) ≈ 347 px
+   *   → cap-height ink = 250 px = bbox height → aligns with Cap-height guide ✓
+   * Google Fonts hhea ascender ≈ 0.8 of the em-square (vs cap-height ≈ 0.72)
+   *   gap above cap-height = (0.8 − 0.72) × 347 ≈ 27.8 px
+   * top: −28px shifts the element above the bbox so that:
+   *   cap-height ink top  → Cap-height guide (bbox top)    ✓
+   *   baseline            → Baseline guide   (bbox bottom)  ✓
+   */
   transform: translateX(-50%);
   font-size: calc(250px * 1.38889);
-  /* ≈ 347 px */
-  bottom: calc(-250px * 1.38889 * 0.278);
-  /* ≈ -96.5 px */
+  /* 250 / 0.72 ≈ 347 px */
+  top: calc(-250px * 1.38889 * 0.08);
+  /* ≈ −27.8 px */
   line-height: 1;
   color: #ffffff;
   z-index: 2;
@@ -538,6 +543,7 @@
   .glyphs-preview-column {
     position: static;
     width: 100%;
+    flex: none;
   }
 
   .glyphs-preview-panel {
@@ -652,7 +658,8 @@
 }
 
 [data-theme="dark"] .glyph-cell:hover {
-  background: #1a1a1a;
+  background: #ffffff;
+  color: #0a0a0a;
 }
 
 [data-theme="dark"] .glyph-cell.is-selected {

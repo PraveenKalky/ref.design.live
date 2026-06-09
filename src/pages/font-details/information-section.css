@@ -1,0 +1,190 @@
+/* ═══════════════════════════════════════════
+   Information Section (Dark Theme)
+   ═══════════════════════════════════════════ */
+
+.info-section {
+  background-color: #000000;
+  color: #ffffff;
+  padding: 80px 0 140px; /* Generous padding below Glyphs and at the bottom */
+  font-family: 'Urbanist', 'Outfit', sans-serif;
+  border-top: none; /* Minimalist design, no lines or borders */
+}
+
+.info-container {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 32px;
+  box-sizing: border-box;
+}
+
+.info-title {
+  font-size: 28px;
+  font-weight: 500;
+  color: #ffffff;
+  margin: 0 0 56px 0;
+  letter-spacing: -0.01em;
+}
+
+.info-layout {
+  display: flex;
+  gap: 8%; /* 35-40% left, 8% gap, 52-57% right */
+  align-items: flex-start;
+}
+
+/* ── Left Column: Metadata ── */
+.info-metadata-column {
+  flex: 0 0 38%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.info-metadata-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  row-gap: 48px;
+  column-gap: 32px;
+  margin-bottom: 56px;
+}
+
+.info-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.info-group-version {
+  grid-column: span 1;
+}
+
+.info-group-awards {
+  grid-column: span 2;
+}
+
+.info-label {
+  display: block;
+  font-size: 16px;
+  font-weight: 500;
+  color: #86868b; /* Muted gray label text on dark */
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.info-value {
+  font-size: 15px;
+  font-weight: 500;
+  color: #ffffff; /* Clean white values */
+  line-height: 1.5;
+  margin: 0;
+}
+
+.info-group-awards .info-value {
+  line-height: 1.6;
+}
+
+.info-download-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff; /* White button in dark theme */
+  color: #000000; /* Black text */
+  border: none;
+  border-radius: 9999px;
+  padding: 10px 24px;
+  font-family: 'Urbanist', 'Outfit', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.1s ease;
+  white-space: nowrap;
+  letter-spacing: -0.01em;
+}
+
+.info-download-btn:hover {
+  opacity: 0.9;
+}
+
+.info-download-btn:active {
+  transform: scale(0.98);
+}
+
+/* ── Right Column: Editorial Area ── */
+.info-content-column {
+  flex: 1;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.info-about-label {
+  margin-bottom: 12px;
+}
+
+.info-subheading {
+  font-size: 20px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 32px 0;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+
+.info-editorial-text {
+  max-width: 680px; /* Comfortable editorial reading width */
+}
+
+.info-editorial-text p {
+  font-size: 15px;
+  font-weight: 400;
+  color: #e5e5ea; /* Off-white for comfortable reading on dark backdrops */
+  line-height: 1.65;
+  margin: 0 0 28px 0;
+  letter-spacing: 0;
+}
+
+.info-campaign {
+  font-style: italic;
+  color: #86868b !important;
+  margin-top: 36px !important;
+  margin-bottom: 0 !important;
+}
+
+.info-formats-section {
+  margin-top: 56px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ── Responsive Layout Overrides ── */
+@media (max-width: 1024px) {
+  .info-layout {
+    gap: 4%;
+  }
+  .info-metadata-column {
+    flex: 0 0 42%;
+  }
+}
+
+@media (max-width: 768px) {
+  .info-section {
+    padding: 0 0 80px;
+  }
+  .info-layout {
+    flex-direction: column;
+    gap: 64px;
+  }
+  .info-metadata-column {
+    width: 100%;
+    flex: none;
+  }
+  .info-content-column {
+    width: 100%;
+    flex: none;
+  }
+  .info-metadata-grid {
+    margin-bottom: 40px;
+  }
+  .info-title {
+    margin-bottom: 40px;
+  }
+}

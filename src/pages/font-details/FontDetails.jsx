@@ -6,6 +6,7 @@ import FontStylesPreview from './FontStylesPreview';
 import FontSpecimen from './FontSpecimen';
 import FontSpecimenShowcase from './FontSpecimenShowcase';
 import GlyphsSection from './GlyphsSection';
+import InformationSection from './InformationSection';
 import './font-details.css';
 
 const FontDetails = () => {
@@ -58,6 +59,8 @@ const FontDetails = () => {
       <FontSpecimenShowcase font={font} />
       
       <GlyphsSection font={font} />
+      
+      <InformationSection font={font} />
       
       <section className="font-details-content-placeholder">
         {/* Placeholder for future content scrolling */}
