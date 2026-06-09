@@ -110,19 +110,38 @@ const GlyphsSection = ({ font }) => {
     fontStyle: selectedStyle.italic ? 'italic' : 'normal',
   };
 
-  // Size the glyph so its cap-height fills the 250 px bbox exactly,
-  // then pin its baseline to the Baseline guide (bbox bottom = 250 px).
-  // bottom = −(fontSize × hhea_descender/UPM) anchors the rendered baseline
-  // at bbox-bottom (the Baseline guide) for the Google Fonts used here.
-  const isLowercase = /^[a-z]$/.test(activeGlyph.char);
-  const charHeightUnits = isLowercase ? metrics.xHeight : metrics.capHeight;
-  const glyphFontSize = Math.round(250 / (charHeightUnits / 1000)); // px
-  const glyphBottom   = glyphFontSize * (metrics.descender / 1000);  // px
+  const gridFontStyle = {
+    fontFamily,
+    fontWeight: 500,
+  };
+
+  // ── Glyph sizing & vertical alignment ────────────────────────────────────
+  // Goal:
+  //   • Uppercase: cap-height ink top  = Cap-height guide (bbox top)
+  //   • Uppercase: baseline            = Baseline guide   (bbox bottom, 250 px below)
+  //   • Lowercase: x-height ink top    = X-height guide   (68.75 px below bbox top)
+  //   • Lowercase: baseline            = Baseline guide   (same bbox bottom)
+  //
+  // fontSize = 250 / (capHeight/UPM) ≈ 347 px
+  //   → uppercase cap-height ink spans exactly 250 px  ✓
+  //   → lowercase x-height ink spans 522/1000×347 ≈ 181 px
+  //       which equals the X-height→Baseline guide distance (181.25 px) ✓
+  //
+  // Google Fonts normalized hhea ascender ≈ 0.8 of the em-square.
+  // The space above cap-height = (0.8 − 0.72) × fontSize ≈ 28 px.
+  // Setting top = −28 px shifts the element up so that:
+  //   cap-height ink top  aligns with bbox top  (Cap-height guide) ✓
+  //   baseline            aligns with bbox bottom (Baseline guide)  ✓
+  const ASCENDER_RATIO = 0.8; // actual normalized ascender for all Google Fonts used here
+  const glyphFontSize  = Math.round(250 / (metrics.capHeight / 1000)); // ≈ 347 px
+  const glyphTop       = -Math.round(glyphFontSize * (ASCENDER_RATIO - metrics.capHeight / 1000));
+  // ≈ −Math.round(347 × 0.08) = −28 px
 
   const glyphCharStyle = {
     ...activeFontStyle,
+    fontWeight: 600,
     fontSize: `${glyphFontSize}px`,
-    bottom: `${glyphBottom}px`,
+    top: `${glyphTop}px`,
   };
 
   return (
@@ -206,7 +225,7 @@ const GlyphsSection = ({ font }) => {
                         onClick={() => handleGlyphClick(glyph)}
                         onMouseEnter={() => setHoveredGlyph(glyph)}
                         onMouseLeave={() => setHoveredGlyph(null)}
-                        style={activeFontStyle}
+                        style={gridFontStyle}
                       >
                         {glyph.char}
                       </button>
@@ -223,17 +242,7 @@ const GlyphsSection = ({ font }) => {
 
               {/* ── Zone 1: Toolbar ── */}
               <div className="glyph-preview-toolbar">
-                {/* Metrics toggle on the LEFT */}
-                <div 
-                  className="metric-toggle-switch"
-                  onClick={() => setShowMetrics(!showMetrics)}
-                >
-                  <span>Metrics</span>
-                  <div className={`toggle-track ${showMetrics ? 'is-active' : ''}`}>
-                    <div className="toggle-thumb" />
-                  </div>
-                </div>
-                {/* Fill / Outlines pills on the RIGHT */}
+                {/* Fill / Outlines pills on the LEFT */}
                 <div className="glyph-preview-mode-toggle">
                   <label className="glyph-radio-label">
                     <input
@@ -255,6 +264,16 @@ const GlyphsSection = ({ font }) => {
                     />
                     <span>Outlines</span>
                   </label>
+                </div>
+                {/* Metrics toggle on the RIGHT */}
+                <div 
+                  className="metric-toggle-switch"
+                  onClick={() => setShowMetrics(!showMetrics)}
+                >
+                  <span>Metrics</span>
+                  <div className={`toggle-track ${showMetrics ? 'is-active' : ''}`}>
+                    <div className="toggle-thumb" />
+                  </div>
                 </div>
               </div>
 
