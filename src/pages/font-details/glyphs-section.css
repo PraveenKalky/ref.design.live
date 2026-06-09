@@ -32,7 +32,8 @@
   flex: 1;
   min-width: 0;
   position: sticky;
-  top: 100px; /* below navbar */
+  top: 100px;
+  /* below navbar */
   align-self: flex-start;
 }
 
@@ -265,6 +266,7 @@
   padding: 32px;
   box-sizing: border-box;
   min-height: 640px;
+  margin-top: 29px;
 }
 
 /* ── Zone 1: Toolbar ── */
@@ -417,16 +419,29 @@
 }
 
 /* Horizontal line vertical offsets (centered relative to 250px box) */
-.glyph-guide-cap      { top: calc(50% - 125px); }
-.glyph-guide-xheight  { top: calc(50% - 56.25px); }
-.glyph-guide-baseline { top: calc(50% + 125px); }
-.glyph-guide-descender { top: calc(50% + 221.5px); }
+.glyph-guide-cap {
+  top: calc(50% - 125px);
+}
+
+.glyph-guide-xheight {
+  top: calc(50% - 56.25px);
+}
+
+.glyph-guide-baseline {
+  top: calc(50% + 125px);
+}
+
+.glyph-guide-descender {
+  top: calc(50% + 221.5px);
+}
 
 /* ── Vertical guide lines ── */
 .glyph-guide-vertical {
   position: absolute;
-  top: -115px;  /* Extend to top of canvas */
-  bottom: -115px; /* Extend to bottom of canvas */
+  top: -115px;
+  /* Extend to top of canvas */
+  bottom: -115px;
+  /* Extend to bottom of canvas */
   width: 0;
   border-left: 1px solid rgba(255, 255, 255, 0.2);
   pointer-events: none;
@@ -453,27 +468,30 @@
 }
 
 .glyph-guide-w-left {
-  left: 8px; /* Positioned to the right of the left vertical guide */
+  left: 8px;
+  /* Positioned to the right of the left vertical guide */
 }
 
 .glyph-guide-w-right {
   left: auto;
-  right: 4px; /* Positioned just inside the right vertical guide */
+  right: 4px;
+  /* Positioned just inside the right vertical guide */
 }
 
 /* ── The glyph character ── */
 .glyph-preview-char {
   position: absolute;
   left: 50%;
+  /* Anchor baseline to the Baseline guide (= bbox bottom at 250 px). */
+  /* font-size: bbox_h × (UPM / capHeight) = 250 × (1000/720) ≈ 347 px          */
+  /*   → cap-height ink = 250 px = bbox height, so cap-height aligns cap guide. */
+  /* bottom: −(fontSize × hhea_descender/UPM) ≈ −69 px                         */
+  /*   → baseline = bbox_bottom = Baseline guide (250 px from bbox top).         */
   transform: translateX(-50%);
-  /* font-size = bbox_height × (UPM / capHeight) = 250px × (1000/720) = 347px
-     Maps the cap-height to exactly 250px so R's top sits at the Cap height guide
-     and the baseline lands on the Baseline guide. */
   font-size: calc(250px * 1.38889);
-  /* bottom = font-size × (hhea_descender / UPM) = 347px × 0.2 ≈ 69px
-     Uses the font's actual hhea line metrics (not design-space descender)
-     so the rendered baseline aligns with the Baseline guide. */
-  bottom: calc(-250px * 0.278);
+  /* ≈ 347 px */
+  bottom: calc(-250px * 1.38889 * 0.278);
+  /* ≈ -96.5 px */
   line-height: 1;
   color: #ffffff;
   z-index: 2;
@@ -520,6 +538,10 @@
   .glyphs-preview-column {
     position: static;
     width: 100%;
+  }
+
+  .glyphs-preview-panel {
+    margin-top: 0;
   }
 
   .glyphs-container {
