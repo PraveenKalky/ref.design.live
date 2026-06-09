@@ -107,14 +107,14 @@ const GlyphsSection = ({ font }) => {
     fontStyle: selectedStyle.italic ? 'italic' : 'normal',
   };
 
-  // Dynamic glyph sizing: scale so the character fills the cap→baseline band.
-  // Lowercase letters are sized to their x-height; caps/symbols use cap-height.
-  // This keeps the top of every glyph aligned with the Cap height guide and
-  // the baseline pinned on the Baseline guide (using Urbanist's hhea desc ratio ≈ 0.2).
+  // Size the glyph so its cap-height fills the 250 px bbox exactly,
+  // then pin its baseline to the Baseline guide (bbox bottom = 250 px).
+  // bottom = −(fontSize × hhea_descender/UPM) anchors the rendered baseline
+  // at bbox-bottom (the Baseline guide) for the Google Fonts used here.
   const isLowercase = /^[a-z]$/.test(selectedGlyph.char);
   const charHeightUnits = isLowercase ? metrics.xHeight : metrics.capHeight;
   const glyphFontSize = Math.round(250 / (charHeightUnits / 1000)); // px
-  const glyphBottom   = -(glyphFontSize * 0.2);                      // px, hhea desc offset
+  const glyphBottom   = glyphFontSize * (metrics.descender / 1000);  // px
 
   const glyphCharStyle = {
     ...activeFontStyle,
@@ -125,69 +125,70 @@ const GlyphsSection = ({ font }) => {
   return (
     <section className="glyphs-section" id="glyphs">
       <div className="glyphs-container">
+        {/* Header */}
+        <div className="glyphs-header">
+          <div className="glyphs-header-left">
+            <h2 className="glyphs-title">Glyphs</h2>
+          </div>
+
+          <div className="glyphs-header-right">
+            {/* Font Style Dropdown */}
+            <div className="glyphs-dropdown" ref={dropdownRef}>
+              <button
+                className="glyphs-dropdown-btn"
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+              >
+                <span className="glyphs-dropdown-label">
+                  {font?.name || 'Font'} {selectedStyle.name}
+                </span>
+                <svg
+                  className={`glyphs-dropdown-chevron ${dropdownOpen ? 'is-open' : ''}`}
+                  width="12" height="12" viewBox="0 0 12 12" fill="none"
+                >
+                  <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+
+              {dropdownOpen && (
+                <div className="glyphs-dropdown-menu">
+                  {fontStyles.map((style, idx) => (
+                    <button
+                      key={idx}
+                      className={`glyphs-dropdown-item ${idx === selectedStyleIndex ? 'is-selected' : ''}`}
+                      onClick={() => handleStyleSelect(idx)}
+                      style={{
+                        fontWeight: style.weight,
+                        fontStyle: style.italic ? 'italic' : 'normal',
+                      }}
+                    >
+                      {style.name}
+                      <span className="glyphs-dropdown-item-weight">{style.weight}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="glyphs-tab-group">
+              <button
+                className={`glyphs-tab ${activeTab === 'all' ? 'is-active' : ''}`}
+                onClick={() => setActiveTab('all')}
+              >
+                All
+              </button>
+              <button
+                className={`glyphs-tab ${activeTab === 'symbols' ? 'is-active' : ''}`}
+                onClick={() => setActiveTab('symbols')}
+              >
+                Symbols
+              </button>
+            </div>
+          </div>
+        </div>
+
         <div className="glyphs-layout">
           {/* ── Left Column: Glyph Grid ── */}
           <div className="glyphs-grid-column">
-            {/* Header */}
-            <div className="glyphs-header">
-              <div className="glyphs-header-left">
-                <h2 className="glyphs-title">Glyphs</h2>
-              </div>
-
-              <div className="glyphs-header-right">
-                {/* Font Style Dropdown */}
-                <div className="glyphs-dropdown" ref={dropdownRef}>
-                  <button
-                    className="glyphs-dropdown-btn"
-                    onClick={() => setDropdownOpen(!dropdownOpen)}
-                  >
-                    <span className="glyphs-dropdown-label">
-                      {font?.name || 'Font'} {selectedStyle.name}
-                    </span>
-                    <svg
-                      className={`glyphs-dropdown-chevron ${dropdownOpen ? 'is-open' : ''}`}
-                      width="12" height="12" viewBox="0 0 12 12" fill="none"
-                    >
-                      <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </button>
-
-                  {dropdownOpen && (
-                    <div className="glyphs-dropdown-menu">
-                      {fontStyles.map((style, idx) => (
-                        <button
-                          key={idx}
-                          className={`glyphs-dropdown-item ${idx === selectedStyleIndex ? 'is-selected' : ''}`}
-                          onClick={() => handleStyleSelect(idx)}
-                          style={{
-                            fontWeight: style.weight,
-                            fontStyle: style.italic ? 'italic' : 'normal',
-                          }}
-                        >
-                          {style.name}
-                          <span className="glyphs-dropdown-item-weight">{style.weight}</span>
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                <div className="glyphs-tab-group">
-                  <button
-                    className={`glyphs-tab ${activeTab === 'all' ? 'is-active' : ''}`}
-                    onClick={() => setActiveTab('all')}
-                  >
-                    All
-                  </button>
-                  <button
-                    className={`glyphs-tab ${activeTab === 'symbols' ? 'is-active' : ''}`}
-                    onClick={() => setActiveTab('symbols')}
-                  >
-                    Symbols
-                  </button>
-                </div>
-              </div>
-            </div>
 
             {/* Categories */}
             <div className="glyphs-categories">
