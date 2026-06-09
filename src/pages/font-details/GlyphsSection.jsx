@@ -15,12 +15,15 @@ const GlyphsSection = ({ font }) => {
     hex: 'U+0025',
     decimal: 37,
   });
+  const [hoveredGlyph, setHoveredGlyph] = useState(null);
   const [renderMode, setRenderMode] = useState('fill'); // 'fill' | 'outlines'
   const [showMetrics, setShowMetrics] = useState(true);
 
+  const activeGlyph = hoveredGlyph || selectedGlyph;
+
   // Dynamic metrics based on character type and reference image values
   const metrics = useMemo(() => {
-    const char = selectedGlyph.char;
+    const char = activeGlyph.char;
     if (char === '%') {
       return { width: 820, capHeight: 720, xHeight: 522, baseline: 0, descender: -278 };
     }
@@ -49,7 +52,7 @@ const GlyphsSection = ({ font }) => {
       baseline: 0,
       descender: -278
     };
-  }, [selectedGlyph.char]);
+  }, [activeGlyph.char]);
 
   // Font style dropdown state
   const fontStyles = font?.stylesList || [
@@ -111,7 +114,7 @@ const GlyphsSection = ({ font }) => {
   // then pin its baseline to the Baseline guide (bbox bottom = 250 px).
   // bottom = −(fontSize × hhea_descender/UPM) anchors the rendered baseline
   // at bbox-bottom (the Baseline guide) for the Google Fonts used here.
-  const isLowercase = /^[a-z]$/.test(selectedGlyph.char);
+  const isLowercase = /^[a-z]$/.test(activeGlyph.char);
   const charHeightUnits = isLowercase ? metrics.xHeight : metrics.capHeight;
   const glyphFontSize = Math.round(250 / (charHeightUnits / 1000)); // px
   const glyphBottom   = glyphFontSize * (metrics.descender / 1000);  // px
@@ -201,7 +204,8 @@ const GlyphsSection = ({ font }) => {
                         key={glyph.code}
                         className={`glyph-cell ${selectedGlyph.code === glyph.code ? 'is-selected' : ''}`}
                         onClick={() => handleGlyphClick(glyph)}
-                        title={glyph.hex}
+                        onMouseEnter={() => setHoveredGlyph(glyph)}
+                        onMouseLeave={() => setHoveredGlyph(null)}
                         style={activeFontStyle}
                       >
                         {glyph.char}
@@ -297,14 +301,14 @@ const GlyphsSection = ({ font }) => {
                     className={`glyph-preview-char ${renderMode === 'outlines' ? 'is-outline' : ''}`}
                     style={glyphCharStyle}
                   >
-                    {selectedGlyph.char}
+                    {activeGlyph.char}
                   </div>
                 </div>
               </div>
 
               {/* ── Zone 3: Unicode Footer ── */}
               <div className="glyph-preview-unicode">
-                {selectedGlyph.hex}
+                {activeGlyph.hex}
               </div>
 
             </div>
