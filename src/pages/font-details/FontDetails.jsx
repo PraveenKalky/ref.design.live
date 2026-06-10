@@ -35,22 +35,7 @@ const FontDetails = () => {
     <div className="font-details-page">
       <FontDetailsHero font={font} />
       
-      <section className="font-details-specs" id="information">
-        <div className="specs-container">
-          <div className="spec-item">
-            <span className="spec-label">Weights & Styles</span>
-            <h3 className="spec-value">{font.weightsAndStyles}</h3>
-          </div>
-          <div className="spec-item">
-            <span className="spec-label">Language Support</span>
-            <h3 className="spec-value">{font.languageSupport}</h3>
-          </div>
-          <div className="spec-item">
-            <span className="spec-label">Release Year</span>
-            <h3 className="spec-value">{font.releaseYear}</h3>
-          </div>
-        </div>
-      </section>
+
 
       <FontStylesPreview font={font} />
       

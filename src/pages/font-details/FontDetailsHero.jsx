@@ -15,6 +15,21 @@ const FontDetailsHero = ({ font }) => {
           {font?.name || 'Font Name'}
         </h1>
         <p className="hero-font-about">{font?.description || ''}</p>
+        
+        <div className="hero-specs-container">
+          <div className="hero-spec-item">
+            <span className="hero-spec-label">Weights & Styles</span>
+            <span className="hero-spec-value">{font?.weightsAndStyles}</span>
+          </div>
+          <div className="hero-spec-item">
+            <span className="hero-spec-label">Language Support</span>
+            <span className="hero-spec-value">{font?.languageSupport}</span>
+          </div>
+          <div className="hero-spec-item">
+            <span className="hero-spec-label">Release Year</span>
+            <span className="hero-spec-value">{font?.releaseYear}</span>
+          </div>
+        </div>
       </div>
       
       <div className="hero-bottom-nav-container">
