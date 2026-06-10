@@ -1,119 +1,265 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { ArrowRight } from '@phosphor-icons/react';
 import './information-section.css';
 
-const InformationSection = ({ font }) => {
-  // We can customize the about section name based on the current font,
-  // but we keep the editorial copy exactly as requested by the user.
-  const fontName = font?.name || 'Terrane';
+const getFontMetadata = (font) => {
+  const fontName = font?.name || 'Founders Grotesk';
+  
+  // 1. Credits & Awards Data
+  let design = ["Mathieu Desjardins"];
+  let engineering = ["Mathieu Desjardins", "Valerio Monopoli"];
+  let awards = [
+    { title: "Hiiibrand International Brand & Communication Design Awards", year: 2020 }
+  ];
 
-  const handleDownloadSpecimen = () => {
-    // Mock specimen download behavior
-    alert(`Downloading PDF specimen for ${fontName}...`);
+  if (fontName.includes("Montreal")) {
+    design = ["Mathieu Desjardins"];
+    engineering = ["Mathieu Desjardins", "Sebastien Tremblay"];
+    awards = [
+      { title: "Typehelp Top Release", year: 2019 },
+      { title: "Montreal Design Craft Awards, Winner", year: 2020 }
+    ];
+  } else if (fontName.includes("Fragment")) {
+    design = ["Mathieu Desjardins"];
+    engineering = ["Mathieu Desjardins"];
+    awards = [
+      { title: "AGDA Design Award, Finalist", year: 2021 }
+    ];
+  } else if (fontName.includes("Right")) {
+    design = ["Alexander Slobzheninov"];
+    engineering = ["Alexander Slobzheninov", "Noe Blanco"];
+    awards = [
+      { title: "Best Awards, Design Craft, Finalist", year: 2020 },
+      { title: "Type Directors Club Certificate", year: 2021 }
+    ];
+  } else if (fontName.includes("Mori")) {
+    design = ["Caio Kondo"];
+    engineering = ["Caio Kondo", "Valerio Monopoli"];
+    awards = [
+      { title: "Tokyo TDC Annual Awards", year: 2022 }
+    ];
+  } else if (fontName.includes("Pangram")) {
+    design = ["Mathieu Desjardins"];
+    engineering = ["Mathieu Desjardins", "Ben Kiel"];
+    awards = [
+      { title: "Communication Arts Design Award", year: 2018 }
+    ];
+  } else if (fontName.includes("Formula")) {
+    design = ["Mathieu Desjardins"];
+    engineering = ["Mathieu Desjardins", "Hugo Jourdan"];
+    awards = [
+      { title: "Brand New Award, Winner", year: 2018 }
+    ];
+  } else if (fontName.includes("Editorial")) {
+    design = ["Mathieu Desjardins"];
+    engineering = ["Mathieu Desjardins", "Francesca Bolognini"];
+    awards = [
+      { title: "Hiiibrand Bronze Award", year: 2019 },
+      { title: "Club des Directeurs Artistiques 3rd Prize", year: 2020 }
+    ];
+  } else if (fontName.includes("Telegraph") || fontName.includes("Telegraf")) {
+    design = ["Nick Losacco"];
+    engineering = ["Nick Losacco", "Valerio Monopoli"];
+    awards = [
+      { title: "Type Directors Club Certificate", year: 2020 }
+    ];
+  }
+
+  // 2. Technical Details Data
+  const subFamilies = [
+    fontName,
+    `${fontName} Condensed`,
+    `${fontName} X-Condensed`,
+    `${fontName} Text`,
+    `${fontName} Mono`
+  ];
+
+  const releaseDates = subFamilies.map((name, idx) => ({
+    name,
+    year: parseInt(font?.releaseYear?.replace(/\D/g, '')) ? parseInt(font.releaseYear.replace(/\D/g, '')) + idx : 2020 + idx
+  }));
+
+  const currentVersions = subFamilies.map((name, idx) => ({
+    name,
+    version: idx === 4 ? "2.005" : "2.004"
+  }));
+
+  const classifications = subFamilies.map((name, idx) => ({
+    name,
+    value: idx === 4 ? `Modern: Lineal/${font?.category || 'Grotesque'} Monospaced` : `Modern: Lineal/${font?.category || 'Grotesque'}`
+  }));
+
+  const creditsRows = [
+    ...design.map((name, idx) => ({ label: idx === 0 ? "Design" : "", value: name })),
+    ...engineering.map((name, idx) => ({ label: idx === 0 ? "Engineering" : "", value: name })),
+    ...awards.map((award, idx) => ({ label: idx === 0 ? "Awards" : "", value: award.title, meta: award.year.toString() }))
+  ];
+
+  const technicalRows = [
+    ...releaseDates.map((rd, idx) => ({ label: idx === 0 ? "Release dates" : "", value: rd.name, meta: rd.year.toString() })),
+    ...currentVersions.map((cv, idx) => ({ label: idx === 0 ? "Current versions" : "", value: cv.name, meta: cv.version })),
+    ...classifications.map((cl, idx) => ({ label: idx === 0 ? "Classifications" : "", value: cl.name, meta: cl.value })),
+    {
+      label: "Font formats",
+      isMultiColumn: true,
+      columns: [
+        { label: "OTF", desc: "Desktop" },
+        { label: "WOFF2", desc: "Web" },
+        { label: "TTF", desc: "App" }
+      ]
+    },
+    {
+      label: "Average glyph count",
+      isMultiColumn: true,
+      columns: [
+        { label: fontName.includes("Pangram") ? "980" : "469", desc: "per Roman style" },
+        { label: fontName.includes("Formula") ? "0" : fontName.includes("Pangram") ? "980" : "198", desc: "per Italic style" },
+        { label: fontName.includes("Pangram") ? "27,440" : "16,680", desc: "total" }
+      ]
+    },
+    { label: "Font styles", value: font?.stylesList?.length?.toString() || "35" },
+    { label: "Hinting", value: "Manual VTT hinting" },
+    { label: "Kerning", value: "Manual kerning", meta: "78,945 total pairs" }
+  ];
+
+  return { creditsRows, technicalRows };
+};
+
+const InformationSection = ({ font }) => {
+  const fontName = font?.name || 'Founders Grotesk';
+  
+  // Accordion states
+  const [openSections, setOpenSections] = useState({
+    credits: false,
+    technical: false,
+    language: false
+  });
+
+  const toggleSection = (section) => {
+    setOpenSections(prev => ({
+      ...prev,
+      [section]: !prev[section]
+    }));
+  };
+
+  const handleDownloadTestFonts = () => {
+    alert(`Downloading test fonts for ${fontName}...`);
+  };
+
+  const editorialParagraph = `${fontName} is a contemporary amalgamation of classic grotesks. Millar & Richard's early 20th century Grotesque series provided rudimentary geometry, serpentine curves, and the narrow but welcome aperture of certain forms. Further details were inspired by H. W. Caslon's Doric series from the same era. These details are coupled with tight spacing strategies from Helvetica's Halbfett (Medium) headline-sized metal cuts from the late 1950s. ${fontName} is not intended as strict revival, it resolves the best details from the last century into a large family designed for modern typography.`;
+
+  const { creditsRows, technicalRows } = getFontMetadata(font);
+
+  const languageRows = [
+    { label: "Coverage", value: font?.languageSupport || 'European & Western languages' },
+    { label: "Character sets", value: "Latin Extended, Western European, Central European, standard diacritics" }
+  ];
+
+  const renderAccordionTable = (rows) => {
+    return (
+      <div className="accordion-panel-wrapper">
+        <table className="accordion-table">
+          <tbody>
+            {rows.map((row, index) => {
+              if (row.isMultiColumn) {
+                return (
+                  <tr key={index} className="accordion-table-row">
+                    <td className="table-label">{row.label}</td>
+                    <td className="table-value" colSpan={2}>
+                      <div className="table-multicol">
+                        {row.columns.map((col, cIdx) => (
+                          <div key={cIdx} className="table-multicol-item">
+                            <span className="table-multicol-value">{col.label}</span>{' '}
+                            <span className="table-multicol-desc">{col.desc}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </td>
+                  </tr>
+                );
+              }
+
+              return (
+                <tr key={index} className="accordion-table-row">
+                  <td className="table-label">{row.label}</td>
+                  <td className="table-value">{row.value}</td>
+                  <td className="table-meta">{row.meta || ''}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    );
   };
 
   return (
     <section className="info-section" id="information">
       <div className="info-container">
+        {/* Do not remove "Information" heading */}
         <h2 className="info-title">Information</h2>
-        
+
         <div className="info-layout">
-          {/* Left Column: Metadata */}
-          <div className="info-metadata-column">
-            <div className="info-metadata-grid">
-              <div className="info-group">
-                <span className="info-label">Design</span>
-                <p className="info-value">Emmanuel Besse</p>
+          {/* Full-width Content Block */}
+          <div className="info-content-left">
+            <p className="info-description-text">
+              {editorialParagraph}
+            </p>
+
+            <div className="info-accordion-container">
+              {/* Credits & Awards */}
+              <div className="info-accordion-item">
+                <button className="info-accordion-header" onClick={() => toggleSection('credits')}>
+                  <svg 
+                    className={`info-accordion-icon ${openSections.credits ? 'is-open' : ''}`} 
+                    width="8" height="8" viewBox="0 0 8 8" fill="none"
+                  >
+                    <path d="M2 1.5L6 4L2 6.5V1.5Z" fill="currentColor" />
+                  </svg>
+                  <span className="info-accordion-title">Credits & awards</span>
+                </button>
+                <div className={`info-accordion-content ${openSections.credits ? 'is-open' : ''}`}>
+                  {renderAccordionTable(creditsRows)}
+                </div>
               </div>
-              
-              <div className="info-group">
-                <span className="info-label">Team</span>
-                <p className="info-value">
-                  Léa Bruneau<br />
-                  Hugues Gentile
-                </p>
+
+              {/* Technical Details */}
+              <div className="info-accordion-item">
+                <button className="info-accordion-header" onClick={() => toggleSection('technical')}>
+                  <svg 
+                    className={`info-accordion-icon ${openSections.technical ? 'is-open' : ''}`} 
+                    width="8" height="8" viewBox="0 0 8 8" fill="none"
+                  >
+                    <path d="M2 1.5L6 4L2 6.5V1.5Z" fill="currentColor" />
+                  </svg>
+                  <span className="info-accordion-title">Technical details</span>
+                </button>
+                <div className={`info-accordion-content ${openSections.technical ? 'is-open' : ''}`}>
+                  {renderAccordionTable(technicalRows)}
+                </div>
               </div>
-              
-              <div className="info-group info-group-version">
-                <span className="info-label">Version</span>
-                <p className="info-value">1.001</p>
-              </div>
-              
-              <div className="info-group info-group-awards">
-                <span className="info-label">Awards & distinctions</span>
-                <p className="info-value">
-                  14th Hiiibrand International Brand & Communication Design Awards - Bronze Awards<br />
-                  Typehelp 2025 top release<br />
-                  Club des Directeurs Artistiques 2025 3rd Prize
-                </p>
+
+              {/* Language Support */}
+              <div className="info-accordion-item">
+                <button className="info-accordion-header" onClick={() => toggleSection('language')}>
+                  <svg 
+                    className={`info-accordion-icon ${openSections.language ? 'is-open' : ''}`} 
+                    width="8" height="8" viewBox="0 0 8 8" fill="none"
+                  >
+                    <path d="M2 1.5L6 4L2 6.5V1.5Z" fill="currentColor" />
+                  </svg>
+                  <span className="info-accordion-title">Language support</span>
+                </button>
+                <div className={`info-accordion-content ${openSections.language ? 'is-open' : ''}`}>
+                  {renderAccordionTable(languageRows)}
+                </div>
               </div>
             </div>
-            
-            <button className="info-download-btn" onClick={handleDownloadSpecimen}>
-              Download PDF Specimen
+
+            <button className="info-download-test-btn" onClick={handleDownloadTestFonts}>
+              <span>Download Fonts</span>
+              <ArrowRight className="info-download-icon" size={20} weight="bold" />
             </button>
-          </div>
-          
-          {/* Right Column: Editorial Content Area */}
-          <div className="info-content-column">
-            <span className="info-label info-about-label">About this font</span>
-            <h3 className="info-subheading">
-              {fontName === 'Terrane' ? 'Terrane, a typeface that opens dialogues' : `${fontName}, a typeface that opens dialogues`}
-            </h3>
-            
-            <div className="info-editorial-text">
-              <p>
-                Terrane is a humanist typeface designed to open dialogues. It exemplifies the dualities inherent in humanist
-                design by balancing apparent simplicity with subtle complexity. As a low-contrast sans-serif, Terrane projects
-                clarity and openness with forms that feel culturally grounded and organic. While Terrane's design roots are firmly
-                planted in the humanist sans tradition, the serif counterpart explores more exotic, lesser-known traits.
-                Methodical and modern, Terrane proposes a synthesis of warmth and exactitude.
-              </p>
-              <p>
-                While Terrane's bold weights carry a sense of warm cheerfulness, it is able to behave as a contemplative and
-                assertive typeface. This subtle confidence feels appropriate where restraint and rigor are expected. Terrain
-                establishes a steady, composed tone effectively conveying intellectual rigor and human-centered narratives.
-                The humanist curves contribute to a somewhat natural cadence that's inviting to the reader without
-                compromising its structural integrity. At the same time, Terrane's moderate contrast and careful construction
-                anchor it in a framework of utilitarian elegance.
-              </p>
-              <p>
-                The true versatility of Terrane lies in its dual nature as both a sans-serif and a serifed typeface. Terrane Sans is
-                serviceable and polyvalent, marked by its low contrast and not-so-wide apertures that secure readability in
-                demanding environments. Meanwhile, Terrane Serif introduces stone-cut gravitas and maintains the low-
-                contrast ethos of its counterpart. Both typefaces share identical proportions, and pairing them creates a
-                harmonious relationship. Transitioning from one to another is seamless, creating its own miniature design
-                system.
-              </p>
-              <p>
-                With its inscriptional quality, Terrane Serif brings a sense of permanence and authority, making it compelling in
-                an editorial context and striking as a small-size display typeface. Terrane Serif is a nuanced acknowledgment of
-                inscriptional traditions in that it does not resort to the fragility of high-contrast designs. The serifs are measured
-                and deliberate, suggesting an architectural solidity that complements the open and contemporary structure of
-                the sans-serif. This Petit Serif-inspired approach stands apart as a thoughtful and functional reimagining of
-                classical forms but also of some photo-lettering exploration of the 70s.
-              </p>
-              <p>
-                Terrane Sans feels at ease where clarity and approachability are expected, making it exemplary for applications
-                that must communicate professionalism and accessibility. The serif variant, on the other hand, lends itself to
-                literary layouts that express modern relevance and cultural depth. Together, the two styles enable designers to
-                create typography systems that know how to stay both cohesive and full of nuances, serving as a toolkit for
-                storytelling across mediums.
-              </p>
-              <p>
-                Terrane is a visual conversation between the human and the monumental. It's right at home in both digital
-                frameworks and engraved in stone, collating eras and mediums with understated elegance. Whether supporting
-                an academic journal, guiding a museum visitor, or defining a brand's voice, Terrane adapts with presence,
-                serving as both a vessel and a canvas for the ideas it carries. It is, in every sense, a typeface that opens
-                dialogues.
-              </p>
-              
-              <p className="info-campaign">Campaign by Maxime Verret</p>
-            </div>
-            
-            <div className="info-formats-section">
-              <span className="info-label">Formats</span>
-              <p className="info-value">Static (OTF, TTF, WOFF, WOFF2)</p>
-            </div>
           </div>
         </div>
       </div>
