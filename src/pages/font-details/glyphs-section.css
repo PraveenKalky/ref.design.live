@@ -382,11 +382,11 @@
 /* ── Bounding box representing cap-to-baseline area ── */
 .glyph-bbox {
   position: absolute;
-  top: 50%;
+  top: calc(50% - 173.25px);
   height: 250px;
   aspect-ratio: var(--glyph-width, 534) / 720;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%);
 }
 
 /* ── Horizontal guide lines ── */
@@ -419,29 +419,29 @@
   right: 0;
 }
 
-/* Horizontal line vertical offsets (centered relative to 250px box) */
+/* Horizontal line vertical offsets (centered relative to metrics box) */
 .glyph-guide-cap {
-  top: calc(50% - 125px);
+  top: calc(50% - 173.25px);
 }
 
 .glyph-guide-xheight {
-  top: calc(50% - 56.25px);
+  top: calc(50% - 104.5px);
 }
 
 .glyph-guide-baseline {
-  top: calc(50% + 125px);
+  top: calc(50% + 76.75px);
 }
 
 .glyph-guide-descender {
-  top: calc(50% + 221.5px);
+  top: calc(50% + 173.25px);
 }
 
 /* ── Vertical guide lines ── */
 .glyph-guide-vertical {
   position: absolute;
-  top: -115px;
+  top: -200px;
   /* Extend to top of canvas */
-  bottom: -115px;
+  bottom: -200px;
   /* Extend to bottom of canvas */
   width: 0;
   border-left: 1px solid rgba(255, 255, 255, 0.2);
