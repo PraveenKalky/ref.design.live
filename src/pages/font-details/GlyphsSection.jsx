@@ -308,10 +308,6 @@ const GlyphsSection = ({ font }) => {
                       {/* Two vertical guide lines bracketing the glyph */}
                       <div className="glyph-guide-vertical glyph-guide-v1" />
                       <div className="glyph-guide-vertical glyph-guide-v2" />
-
-                      {/* Bottom width labels just to the right of each vertical guide */}
-                      <span className="glyph-guide-w-label glyph-guide-w-left">0</span>
-                      <span className="glyph-guide-w-label glyph-guide-w-right">{metrics.width}</span>
                     </>
                   )}
 
