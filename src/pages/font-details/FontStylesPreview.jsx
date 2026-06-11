@@ -19,51 +19,91 @@ const styles = [
 ];
 
 const FontStylesPreview = ({ font }) => {
-  // Default to Regular (id: 5)
-  const [hoveredStyle, setHoveredStyle] = useState(styles[4]);
+  const [hoveredStyle, setHoveredStyle] = useState(styles[0]);
+
+  const uprightStyles = styles.filter(s => !s.isItalic);
+  const italicStyles = styles.filter(s => s.isItalic);
 
   return (
     <section className="font-styles-preview-section" id="styles">
       <div className="font-styles-preview-container">
-        
-        {/* Top Section: Flowing Styles List */}
-        <div className="flowing-styles-list">
-          {styles.map((style) => (
-            <div
-              key={style.id}
-              className="flowing-style-item"
-              onMouseEnter={() => setHoveredStyle(style)}
-            >
-              <span
-                className="flowing-style-name"
-                style={{
-                  fontWeight: style.weight,
-                  fontStyle: style.isItalic ? 'italic' : 'normal',
-                }}
-              >
-                {style.name}
-              </span>
-              <sup className="flowing-style-weight">{style.weight}</sup>
-            </div>
-          ))}
+        {/* Header Row */}
+        <div className="preview-header">
+          <h2 className="preview-font-name">{font?.name || 'Font Name'}</h2>
+          <span className="preview-style-count">{styles.length} Styles</span>
         </div>
 
-        {/* Bottom Section: Large Preview Panel */}
-        <div className="large-preview-panel">
-          <div
-            className="large-preview-text"
-            style={{
-              fontFamily: font?.googleFont || 'inherit',
-              fontWeight: hoveredStyle.weight,
-              fontStyle: hoveredStyle.isItalic ? 'italic' : 'normal',
-            }}
-          >
-            <div>My Girl Wove Six Dozen Plaid</div>
-            <div>Jackets Before She Quit.</div>
-            <div>!@#$%^&*()_+ 1234567890</div>
+        <div className="preview-content-layout">
+          {/* Left: Preview Box */}
+          <div className="preview-box-container">
+            <div
+              className="preview-box"
+              style={{
+                fontFamily: font?.googleFont || 'inherit',
+                fontWeight: hoveredStyle.weight,
+                fontStyle: hoveredStyle.isItalic ? 'italic' : 'normal',
+              }}
+            >
+              <div className="preview-text">AaBbCc</div>
+              <div className="preview-text">01234567</div>
+              <div className="preview-text">{`{(!@#$?&)}`}</div>
+            </div>
+          </div>
+
+          {/* Right: Styles List */}
+          <div className="styles-list-container">
+            {Array.from({ length: Math.max(uprightStyles.length, italicStyles.length) }).map((_, index) => {
+              const upright = uprightStyles[index];
+              const italic = italicStyles[index];
+
+              return (
+                <div key={index} className="style-row-full">
+                  {/* Left Column (Upright) */}
+                  <div
+                    className="style-half"
+                    onMouseEnter={() => upright && setHoveredStyle(upright)}
+                  >
+                    {upright ? (
+                      <>
+                        <span
+                          className="style-name"
+                          style={{
+                            fontWeight: upright.weight,
+                            fontStyle: 'normal',
+                          }}
+                        >
+                          {upright.name}
+                        </span>
+                        <span className="style-weight">{upright.weight}</span>
+                      </>
+                    ) : <span />}
+                  </div>
+
+                  {/* Right Column (Italic) */}
+                  <div
+                    className="style-half"
+                    onMouseEnter={() => italic && setHoveredStyle(italic)}
+                  >
+                    {italic ? (
+                      <>
+                        <span
+                          className="style-name"
+                          style={{
+                            fontWeight: italic.weight,
+                            fontStyle: 'italic',
+                          }}
+                        >
+                          {italic.name}
+                        </span>
+                        <span className="style-weight">{italic.weight}</span>
+                      </>
+                    ) : <span />}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
-
       </div>
     </section>
   );

@@ -216,7 +216,7 @@ const InformationSection = ({ font }) => {
                   >
                     <path d="M2 1.5L6 4L2 6.5V1.5Z" fill="currentColor" />
                   </svg>
-                  <span className="info-accordion-title">Credits & awards</span>
+                  <span className="info-accordion-title">Credits &amp; awards</span>
                 </button>
                 <div className={`info-accordion-content ${openSections.credits ? 'is-open' : ''}`}>
                   {renderAccordionTable(creditsRows)}
