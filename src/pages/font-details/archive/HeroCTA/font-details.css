@@ -62,28 +62,23 @@
   letter-spacing: 0.02em;
 }
 
-/* ── BOTTOM NAV PILL & CTA ROW ── */
+/* ── BOTTOM NAV PILL ── */
 .hero-bottom-nav-container {
   position: absolute;
   bottom: 24px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 10;
-  display: flex;
-  align-items: center;
-  gap: 12px;
 }
 
 .hero-pill-nav {
   display: flex;
   align-items: center;
-  height: 50px;
-  box-sizing: border-box;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-radius: 9999px;
-  padding: 0 24px;
+  padding: 6px 6px 6px 24px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   gap: 24px;
 }
@@ -102,51 +97,21 @@
   color: #666;
 }
 
-.hero-save-btn {
-  background-color: #0d0d0d;
-  color: #fff;
-  border: none;
-  border-radius: 9999px;
-  height: 50px;
-  padding: 0 24px;
-  font-family: 'Urbanist', 'Outfit', sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  transition: background-color 0.2s ease, transform 0.2s ease;
-  white-space: nowrap;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-}
-
-.hero-save-btn:hover {
-  background-color: #222222;
-  transform: scale(1.02);
-}
-
-.hero-download-btn {
+.add-to-cart-btn {
   background-color: var(--dv-brand-yellow, #ffe500);
   color: #000;
   border: none;
   border-radius: 9999px;
-  height: 50px;
-  padding: 0 28px;
+  padding: 10px 24px;
   font-family: 'Urbanist', 'Outfit', sans-serif;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   transition: background-color 0.2s ease, transform 0.2s ease;
   white-space: nowrap;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
-.hero-download-btn:hover {
+.add-to-cart-btn:hover {
   background-color: #e6ce00;
   transform: scale(1.02);
 }
