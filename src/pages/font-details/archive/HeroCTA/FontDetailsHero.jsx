@@ -1,5 +1,4 @@
 import React from 'react';
-import { BookmarkSimple, ArrowRight } from '@phosphor-icons/react';
 import './font-details.css';
 
 const FontDetailsHero = ({ font }) => {
@@ -38,15 +37,11 @@ const FontDetailsHero = ({ font }) => {
           <a href="#styles" className="nav-item">Styles</a>
           <a href="#specimen" className="nav-item">Specimen</a>
           <a href="#information" className="nav-item">Information</a>
+          <a href="#designers" className="nav-item">Designers</a>
           <a href="#glyphs" className="nav-item">Glyphs</a>
+          <a href="#opentype" className="nav-item">OpenType</a>
+          <button className="add-to-cart-btn">Download</button>
         </nav>
-        <button className="hero-save-btn">
-          <BookmarkSimple size={18} weight="regular" />
-        </button>
-        <button className="hero-download-btn">
-          <span>DOWNLOAD</span>
-          <ArrowRight className="hero-download-icon" size={20} weight="bold" />
-        </button>
       </div>
     </section>
   );

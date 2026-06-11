@@ -165,8 +165,8 @@
   letter-spacing: -0.03em;
   text-align: center;
   margin: 0;
-  color: #ffffff;
-  -webkit-text-stroke: 1.5px #0d0d0d;
+  color: #0d0d0d;
+  -webkit-text-stroke: 0;
 }
 
 .headline-numeric-line {
@@ -265,5 +265,6 @@
 }
 
 [data-theme="dark"] .headline-text-large {
-  -webkit-text-stroke: 1.5px #ffffff;
+  color: #ffffff;
+  -webkit-text-stroke: 0;
 }

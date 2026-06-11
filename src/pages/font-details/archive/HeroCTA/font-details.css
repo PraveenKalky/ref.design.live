@@ -62,28 +62,23 @@
   letter-spacing: 0.02em;
 }
 
-/* ── BOTTOM NAV PILL & CTA ROW ── */
+/* ── BOTTOM NAV PILL ── */
 .hero-bottom-nav-container {
   position: absolute;
   bottom: 24px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 10;
-  display: flex;
-  align-items: center;
-  gap: 12px;
 }
 
 .hero-pill-nav {
   display: flex;
   align-items: center;
-  height: 50px;
-  box-sizing: border-box;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-radius: 9999px;
-  padding: 0 24px;
+  padding: 6px 6px 6px 24px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   gap: 24px;
 }
@@ -102,68 +97,23 @@
   color: #666;
 }
 
-.hero-save-btn {
-  background-color: #ffffff;
-  color: #0d0d0d;
-  border: none;
-  border-radius: 9999px;
-  width: 50px;
-  height: 50px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.2s ease, transform 0.2s ease;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  flex-shrink: 0;
-}
-
-.hero-save-btn:hover {
-  background-color: #f2f2f2;
-  transform: scale(1.02);
-}
-
-.hero-download-btn {
+.add-to-cart-btn {
   background-color: var(--dv-brand-yellow, #ffe500);
-  color: #000000;
+  color: #000;
   border: none;
   border-radius: 9999px;
-  height: 50px;
-  padding: 0 28px;
+  padding: 10px 24px;
   font-family: 'Urbanist', 'Outfit', sans-serif;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   transition: background-color 0.2s ease, transform 0.2s ease;
   white-space: nowrap;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  box-sizing: border-box;
 }
 
-.hero-download-btn:hover {
-  background-color: #ffffff;
+.add-to-cart-btn:hover {
+  background-color: #e6ce00;
   transform: scale(1.02);
-}
-
-.hero-download-icon {
-  opacity: 0;
-  width: 0;
-  transform: translateX(-10px);
-  transition: all 0.3s ease;
-  overflow: hidden;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.hero-download-btn:hover .hero-download-icon {
-  opacity: 1;
-  width: 20px;
-  transform: translateX(0);
-  margin-left: 8px;
 }
 
 .hero-specs-container {
