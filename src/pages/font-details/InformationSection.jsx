@@ -4,7 +4,7 @@ import './information-section.css';
 
 const getFontMetadata = (font) => {
   const fontName = font?.name || 'Founders Grotesk';
-  
+
   // 1. Credits & Awards Data
   let design = ["Mathieu Desjardins"];
   let engineering = ["Mathieu Desjardins", "Valerio Monopoli"];
@@ -127,7 +127,7 @@ const getFontMetadata = (font) => {
 
 const InformationSection = ({ font }) => {
   const fontName = font?.name || 'Founders Grotesk';
-  
+
   // Accordion states
   const [openSections, setOpenSections] = useState({
     credits: false,
@@ -210,8 +210,8 @@ const InformationSection = ({ font }) => {
               {/* Credits & Awards */}
               <div className="info-accordion-item">
                 <button className="info-accordion-header" onClick={() => toggleSection('credits')}>
-                  <svg 
-                    className={`info-accordion-icon ${openSections.credits ? 'is-open' : ''}`} 
+                  <svg
+                    className={`info-accordion-icon ${openSections.credits ? 'is-open' : ''}`}
                     width="8" height="8" viewBox="0 0 8 8" fill="none"
                   >
                     <path d="M2 1.5L6 4L2 6.5V1.5Z" fill="currentColor" />
@@ -226,8 +226,8 @@ const InformationSection = ({ font }) => {
               {/* Technical Details */}
               <div className="info-accordion-item">
                 <button className="info-accordion-header" onClick={() => toggleSection('technical')}>
-                  <svg 
-                    className={`info-accordion-icon ${openSections.technical ? 'is-open' : ''}`} 
+                  <svg
+                    className={`info-accordion-icon ${openSections.technical ? 'is-open' : ''}`}
                     width="8" height="8" viewBox="0 0 8 8" fill="none"
                   >
                     <path d="M2 1.5L6 4L2 6.5V1.5Z" fill="currentColor" />
@@ -242,8 +242,8 @@ const InformationSection = ({ font }) => {
               {/* Language Support */}
               <div className="info-accordion-item">
                 <button className="info-accordion-header" onClick={() => toggleSection('language')}>
-                  <svg 
-                    className={`info-accordion-icon ${openSections.language ? 'is-open' : ''}`} 
+                  <svg
+                    className={`info-accordion-icon ${openSections.language ? 'is-open' : ''}`}
                     width="8" height="8" viewBox="0 0 8 8" fill="none"
                   >
                     <path d="M2 1.5L6 4L2 6.5V1.5Z" fill="currentColor" />
