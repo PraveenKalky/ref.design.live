@@ -193,32 +193,46 @@
 .fonts-cards-container {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 0;
   animation: slideUpFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .font-card {
-  background: #f2f2f0;
+  background: transparent;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 0 !important;
-  padding: 20px 24px;
+  padding: 40px 0;
   overflow: hidden !important;
   width: 100%;
   max-width: 100%;
   min-width: 0;
   height: 310px;
-  transition: background 0.25s ease, color 0.25s ease;
+  transition: background 0.25s ease, color 0.25s ease, padding 0.25s ease;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
 }
 
+.font-card:last-child {
+  border-bottom: none;
+}
+
+.font-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
 .font-card:hover {
   background: #000;
   color: #fff;
+  padding: 40px 24px;
 }
 
 [data-theme="dark"] .font-card {
-  background: #1a1a1a;
+  background: transparent;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 [data-theme="dark"] .font-card:hover {
@@ -240,17 +254,11 @@
   background: #111;
 }
 
-.font-card-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-}
-
 .card-top-left {
   display: flex;
   align-items: center;
-  flex: 1;
+  justify-content: flex-start;
+  flex: 0 0 auto;
 }
 
 .font-card-name {
@@ -260,6 +268,9 @@
   color: #111;
   margin: 0;
   transition: color 0.25s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .font-card:hover .font-card-name {
@@ -278,6 +289,7 @@
   font-weight: 600;
   margin-left: 8px;
   display: inline-block;
+  flex-shrink: 0;
 }
 
 .font-badge.update {
@@ -291,92 +303,95 @@
 }
 
 .card-top-center {
-  flex: 1;
-  text-align: center;
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
-  min-width: 0;
+  flex: 1 1 auto;
 }
 
 .font-card-desc {
   font-family: 'Urbanist', sans-serif;
-  font-size: 16px;
-  color: #888;
-  margin: 0;
-  transition: opacity 0.5s cubic-bezier(0.25, 1, 0.5, 1), color 0.3s ease;
+  color: #666;
+  transition: opacity 0.25s ease;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
+  margin: 0;
 }
 
 .font-card:hover .font-card-desc {
   opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
 
 .card-top-right {
-  flex: 1;
   display: flex;
-  justify-content: flex-end;
   align-items: center;
+  justify-content: flex-end;
   gap: 12px;
+  flex: 0 0 auto;
 }
 
 .font-card-styles {
   font-family: 'Urbanist', sans-serif;
-  font-size: 16px;
-  color: #888;
-  white-space: pre-line;
-  text-align: right;
+  font-size: 14px;
+  color: #666;
   margin: 0;
-  line-height: 1.4;
-  transition: opacity 0.5s cubic-bezier(0.25, 1, 0.5, 1);
-  margin-right: auto; /* Pushes the buttons to the right, wait, flex-end aligns all to right. */
-}
-
-.font-card:hover .font-card-styles {
-  opacity: 0;
-}
-
-.font-check-out-btn {
-  font-family: 'Urbanist', sans-serif;
-  border: 1.5px solid #ccc;
-  border-radius: 9999px;
-  padding: 0 20px;
-  height: 40px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  box-sizing: border-box;
-  font-size: 16px;
-  background: transparent;
-  color: #111;
-  cursor: pointer;
-  font-weight: 500;
-  transition: all 0.25s ease;
+  margin-right: 8px;
+  transition: opacity 0.25s ease, color 0.25s ease;
   white-space: nowrap;
 }
 
-.font-check-out-btn.icon-only {
-  width: 40px;
-  padding: 0;
-  display: inline-flex;
+.font-card:hover .font-card-styles {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.font-check-out-btn {
+  background: transparent;
+  border: 1px solid #ccc;
+  border-radius: 50px;
+  padding: 8px 24px;
+  font-family: 'Urbanist', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  color: #111;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
   align-items: center;
   justify-content: center;
+  gap: 8px;
+  white-space: nowrap;
+  box-sizing: border-box;
 }
 
-.font-card:hover .font-check-out-btn {
-  border-color: #fff;
-  color: #000;
-  background: #fff;
+/* 3. Fix action icon buttons: same height and width as the font family selector pill height (36px) */
+.font-check-out-btn.icon-only {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: 50%;
+  flex-shrink: 0;
 }
 
+/* Normal hover on the button itself when card is not hovered */
 .font-check-out-btn:hover {
   border-color: #111;
+  background: rgba(0, 0, 0, 0.05);
 }
 
+/* When the card is hovered (black background in light theme) */
+.font-card:hover .font-check-out-btn {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.font-card:hover .font-check-out-btn:hover {
+  border-color: #fff;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* ── Dark Mode ── */
 [data-theme="dark"] .font-check-out-btn {
   background: transparent;
   color: #fff;
@@ -385,189 +400,202 @@
 
 [data-theme="dark"] .font-check-out-btn:hover {
   border-color: #fff;
+  background: rgba(255, 255, 255, 0.1);
 }
 
-/* ── HOVER CONTROLS BAR ── */
-.font-card-hover-controls {
+/* When the card is hovered in dark theme (white background) */
+[data-theme="dark"] .font-card:hover .font-check-out-btn {
+  color: #111;
+  border-color: rgba(0, 0, 0, 0.15);
+  background: transparent;
+}
+
+[data-theme="dark"] .font-card:hover .font-check-out-btn:hover {
+  border-color: #111;
+  background: rgba(0, 0, 0, 0.08);
+}
+
+/* ═══════════════════════════════════════
+   HOVER CONTROLS BAR  (list view only)
+   ─────────────────────────────────────── */
+
+/* The bar is positioned absolutely in the center of card-top-center.
+   It fades in/out on hover.                                      */
+.fchc-bar {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 32px;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.5s cubic-bezier(0.25, 1, 0.5, 1), transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  gap: 8px;
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) scale(0.95);
-  z-index: 10;
+  transform: translate(-50%, -50%);
+  width: max-content;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
 }
 
-.font-card:hover .font-card-hover-controls {
+/* When the card is hovered, reveal the bar */
+.font-card:hover .fchc-bar {
   opacity: 1;
   pointer-events: auto;
-  transform: translate(-50%, -50%) scale(1);
 }
 
-.fchc-widgets {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-}
-
-.fchc-dropdown {
+/* ── Base pill ── */
+.fchc-pill {
   display: flex;
   align-items: center;
   gap: 8px;
-  background: #1a1a1a;
-  color: #fff;
-  border: 1.5px solid #333;
+  height: 36px !important;
+  padding: 0 14px;
+  background: rgba(255, 255, 255, 0.13);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 9999px;
-  padding: 8px 16px;
-  font-family: 'Urbanist', sans-serif;
-  font-size: 16px;
-  font-weight: 500;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  white-space: nowrap;
   cursor: pointer;
-  white-space: nowrap;
+  transition: background 0.15s ease;
 }
 
-.fchc-slider-group {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+.fchc-pill:hover {
+  background: rgba(255, 255, 255, 0.22);
 }
 
-.fchc-slider-label {
+/* ── Style dropdown ── */
+.fchc-select {
   font-family: 'Urbanist', sans-serif;
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 500;
   color: #fff;
+  gap: 6px;
+  height: 36px !important;
+}
+
+.fchc-select-text {
   white-space: nowrap;
 }
 
-.fchc-slider-track-wrap {
-  position: relative;
-  display: flex;
-  align-items: center;
-  width: 140px;
-  height: 20px;
+/* ── Icon+Slider+Value control pill ── */
+.fchc-control {
+  gap: 10px;
+  padding: 0 12px;
+  min-width: 220px;
+  height: 36px !important;
 }
 
-.tracking-center-tick {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 2px;
-  height: 12px;
-  background-color: #555;
-  pointer-events: none;
-  z-index: 1;
+.fchc-icon {
+  color: rgba(255, 255, 255, 0.7);
+  flex-shrink: 0;
 }
 
-.fchc-slider-input {
+/* ── Slider ── */
+.fchc-slider {
   -webkit-appearance: none;
   appearance: none;
-  width: 100%;
+  flex: 1;
+  height: 14px;
   background: transparent;
   outline: none;
   margin: 0;
-  position: relative;
-  z-index: 2;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+  align-self: center;
 }
 
-.fchc-slider-input::-webkit-slider-runnable-track {
-  width: 100%;
+/* Track */
+.fchc-slider::-webkit-slider-runnable-track {
   height: 2px;
-  background: #555;
+  background: rgba(255, 255, 255, 0.35);
+  border-radius: 2px;
+}
+
+.fchc-slider::-moz-range-track {
+  height: 2px;
+  background: rgba(255, 255, 255, 0.35);
+  border-radius: 2px;
   border: none;
 }
 
-.fchc-slider-input::-moz-range-track {
-  width: 100%;
-  height: 2px;
-  background: #555;
-  border: none;
-}
-
-.fchc-slider-input::-webkit-slider-thumb {
+/* Thumb — solid dark filled circle matching reference */
+.fchc-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
-  background: #000;
-  border: 2px solid #fff;
+  background: #fff;
   cursor: pointer;
-  margin-top: -7px;
+  margin-top: -6px;
+  transition: transform 0.1s ease;
 }
 
-.fchc-slider-input::-moz-range-thumb {
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: #000;
-  border: 2px solid #fff;
-  cursor: pointer;
+.fchc-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
 }
 
-.slider-undo-btn {
-  background: transparent;
+.fchc-slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fff;
+  cursor: pointer;
   border: none;
-  color: #fff;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  opacity: 0.7;
-  transition: opacity 0.2s ease;
+  transition: transform 0.1s ease;
 }
 
-.slider-undo-btn:hover {
-  opacity: 1;
+/* ── Value label ── */
+.fchc-value {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.85);
+  white-space: nowrap;
+  flex-shrink: 0;
+  min-width: 44px;
+  text-align: right;
 }
 
-/* ── DARK MODE: Hover controls inversion ── */
-[data-theme="dark"] .font-card:hover .fchc-dropdown {
-  background: #f0f0f0;
-  color: #111;
-  border-color: #ccc;
+/* ── Dark mode: invert pills to dark on white hover card ── */
+[data-theme="dark"] .font-card:hover .fchc-pill {
+  background: rgba(0, 0, 0, 0.08);
+  border-color: rgba(0, 0, 0, 0.12);
 }
 
-[data-theme="dark"] .font-card:hover .fchc-slider-label {
-  color: #111;
+[data-theme="dark"] .font-card:hover .fchc-pill:hover {
+  background: rgba(0, 0, 0, 0.14);
 }
 
-[data-theme="dark"] .font-card:hover .fchc-slider-input::-webkit-slider-runnable-track {
-  background: #ccc;
-}
-
-[data-theme="dark"] .font-card:hover .fchc-slider-input::-moz-range-track {
-  background: #ccc;
-}
-
-[data-theme="dark"] .font-card:hover .fchc-slider-input::-webkit-slider-thumb {
-  background: #fff;
-  border-color: #111;
-}
-
-[data-theme="dark"] .font-card:hover .fchc-slider-input::-moz-range-thumb {
-  background: #fff;
-  border-color: #111;
-}
-
-[data-theme="dark"] .font-card:hover .tracking-center-tick {
-  background-color: #bbb;
-}
-
-[data-theme="dark"] .font-card:hover .slider-undo-btn {
-  color: #555;
-}
-
-[data-theme="dark"] .font-card:hover .slider-undo-btn:hover {
+[data-theme="dark"] .font-card:hover .fchc-select {
   color: #111;
 }
+
+[data-theme="dark"] .font-card:hover .fchc-icon {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .font-card:hover .fchc-value {
+  color: rgba(0, 0, 0, 0.7);
+}
+
+[data-theme="dark"] .font-card:hover .fchc-slider::-webkit-slider-runnable-track {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="dark"] .font-card:hover .fchc-slider::-moz-range-track {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="dark"] .font-card:hover .fchc-slider::-webkit-slider-thumb {
+  background: #111;
+}
+
+[data-theme="dark"] .font-card:hover .fchc-slider::-moz-range-thumb {
+  background: #111;
+}
+
 
 .font-card-preview {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -996,312 +1024,4 @@
 [data-theme="dark"] .grid-view .font-card:hover .font-check-out-btn {
   background: #fff;
   color: #000;
-}
-
-/* ════════════════════════════════════════════
-   NEW EDITORIAL LIST VIEW STYLE
-   ════════════════════════════════════════════ */
-
-.font-list-item {
-  border-top: 1px solid #e2e2e0;
-  padding: 32px 0 56px 0;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-  width: 100%;
-  min-height: 380px;
-  background-color: #ffffff;
-  transition: background-color 0.25s ease;
-}
-
-[data-theme="dark"] .font-list-item {
-  border-top: 1px solid #2a2a2a;
-  background-color: #111111;
-}
-
-.list-item-meta-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  margin-bottom: 24px;
-  font-family: 'Urbanist', sans-serif;
-  font-size: 14px;
-}
-
-.meta-left {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.font-name-wrap {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  cursor: pointer;
-}
-
-.list-font-name {
-  font-size: 18px;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-}
-
-.list-dropdown-indicator {
-  color: #888;
-  transition: transform 0.2s ease;
-}
-
-.list-purchase-btn {
-  background: #000000;
-  color: #ffffff;
-  border: none;
-  border-radius: 9999px;
-  padding: 6px 16px;
-  font-family: inherit;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.list-purchase-btn:hover {
-  background: #222222;
-}
-
-[data-theme="dark"] .list-purchase-btn {
-  background: #ffffff;
-  color: #000000;
-}
-
-[data-theme="dark"] .list-purchase-btn:hover {
-  background: #e0e0e0;
-}
-
-.list-link {
-  font-size: 13px;
-  font-weight: 500;
-  text-decoration: underline;
-  cursor: pointer;
-  transition: color 0.2s;
-}
-
-.list-link-btn {
-  background: transparent;
-  border: none;
-  font-family: inherit;
-  font-size: 13px;
-  font-weight: 500;
-  text-decoration: underline;
-  cursor: pointer;
-  padding: 0;
-  transition: color 0.2s;
-}
-
-.meta-right {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-}
-
-.list-slider-group {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 13px;
-}
-
-.slider-icon-label {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-  color: #888;
-}
-
-.weight-symbol, .width-symbol {
-  font-family: 'Urbanist', 'Outfit', monospace;
-  font-size: 14px;
-}
-
-.slider-size-text {
-  font-size: 13px;
-  color: #888;
-  min-width: 44px;
-  text-align: right;
-}
-
-.list-slider-input {
-  width: 90px;
-  -webkit-appearance: none;
-  appearance: none;
-  background: transparent;
-  height: 16px;
-  cursor: pointer;
-  outline: none;
-  margin: 0;
-}
-
-.list-slider-input::-webkit-slider-runnable-track {
-  height: 1.5px;
-  background: #e0e0e0;
-  border: none;
-}
-
-.list-slider-input::-moz-range-track {
-  height: 1.5px;
-  background: #e0e0e0;
-  border: none;
-}
-
-[data-theme="dark"] .list-slider-input::-webkit-slider-runnable-track {
-  background: #444;
-}
-
-[data-theme="dark"] .list-slider-input::-moz-range-track {
-  background: #444;
-}
-
-.list-slider-input::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: #000000;
-  border: 1.5px solid #000000;
-  margin-top: -4px;
-  transition: transform 0.1s ease;
-}
-
-.list-slider-input::-moz-range-thumb {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: #000000;
-  border: 1.5px solid #000000;
-  transition: transform 0.1s ease;
-}
-
-[data-theme="dark"] .list-slider-input::-webkit-slider-thumb {
-  background: #ffffff;
-  border-color: #ffffff;
-}
-
-[data-theme="dark"] .list-slider-input::-moz-range-thumb {
-  background: #ffffff;
-  border-color: #ffffff;
-}
-
-.list-slider-input::-webkit-slider-thumb:hover {
-  transform: scale(1.3);
-}
-
-.list-slider-input::-moz-range-thumb:hover {
-  transform: scale(1.3);
-}
-
-.list-swatches {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-left: 8px;
-}
-
-.swatch-circle {
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  cursor: pointer;
-  padding: 0;
-  position: relative;
-  transition: transform 0.2s, box-shadow 0.2s;
-  box-sizing: border-box;
-}
-
-.swatch-circle:hover {
-  transform: scale(1.2);
-}
-
-.swatch-circle.active {
-  box-shadow: 0 0 0 1.5px #000000;
-}
-
-[data-theme="dark"] .swatch-circle.active {
-  box-shadow: 0 0 0 1.5px #ffffff;
-}
-
-.list-action-btn {
-  background: transparent;
-  border: 1.5px solid #e0e0e0;
-  border-radius: 50%;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s;
-  padding: 0;
-  flex-shrink: 0;
-}
-
-.list-action-btn:hover {
-  background: rgba(0, 0, 0, 0.05);
-  border-color: #000000;
-}
-
-[data-theme="dark"] .list-action-btn {
-  border-color: #333;
-}
-
-[data-theme="dark"] .list-action-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: #ffffff;
-}
-
-.list-item-drawer {
-  padding: 20px 24px;
-  background: rgba(0, 0, 0, 0.02);
-  border-left: 3px solid #7b61ff;
-  font-size: 14px;
-  margin-bottom: 24px;
-  font-family: 'Urbanist', sans-serif;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  border-top: 1px solid #f2f2f0;
-  border-bottom: 1px solid #f2f2f0;
-  animation: slideDownFadeIn 0.3s ease forwards;
-}
-
-[data-theme="dark"] .list-item-drawer {
-  background: rgba(255, 255, 255, 0.02);
-  border-top-color: #222;
-  border-bottom-color: #222;
-}
-
-.list-item-preview-area {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  box-sizing: border-box;
-  width: 100%;
-  min-height: 240px;
-  overflow: hidden;
-  margin-top: 16px;
-  cursor: pointer;
-}
-
-.list-preview-text {
-  display: block;
-  line-height: 1;
-  transition: font-size 0.1s ease, font-weight 0.1s ease, letter-spacing 0.1s ease;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
-  text-align: left;
 }

@@ -31,19 +31,9 @@ const getShortDescription = (fontName) => {
 };
 
 const FontCard = ({ font, globalText, globalFontSize, viewMode }) => {
-  const [fontSize, setFontSize] = useState(globalFontSize || 150);
+  const [fontSize, setFontSize] = useState(globalFontSize || 120);
   const [letterSpacing, setLetterSpacing] = useState(0);
-  const [weight, setWeight] = useState(400);
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [colorTheme, setColorTheme] = useState({ id: 'black', text: '#000000', bg: '#ffffff', swatchColor: '#000000' });
   const navigate = useNavigate();
-
-  const swatches = [
-    { id: 'white', text: '#ffffff', bg: '#111111', swatchColor: '#ffffff', border: '1px solid #ccc' },
-    { id: 'black', text: '#000000', bg: '#ffffff', swatchColor: '#000000' },
-    { id: 'red', text: '#e03d2f', bg: '#ffffff', swatchColor: '#e03d2f' },
-    { id: 'yellow', text: '#f5a623', bg: '#ffffff', swatchColor: '#f5a623' }
-  ];
 
   useEffect(() => {
     if (globalFontSize !== undefined) {
@@ -51,230 +41,78 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode }) => {
     }
   }, [globalFontSize]);
 
-  useEffect(() => {
-    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-    if (isDark) {
-      setColorTheme({ id: 'white', text: '#ffffff', bg: '#111111', swatchColor: '#ffffff', border: '1px solid #444' });
-    }
-  }, []);
-
   const handleCardClick = (e) => {
-    if (e.target.closest('.font-card-hover-controls') || e.target.closest('.list-item-meta-row') || e.target.closest('button')) {
+    // Prevent navigation if the user is interacting with sliders or buttons
+    if (e.target.closest('.font-card-hover-controls') || e.target.closest('button')) {
       return;
     }
     navigate(`/fonts/${font.id}`);
   };
 
-  if (viewMode === 'list') {
-    const previewText = globalText && globalText.trim() !== '' ? globalText : font.name;
-    const isDarkText = colorTheme.text === '#ffffff';
-
-    return (
-      <div 
-        className="font-list-item" 
-        style={{ backgroundColor: colorTheme.bg }}
-      >
-        <div className="list-item-meta-row" style={{ color: isDarkText ? '#ffffff' : '#111111' }}>
-          <div className="meta-left">
-            <div className="font-name-wrap" onClick={() => setIsDrawerOpen(!isDrawerOpen)}>
-              <span className="list-font-name">{font.name}</span>
-              <ChevronDown 
-                size={14} 
-                className={`list-dropdown-indicator ${isDrawerOpen ? 'open' : ''}`}
-                style={{ transform: isDrawerOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s ease' }}
-              />
-            </div>
-            <button className="list-purchase-btn" onClick={(e) => { e.stopPropagation(); navigate(`/fonts/${font.id}`); }}>
-              Purchase
-            </button>
-            <a href={`/fonts/${font.id}`} className="list-link" style={{ color: isDarkText ? '#88888b' : '#66666d' }} onClick={(e) => e.stopPropagation()}>
-              Project Page
-            </a>
-            <button className="list-link-btn" style={{ color: isDarkText ? '#88888b' : '#66666d' }} onClick={(e) => { e.stopPropagation(); alert(`Downloading trial for ${font.name}...`); }}>
-              Download Trial
-            </button>
-          </div>
-
-          <div className="meta-right">
-            {/* Weight Slider */}
-            <div className="list-slider-group">
-              <span className="slider-icon-label" title="Weight">
-                <span className="weight-symbol">+|||→</span>
-              </span>
-              <input 
-                type="range" 
-                min="100" 
-                max="900" 
-                step="100"
-                value={weight} 
-                onChange={(e) => { e.stopPropagation(); setWeight(parseInt(e.target.value)); }}
-                className="list-slider-input" 
-              />
-            </div>
-
-            {/* Width Slider (Tracking) */}
-            <div className="list-slider-group">
-              <span className="slider-icon-label" title="Width">
-                <span className="width-symbol">⇹</span>
-              </span>
-              <input 
-                type="range" 
-                min="-0.05" 
-                max="0.3" 
-                step="0.01"
-                value={letterSpacing} 
-                onChange={(e) => { e.stopPropagation(); setLetterSpacing(parseFloat(e.target.value)); }}
-                className="list-slider-input" 
-              />
-            </div>
-
-            {/* Font Size Slider */}
-            <div className="list-slider-group">
-              <span className="slider-size-text">{fontSize}px</span>
-              <input 
-                type="range" 
-                min="32" 
-                max="256" 
-                value={fontSize} 
-                onChange={(e) => { e.stopPropagation(); setFontSize(parseInt(e.target.value)); }}
-                className="list-slider-input" 
-              />
-            </div>
-
-            {/* Color Swatches */}
-            <div className="list-swatches">
-              {swatches.map(sw => (
-                <button 
-                  key={sw.id}
-                  className={`swatch-circle ${colorTheme.id === sw.id ? 'active' : ''}`}
-                  style={{ 
-                    backgroundColor: sw.swatchColor, 
-                    border: sw.border || 'none'
-                  }}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setColorTheme(sw);
-                  }}
-                />
-              ))}
-            </div>
-
-            {/* Action Buttons */}
-            <button 
-              className="list-action-btn" 
-              style={{ color: isDarkText ? '#ffffff' : '#111111', borderColor: isDarkText ? '#444' : '#ccc' }}
-              onClick={(e) => { e.stopPropagation(); alert(`Saved ${font.name}`); }}
-              title="Save Font"
-            >
-              <BookmarkSimple size={18} />
-            </button>
-            <button 
-              className="list-action-btn" 
-              style={{ color: isDarkText ? '#ffffff' : '#111111', borderColor: isDarkText ? '#444' : '#ccc' }}
-              onClick={(e) => { e.stopPropagation(); alert(`Downloading ${font.name}`); }}
-              title="Download Font"
-            >
-              <DownloadSimple size={18} />
-            </button>
-          </div>
-        </div>
-
-        {/* Expandable Drawer */}
-        {isDrawerOpen && (
-          <div className="list-item-drawer" style={{ color: isDarkText ? '#88888b' : '#66666d', borderColor: isDarkText ? '#222' : '#eee' }}>
-            <p className="drawer-desc"><strong>Description:</strong> {getShortDescription(font.name)}</p>
-            <p className="drawer-styles"><strong>Styles:</strong> {font.stylesInfo}</p>
-          </div>
-        )}
-
-        {/* Preview Area */}
-        <div 
-          className="list-item-preview-area"
-          onClick={handleCardClick}
-          style={{ color: colorTheme.text }}
-        >
-          <span 
-            className="list-preview-text"
-            style={{ 
-              fontFamily: font.googleFont,
-              fontSize: `${fontSize}px`,
-              fontWeight: weight,
-              letterSpacing: `${letterSpacing}em`
-            }}
-          >
-            {previewText}
-          </span>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="font-card" onClick={handleCardClick} style={{ cursor: 'pointer' }}>
+      {/* ── ROW 1: Meta row — always visible, never moves ── */}
       <div className="font-card-top">
         <div className="card-top-left">
           <h3 className="font-card-name">{font.name}</h3>
-          {viewMode === 'grid' && <p className="font-card-styles">{font.stylesInfo}</p>}
           {font.badge && (
             <span className={`font-badge ${font.badge.toLowerCase()}`}>
               {font.badge}
             </span>
           )}
         </div>
-        
+
         <div className="card-top-center">
           <p className="font-card-desc">{getShortDescription(font.name)}</p>
-          
-          <div className="font-card-hover-controls">
-            <div className="fchc-widgets">
-              <div className="fchc-dropdown">
-                Cond Bold <ChevronDown size={20} />
+          {viewMode === 'list' && (
+            <div className="fchc-bar">
+              {/* 1. Style dropdown */}
+              <div className="fchc-pill fchc-select">
+                <span className="fchc-select-text">Cond Bold</span>
+                <ChevronDown size={14} strokeWidth={2} />
               </div>
-              <div className="fchc-slider-group">
-                <div className="fchc-slider-label">Font Size</div>
-                <div className="fchc-slider-track-wrap">
-                  <input 
-                    type="range" 
-                    min="24" 
-                    max="120" 
-                    value={fontSize} 
-                    onChange={(e) => setFontSize(e.target.value)}
-                    className="fchc-slider-input" 
-                  />
-                </div>
-                <button type="button" className="slider-undo-btn" onClick={(e) => { e.preventDefault(); e.stopPropagation(); setFontSize(48); }}>
-                  <RotateCcw size={16} />
-                </button>
+
+              {/* 2. Font size: icon + slider + value */}
+              <div className="fchc-pill fchc-control">
+                <Maximize2 size={15} strokeWidth={2} className="fchc-icon" />
+                <input
+                  type="range"
+                  min="24"
+                  max="200"
+                  value={fontSize}
+                  onChange={(e) => setFontSize(Number(e.target.value))}
+                  className="fchc-slider"
+                  onClick={(e) => e.stopPropagation()}
+                />
+                <span className="fchc-value">{fontSize}px</span>
               </div>
-              <div className="fchc-slider-group">
-                <div className="fchc-slider-label">Tracking</div>
-                <div className="fchc-slider-track-wrap">
-                  <div className="tracking-center-tick"></div>
-                  <input 
-                    type="range" 
-                    min="-0.5" 
-                    max="0.5" 
-                    step="0.01"
-                    value={letterSpacing} 
-                    onChange={(e) => setLetterSpacing(e.target.value)}
-                    className="fchc-slider-input" 
-                  />
-                </div>
-                <button type="button" className="slider-undo-btn" onClick={(e) => { e.preventDefault(); e.stopPropagation(); setLetterSpacing(0); }}>
-                  <RotateCcw size={16} />
-                </button>
+
+              {/* 3. Tracking: icon + slider + value */}
+              <div className="fchc-pill fchc-control">
+                <MoveHorizontal size={15} strokeWidth={2} className="fchc-icon" />
+                <input
+                  type="range"
+                  min="-0.5"
+                  max="0.5"
+                  step="0.01"
+                  value={letterSpacing}
+                  onChange={(e) => setLetterSpacing(Number(e.target.value))}
+                  className="fchc-slider"
+                  onClick={(e) => e.stopPropagation()}
+                />
+                <span className="fchc-value">{parseFloat(letterSpacing).toFixed(2)}em</span>
               </div>
             </div>
-          </div>
+          )}
         </div>
-        
+
         <div className="card-top-right">
-          {viewMode === 'list' && <p className="font-card-styles">{font.stylesInfo}</p>}
           <button className="font-check-out-btn icon-only"><DownloadSimple size={20} /></button>
           <button className="font-check-out-btn icon-only"><BookmarkSimple size={20} /></button>
         </div>
       </div>
-      
+
+      {/* ── ROW 2: Preview area ── */}
       <div className="font-card-preview">
         <span className="preview-default" style={{ fontFamily: font.googleFont }}>
           {globalText && globalText.trim() !== '' ? globalText : (viewMode === 'grid' ? "Aa" : "AaBbCcDdEeFfGg")}
