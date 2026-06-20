@@ -1,34 +1,73 @@
 import React, { useState } from 'react';
-import { Bookmark, Moon, Sun, User } from 'lucide-react';
+import { Bookmark, Moon, Sun, User, LogOut } from 'lucide-react';
+import { useAuth } from '../../context/AuthContext';
 import LoginModal from './LoginModal';
 
 const NavbarActions = ({ savedCount, theme, toggleTheme }) => {
+  const { user, signOut } = useAuth();
   const [isLoginOpen, setIsLoginOpen] = useState(false);
+
+  // Get initials from user metadata or email
+  const getInitials = () => {
+    if (!user) return null;
+    const username = user.user_metadata?.username;
+    if (username) return username.slice(0, 2).toUpperCase();
+    const email = user.email || '';
+    return email.slice(0, 2).toUpperCase();
+  };
+
+  const handleUserClick = () => {
+    if (user) return; // logged in — no modal
+    setIsLoginOpen(true);
+  };
+
+  const handleSignOut = async () => {
+    try { await signOut(); } catch (e) { console.error(e); }
+  };
 
   return (
     <>
       <div className="nav-right">
-        <div className="icon-btn" onClick={toggleTheme}>
+        <div className="icon-btn" onClick={toggleTheme} title="Toggle theme">
           {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
         </div>
 
         <div className="icon-btn" title={`Saved: ${savedCount || 0}`}>
           <Bookmark size={18} />
+          {savedCount > 0 && (
+            <span className="nav-saved-badge">{savedCount}</span>
+          )}
         </div>
 
         <button className="submit-pill">Submit</button>
 
-        <div
-          className="user-avatar-circle"
-          onClick={() => setIsLoginOpen(true)}
-          style={{ cursor: 'pointer' }}
-          title="Log in"
-        >
-          <User size={18} />
-        </div>
+        {user ? (
+          /* ── Logged-in state ── */
+          <div className="nav-user-group">
+            <div className="user-avatar-circle user-avatar-circle--active" title={user.email}>
+              {getInitials()}
+            </div>
+            <button
+              className="icon-btn nav-signout-btn"
+              onClick={handleSignOut}
+              title="Sign out"
+            >
+              <LogOut size={16} />
+            </button>
+          </div>
+        ) : (
+          /* ── Logged-out state ── */
+          <div
+            className="user-avatar-circle"
+            onClick={handleUserClick}
+            style={{ cursor: 'pointer' }}
+            title="Log in"
+          >
+            <User size={18} />
+          </div>
+        )}
       </div>
 
-      {/* Login Modal */}
       <LoginModal
         isOpen={isLoginOpen}
         onClose={() => setIsLoginOpen(false)}

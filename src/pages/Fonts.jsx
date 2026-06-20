@@ -2,18 +2,14 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Plus, ChevronDown, ChevronUp, X, Type, RotateCcw, LayoutGrid, Menu, Maximize2, MoveHorizontal } from 'lucide-react';
 import { DownloadSimple, BookmarkSimple } from '@phosphor-icons/react';
 import Pagination from '../components/pagination/Pagination';
+import LoginModal from '../components/navbar/LoginModal';
 import '../components/filter-bar/filter-bar.css';
 import '../components/filters/category-filter-expanded.css';
 import './Fonts.css';
-
-const FONT_CATEGORIES = [
-  'Sans-Serif', 'Serif', 'Display', 'Monospace', 'Handwritten', 'Script', 
-  'Geometric', 'Humanist', 'Slab Serif', 'Condensed', 'Variable', 'Rounded', 
-  'Wide', 'Retro', 'Futuristic', 'Decorative', 'Transitional', 'Bold & Heavy', 'Thin & Light'
-];
-
 import { useNavigate } from 'react-router-dom';
 import { FONT_CATEGORY_COUNTS, initialFontsData } from '../data/fontsData';
+import { useFonts } from '../hooks/useFonts';
+import { useSavedFonts } from '../hooks/useSavedFonts';
 
 const getShortDescription = (fontName) => {
   const descriptions = {
@@ -30,9 +26,30 @@ const getShortDescription = (fontName) => {
   return descriptions[baseName] || descriptions[fontName] || "A premium high-quality typeface.";
 };
 
-const FontCard = ({ font, globalText, globalFontSize, viewMode }) => {
+const SPECIMEN_PHRASES = [
+  "Schoolbookish",
+  "Urogravimeter",
+  "Defenselessly",
+  "The quick brown fox",
+  "Neutral forms",
+  "Modern grotesk",
+  "Sharp rhythm"
+];
+const PREVIEW_COLORS = [
+  { id: 'black',  value: '#111111', border: 'transparent' },
+  { id: 'white',  value: '#ffffff', border: '#d0d0d0' },
+  { id: 'orange', value: '#e03d2f', border: 'transparent' },
+  { id: 'yellow', value: '#f5a623', border: 'transparent' },
+];
+
+
+const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggleSave, openLogin }) => {
   const [fontSize, setFontSize] = useState(globalFontSize || 120);
   const [letterSpacing, setLetterSpacing] = useState(0);
+  const [autoFontSize, setAutoFontSize] = useState(null);
+  const [previewColor, setPreviewColor] = useState('#111111');
+  const previewSpanRef = useRef(null);
+  const previewContainerRef = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -40,6 +57,64 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode }) => {
       setFontSize(globalFontSize);
     }
   }, [globalFontSize]);
+
+  const isGrid = viewMode === 'grid';
+  const textToShow = globalText && globalText.trim() !== '' 
+    ? globalText 
+    : SPECIMEN_PHRASES[font.id % SPECIMEN_PHRASES.length];
+
+  // Start large and shrink until text fits the container width
+  const MAX_SIZE = isGrid ? 48 : 180;
+  const MIN_SIZE = isGrid ? 14 : 20;
+
+  useEffect(() => {
+    const span = previewSpanRef.current;
+    const container = previewContainerRef.current;
+    if (!span || !container) return;
+
+    const fit = () => {
+      // Force nowrap so width measurement is accurate
+      span.style.whiteSpace = 'nowrap';
+      span.style.lineHeight = '1';
+
+      let size = MAX_SIZE;
+      span.style.fontSize = size + 'px';
+
+      // Shrink by 2px steps until both width AND height fit
+      while (
+        size > MIN_SIZE &&
+        (span.scrollWidth > container.offsetWidth ||
+         span.offsetHeight > container.offsetHeight)
+      ) {
+        size -= 2;
+        span.style.fontSize = size + 'px';
+      }
+      // Fine-tune by 1px
+      while (
+        size > MIN_SIZE &&
+        (span.scrollWidth > container.offsetWidth ||
+         span.offsetHeight > container.offsetHeight)
+      ) {
+        size -= 1;
+        span.style.fontSize = size + 'px';
+      }
+
+      setAutoFontSize(size);
+    };
+
+    // Initial fit
+    fit();
+    // Re-run after web fonts load (300ms grace)
+    const timer = setTimeout(fit, 350);
+
+    const ro = new ResizeObserver(fit);
+    ro.observe(container);
+    return () => {
+      ro.disconnect();
+      clearTimeout(timer);
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [textToShow, isGrid]);
 
   const handleCardClick = (e) => {
     // Prevent navigation if the user is interacting with sliders or buttons
@@ -107,15 +182,43 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode }) => {
         </div>
 
         <div className="card-top-right">
-          <button className="font-check-out-btn icon-only"><DownloadSimple size={20} /></button>
-          <button className="font-check-out-btn icon-only"><BookmarkSimple size={20} /></button>
+          {/* Color swatches */}
+          <div className="font-card-color-swatches" onClick={(e) => e.stopPropagation()}>
+            {PREVIEW_COLORS.map((c) => (
+              <button
+                key={c.id}
+                className={`color-swatch${previewColor === c.value ? ' color-swatch--active' : ''}`}
+                style={{ background: c.value, border: `1.5px solid ${c.border}` }}
+                onClick={(e) => { e.stopPropagation(); setPreviewColor(c.value); }}
+                aria-label={`Preview color ${c.id}`}
+                title={c.id}
+              />
+            ))}
+          </div>
+          <button className="font-card-action-btn">Download</button>
+          <button
+            className={`font-card-action-btn font-card-save-btn${savedIds?.[font.id] ? ' saved' : ''}`}
+            onClick={(e) => { e.stopPropagation(); toggleSave?.(font.id); }}
+            title={savedIds?.[font.id] ? 'Unsave' : 'Save'}
+          >
+            {savedIds?.[font.id] ? 'Saved ✓' : 'Save'}
+          </button>
         </div>
       </div>
 
       {/* ── ROW 2: Preview area ── */}
-      <div className="font-card-preview">
-        <span className="preview-default" style={{ fontFamily: font.googleFont }}>
-          {globalText && globalText.trim() !== '' ? globalText : (viewMode === 'grid' ? "Aa" : "AaBbCcDdEeFfGg")}
+      <div className="font-card-preview" ref={previewContainerRef}>
+        <span
+          className="preview-default"
+          ref={previewSpanRef}
+          style={{
+            fontSize: autoFontSize ? `${autoFontSize}px` : `${MAX_SIZE}px`,
+            fontFamily: font.googleFont,
+            lineHeight: 1,
+            color: previewColor,
+          }}
+        >
+          {textToShow}
         </span>
         <span className="preview-hover" style={{ fontSize: `${fontSize}px`, letterSpacing: `${letterSpacing}em`, fontFamily: font.googleFont }}>
           {globalText && globalText.trim() !== '' ? globalText : "Six javelins thrown by the quick savages whizzed forty paces beyond the mark."}
@@ -141,10 +244,17 @@ const PRESET_TEXTS = [
 const Fonts = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const galleryRef = useRef(null);
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+
+  // ── Data from Supabase ──
+  const { fonts: dbFonts, loading: fontsLoading } = useFonts();
+
+  // ── Saved fonts (Supabase when logged in, localStorage when not) ──
+  const { savedIds, savedCount, toggleSave } = useSavedFonts(() => setIsLoginOpen(true));
 
   const [activeTab, setActiveTab] = useState('popular');
   const [isExpanded, setIsExpanded] = useState(true);
-  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);;
 
   const [globalText, setGlobalText] = useState("");
   const [globalFontSize, setGlobalFontSize] = useState(64);
@@ -190,15 +300,20 @@ const Fonts = () => {
   };
 
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  
+
+  // Use fonts from Supabase (or local fallback while loading)
+  const fontsSource = dbFonts.length > 0 ? dbFonts : initialFontsData;
+
   // Dynamically compute only the cards for the current page
   const paginatedCards = Array.from({ length: ITEMS_PER_PAGE }).map((_, i) => {
     const globalIndex = startIndex + i;
-    const baseFont = initialFontsData[globalIndex % initialFontsData.length];
+    const baseFont = fontsSource[globalIndex % fontsSource.length];
     return {
       ...baseFont,
       id: globalIndex + 1,
-      name: globalIndex < initialFontsData.length ? baseFont.name : `${baseFont.name} ${Math.floor(globalIndex / initialFontsData.length) + 1}`
+      name: globalIndex < fontsSource.length
+        ? baseFont.name
+        : `${baseFont.name} ${Math.floor(globalIndex / fontsSource.length) + 1}`
     };
   });
 
@@ -360,7 +475,16 @@ const Fonts = () => {
 
             <div key={currentPage} className={`fonts-cards-container ${viewMode === 'grid' ? 'grid-view' : ''}`}>
               {paginatedCards.map(font => (
-                <FontCard key={font.id} font={font} globalText={globalText} globalFontSize={globalFontSize} viewMode={viewMode} />
+                <FontCard
+                    key={font.id}
+                    font={font}
+                    globalText={globalText}
+                    globalFontSize={globalFontSize}
+                    viewMode={viewMode}
+                    savedIds={savedIds}
+                    toggleSave={toggleSave}
+                    openLogin={() => setIsLoginOpen(true)}
+                  />
               ))}
             </div>
 
@@ -375,6 +499,9 @@ const Fonts = () => {
           </div>
         </section>
       </div>
+
+      {/* Login prompt triggered by Save button when logged out */}
+      <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
     </div>
   );
 };

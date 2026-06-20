@@ -201,13 +201,13 @@
   background: transparent;
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 0 !important;
-  padding: 40px 0;
-  overflow: hidden !important;
+  padding: 24px 0;
+  overflow: hidden;
   width: 100%;
   max-width: 100%;
   min-width: 0;
-  height: 310px;
-  transition: background 0.25s ease, color 0.25s ease, padding 0.25s ease;
+  height: 300px;
+  transition: background 0.25s ease, color 0.25s ease;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
@@ -222,12 +222,11 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  flex-shrink: 0; /* Never compress — preview gets the remaining height */
 }
 
 .font-card:hover {
-  background: #000;
-  color: #fff;
-  padding: 40px 24px;
+  padding: 24px 0;
 }
 
 [data-theme="dark"] .font-card {
@@ -236,22 +235,7 @@
 }
 
 [data-theme="dark"] .font-card:hover {
-  background: #fff;
-  color: #111;
-}
-
-[data-theme="dark"] .font-card:hover .font-card-name {
-  color: #111;
-}
-
-[data-theme="dark"] .font-card:hover .font-card-preview {
-  color: #111;
-}
-
-[data-theme="dark"] .font-card:hover .font-check-out-btn {
-  border-color: #111;
-  color: #fff;
-  background: #111;
+  padding: 24px 0;
 }
 
 .card-top-left {
@@ -273,9 +257,7 @@
   text-overflow: ellipsis;
 }
 
-.font-card:hover .font-card-name {
-  color: #fff;
-}
+
 
 [data-theme="dark"] .font-card-name {
   color: #fff;
@@ -332,6 +314,44 @@
   flex: 0 0 auto;
 }
 
+/* ── Color swatches ── */
+.font-card-color-swatches {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-right: 4px;
+}
+
+.color-swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  cursor: pointer;
+  flex-shrink: 0;
+  padding: 0;
+  box-shadow: 0 0 0 0px transparent;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.color-swatch:hover {
+  transform: scale(1.2);
+}
+
+/* Active ring: outset ring that matches the swatch color */
+.color-swatch--active {
+  box-shadow: 0 0 0 1.5px #fff, 0 0 0 3px #111;
+}
+
+/* Dark mode: active ring uses dark bg */
+[data-theme="dark"] .color-swatch--active {
+  box-shadow: 0 0 0 1.5px #111, 0 0 0 3px #fff;
+}
+
+/* White swatch in dark mode needs a visible border */
+[data-theme="dark"] .color-swatch[title="white"] {
+  border-color: rgba(255,255,255,0.35) !important;
+}
+
 .font-card-styles {
   font-family: 'Urbanist', sans-serif;
   font-size: 14px;
@@ -346,73 +366,62 @@
   color: rgba(255, 255, 255, 0.6);
 }
 
-.font-check-out-btn {
+.font-card-action-btn {
   background: transparent;
-  border: 1px solid #ccc;
-  border-radius: 50px;
-  padding: 8px 24px;
+  border: none;
   font-family: 'Urbanist', sans-serif;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 16px;
   color: #111;
   cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  white-space: nowrap;
-  box-sizing: border-box;
+  transition: color 200ms ease, opacity 200ms ease;
+  position: relative;
+  padding: 4px 0;
+  display: inline-block;
 }
 
-/* 3. Fix action icon buttons: same height and width as the font family selector pill height (36px) */
-.font-check-out-btn.icon-only {
-  width: 36px;
-  height: 36px;
-  padding: 0;
-  border-radius: 50%;
-  flex-shrink: 0;
+.font-card-action-btn::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 1px;
+  bottom: 0;
+  left: 0;
+  background-color: currentColor;
+  transform-origin: bottom right;
+  transition: transform 200ms ease-out;
 }
 
-/* Normal hover on the button itself when card is not hovered */
-.font-check-out-btn:hover {
-  border-color: #111;
-  background: rgba(0, 0, 0, 0.05);
+.font-card-action-btn:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
 }
 
-/* When the card is hovered (black background in light theme) */
-.font-card:hover .font-check-out-btn {
-  color: #fff;
-  border-color: rgba(255, 255, 255, 0.3);
+.font-card-action-btn:hover {
+  color: #000;
 }
 
-.font-card:hover .font-check-out-btn:hover {
-  border-color: #fff;
-  background: rgba(255, 255, 255, 0.15);
+/* Saved state */
+.font-card-save-btn.saved {
+  color: #16a34a;
+}
+
+.font-card-save-btn.saved:hover {
+  color: #15803d;
+}
+
+[data-theme="dark"] .font-card-save-btn.saved {
+  color: #4ade80;
 }
 
 /* ── Dark Mode ── */
-[data-theme="dark"] .font-check-out-btn {
-  background: transparent;
+[data-theme="dark"] .font-card .font-card-action-btn {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+[data-theme="dark"] .font-card .font-card-action-btn:hover {
   color: #fff;
-  border-color: #444;
-}
-
-[data-theme="dark"] .font-check-out-btn:hover {
-  border-color: #fff;
-  background: rgba(255, 255, 255, 0.1);
-}
-
-/* When the card is hovered in dark theme (white background) */
-[data-theme="dark"] .font-card:hover .font-check-out-btn {
-  color: #111;
-  border-color: rgba(0, 0, 0, 0.15);
-  background: transparent;
-}
-
-[data-theme="dark"] .font-card:hover .font-check-out-btn:hover {
-  border-color: #111;
-  background: rgba(0, 0, 0, 0.08);
 }
 
 /* ═══════════════════════════════════════
@@ -448,27 +457,25 @@
   align-items: center;
   gap: 8px;
   height: 36px !important;
-  padding: 0 14px;
-  background: rgba(255, 255, 255, 0.13);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 9999px;
+  padding: 0;
+  background: transparent;
+  border: none;
   box-sizing: border-box;
   flex-shrink: 0;
   white-space: nowrap;
   cursor: pointer;
-  transition: background 0.15s ease;
 }
 
 .fchc-pill:hover {
-  background: rgba(255, 255, 255, 0.22);
+  background: transparent;
 }
 
 /* ── Style dropdown ── */
 .fchc-select {
   font-family: 'Urbanist', sans-serif;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
-  color: #fff;
+  color: #111;
   gap: 6px;
   height: 36px !important;
 }
@@ -486,7 +493,7 @@
 }
 
 .fchc-icon {
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(0, 0, 0, 0.5);
   flex-shrink: 0;
 }
 
@@ -508,13 +515,13 @@
 /* Track */
 .fchc-slider::-webkit-slider-runnable-track {
   height: 2px;
-  background: rgba(255, 255, 255, 0.35);
+  background: rgba(0, 0, 0, 0.2);
   border-radius: 2px;
 }
 
 .fchc-slider::-moz-range-track {
   height: 2px;
-  background: rgba(255, 255, 255, 0.35);
+  background: rgba(0, 0, 0, 0.2);
   border-radius: 2px;
   border: none;
 }
@@ -526,7 +533,7 @@
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  background: #fff;
+  background: #111;
   cursor: pointer;
   margin-top: -6px;
   transition: transform 0.1s ease;
@@ -540,7 +547,7 @@
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  background: #fff;
+  background: #111;
   cursor: pointer;
   border: none;
   transition: transform 0.1s ease;
@@ -549,9 +556,9 @@
 /* ── Value label ── */
 .fchc-value {
   font-family: 'Urbanist', sans-serif;
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.85);
+  color: rgba(0, 0, 0, 0.7);
   white-space: nowrap;
   flex-shrink: 0;
   min-width: 44px;
@@ -560,74 +567,72 @@
 
 /* ── Dark mode: invert pills to dark on white hover card ── */
 [data-theme="dark"] .font-card:hover .fchc-pill {
-  background: rgba(0, 0, 0, 0.08);
-  border-color: rgba(0, 0, 0, 0.12);
+  background: transparent;
+  border-color: transparent;
 }
 
 [data-theme="dark"] .font-card:hover .fchc-pill:hover {
-  background: rgba(0, 0, 0, 0.14);
+  background: transparent;
 }
 
 [data-theme="dark"] .font-card:hover .fchc-select {
-  color: #111;
+  color: #fff;
 }
 
 [data-theme="dark"] .font-card:hover .fchc-icon {
-  color: rgba(0, 0, 0, 0.5);
+  color: rgba(255, 255, 255, 0.7);
 }
 
 [data-theme="dark"] .font-card:hover .fchc-value {
-  color: rgba(0, 0, 0, 0.7);
+  color: rgba(255, 255, 255, 0.85);
 }
 
 [data-theme="dark"] .font-card:hover .fchc-slider::-webkit-slider-runnable-track {
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(255, 255, 255, 0.35);
 }
 
 [data-theme="dark"] .font-card:hover .fchc-slider::-moz-range-track {
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(255, 255, 255, 0.35);
 }
 
 [data-theme="dark"] .font-card:hover .fchc-slider::-webkit-slider-thumb {
-  background: #111;
+  background: #fff;
 }
 
 [data-theme="dark"] .font-card:hover .fchc-slider::-moz-range-thumb {
-  background: #111;
+  background: #fff;
 }
 
 
+/* ── Preview safe area ── */
 .font-card-preview {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  color: #111;
-  white-space: nowrap;
-  overflow: hidden !important;
-  line-height: 1;
-  padding: 0 0 16px 0; /* Vertical spacing only; horizontal inherited from .font-card */
-  margin: 0;
-  letter-spacing: -0.02em;
-  transition: color 0.25s ease;
   position: relative;
   display: flex;
-  flex: 1;
-  align-items: flex-end;
+  flex: 1 1 0;
+  min-height: 0;              /* critical: allows flex child to shrink below content size */
+  overflow: hidden;           /* hard boundary — text must stay inside */
+  align-items: center;
   width: 100%;
   max-width: 100%;
   min-width: 0;
   box-sizing: border-box;
+  padding: 12px 0;            /* breathing room: top for ascenders, bottom for descenders */
+  margin-top: 8px;
+  color: #111;
+  letter-spacing: -0.02em;
+  transition: color 0.25s ease;
 }
 
 .preview-default {
-  font-size: clamp(100px, 12vw, 180px);
+  display: inline-block; /* inline-block lets JS measure offsetHeight accurately */
   font-weight: 700;
-  display: block;
-  transition: opacity 0.25s ease;
-  flex-shrink: 1;
   white-space: nowrap;
-  overflow: hidden !important;
+  line-height: 1;       /* line-height 1 = exact cap height — no extra space */
   max-width: 100%;
-  width: 100%;
   text-align: left;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+  overflow: visible;    /* span itself doesn't clip — container does */
+  flex-shrink: 0;
 }
 
 .preview-hover {
@@ -639,8 +644,9 @@
   width: 100%;
   transform: translateY(-50%);
   opacity: 0;
+  visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.25s ease;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
   white-space: normal;
   line-height: 1.2;
   padding: 0; /* No extra padding needed */
@@ -653,15 +659,16 @@
 
 .font-card:hover .preview-default {
   opacity: 0;
+  visibility: hidden;
+  display: none;
 }
 
 .font-card:hover .preview-hover {
   opacity: 1;
+  visibility: visible;
 }
 
-.font-card:hover .font-card-preview {
-  color: #fff;
-}
+
 
 [data-theme="dark"] .font-card-preview {
   color: #fff;
@@ -878,7 +885,7 @@
 
 /* Hide List-specific elements */
 .grid-view .card-top-center,
-.grid-view .font-check-out-btn {
+.grid-view .font-card-action-btn {
   display: none;
 }
 

@@ -306,3 +306,58 @@ body.search-open .navbar-header {
         padding: 0 16px;
     }
 }
+
+/* ── Auth: logged-in avatar ── */
+.user-avatar-circle--active {
+  background: #3B5BFF;
+  font-family: 'Urbanist', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: default;
+}
+
+[data-theme="dark"] .user-avatar-circle--active {
+  background: #4a6bff;
+}
+
+/* ── User group: avatar + sign-out ── */
+.nav-user-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.nav-signout-btn {
+  width: 36px !important;
+  height: 36px !important;
+  border: none;
+  color: #666;
+}
+
+.nav-signout-btn:hover {
+  color: #e03d2f;
+  background: rgba(224, 61, 47, 0.08) !important;
+}
+
+/* ── Saved count badge ── */
+.icon-btn {
+  position: relative;
+}
+
+.nav-saved-badge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: #e03d2f;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  border-radius: 50%;
+  width: 14px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Urbanist', sans-serif;
+}
