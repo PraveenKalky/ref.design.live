@@ -36,16 +36,17 @@ const SPECIMEN_PHRASES = [
   "Sharp rhythm"
 ];
 const PREVIEW_COLORS = [
-  { id: 'black',  value: '#111111', border: 'transparent' },
-  { id: 'white',  value: '#ffffff', border: '#d0d0d0' },
-  { id: 'orange', value: '#e03d2f', border: 'transparent' },
-  { id: 'yellow', value: '#f5a623', border: 'transparent' },
+  { id: 'white', value: '#ffffff', border: '#111111' },
+  { id: 'black', value: '#111111', border: '#111111' },
+  { id: 'orange', value: '#e4572e', border: '#111111' },
+  { id: 'yellow', value: '#f2b544', border: '#111111' },
 ];
 
 
 const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggleSave, openLogin }) => {
   const [fontSize, setFontSize] = useState(globalFontSize || 120);
   const [letterSpacing, setLetterSpacing] = useState(0);
+  const [lineHeight, setLineHeight] = useState(1.2);
   const [autoFontSize, setAutoFontSize] = useState(null);
   const [previewColor, setPreviewColor] = useState('#111111');
   const previewSpanRef = useRef(null);
@@ -143,13 +144,13 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
             <div className="fchc-bar">
               {/* 1. Style dropdown */}
               <div className="fchc-pill fchc-select">
-                <span className="fchc-select-text">Cond Bold</span>
+                <span className="fchc-select-text">Hairline Italic</span>
                 <ChevronDown size={14} strokeWidth={2} />
               </div>
 
-              {/* 2. Font size: icon + slider + value */}
+              {/* 2. Font size */}
               <div className="fchc-pill fchc-control">
-                <Maximize2 size={15} strokeWidth={2} className="fchc-icon" />
+                <span className="fchc-label">Size</span>
                 <input
                   type="range"
                   min="24"
@@ -159,12 +160,28 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
                   className="fchc-slider"
                   onClick={(e) => e.stopPropagation()}
                 />
-                <span className="fchc-value">{fontSize}px</span>
+                <span className="fchc-value">{fontSize}</span>
               </div>
 
-              {/* 3. Tracking: icon + slider + value */}
+              {/* 3. Leading (Line Height) */}
               <div className="fchc-pill fchc-control">
-                <MoveHorizontal size={15} strokeWidth={2} className="fchc-icon" />
+                <span className="fchc-label">Leading</span>
+                <input
+                  type="range"
+                  min="0.8"
+                  max="2.5"
+                  step="0.05"
+                  value={lineHeight}
+                  onChange={(e) => setLineHeight(Number(e.target.value))}
+                  className="fchc-slider"
+                  onClick={(e) => e.stopPropagation()}
+                />
+                <span className="fchc-value">{parseFloat(lineHeight).toFixed(2)}</span>
+              </div>
+
+              {/* 4. Tracking */}
+              <div className="fchc-pill fchc-control">
+                <span className="fchc-label">Spacing</span>
                 <input
                   type="range"
                   min="-0.5"
@@ -175,7 +192,7 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
                   className="fchc-slider"
                   onClick={(e) => e.stopPropagation()}
                 />
-                <span className="fchc-value">{parseFloat(letterSpacing).toFixed(2)}em</span>
+                <span className="fchc-value">{parseFloat(letterSpacing).toFixed(2)}</span>
               </div>
             </div>
           )}
@@ -188,20 +205,22 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
               <button
                 key={c.id}
                 className={`color-swatch${previewColor === c.value ? ' color-swatch--active' : ''}`}
-                style={{ background: c.value, border: `1.5px solid ${c.border}` }}
+                style={{ backgroundColor: c.value, border: `1px solid ${c.border}` }}
                 onClick={(e) => { e.stopPropagation(); setPreviewColor(c.value); }}
                 aria-label={`Preview color ${c.id}`}
                 title={c.id}
               />
             ))}
           </div>
-          <button className="font-card-action-btn">Download</button>
+          <button className="font-card-action-btn icon-only" title="Download">
+            <DownloadSimple size={16} weight="bold" />
+          </button>
           <button
-            className={`font-card-action-btn font-card-save-btn${savedIds?.[font.id] ? ' saved' : ''}`}
+            className={`font-card-action-btn icon-only font-card-save-btn${savedIds?.[font.id] ? ' saved' : ''}`}
             onClick={(e) => { e.stopPropagation(); toggleSave?.(font.id); }}
             title={savedIds?.[font.id] ? 'Unsave' : 'Save'}
           >
-            {savedIds?.[font.id] ? 'Saved ✓' : 'Save'}
+            <BookmarkSimple size={16} weight={savedIds?.[font.id] ? "fill" : "bold"} />
           </button>
         </div>
       </div>
@@ -220,7 +239,7 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
         >
           {textToShow}
         </span>
-        <span className="preview-hover" style={{ fontSize: `${fontSize}px`, letterSpacing: `${letterSpacing}em`, fontFamily: font.googleFont }}>
+        <span className="preview-hover" style={{ fontSize: `${fontSize}px`, letterSpacing: `${letterSpacing}em`, lineHeight: lineHeight, fontFamily: font.googleFont }}>
           {globalText && globalText.trim() !== '' ? globalText : "Six javelins thrown by the quick savages whizzed forty paces beyond the mark."}
         </span>
       </div>
@@ -240,6 +259,8 @@ const PRESET_TEXTS = [
   "Crazy Fredericka bought many very exquisite opal jewels.",
   "Voix ambiguë d'un cœur qui au zéphyr préfère les jattes..."
 ];
+
+const FONT_CATEGORIES = Object.keys(FONT_CATEGORY_COUNTS);
 
 const Fonts = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -303,17 +324,18 @@ const Fonts = () => {
 
   // Use fonts from Supabase (or local fallback while loading)
   const fontsSource = dbFonts.length > 0 ? dbFonts : initialFontsData;
+  const safeFontsSource = fontsSource.length > 0 ? fontsSource : initialFontsData;
 
   // Dynamically compute only the cards for the current page
   const paginatedCards = Array.from({ length: ITEMS_PER_PAGE }).map((_, i) => {
     const globalIndex = startIndex + i;
-    const baseFont = fontsSource[globalIndex % fontsSource.length];
+    const baseFont = safeFontsSource[globalIndex % safeFontsSource.length];
     return {
       ...baseFont,
       id: globalIndex + 1,
-      name: globalIndex < fontsSource.length
+      name: globalIndex < safeFontsSource.length
         ? baseFont.name
-        : `${baseFont.name} ${Math.floor(globalIndex / fontsSource.length) + 1}`
+        : `${baseFont.name} ${Math.floor(globalIndex / safeFontsSource.length) + 1}`
     };
   });
 

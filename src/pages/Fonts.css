@@ -290,6 +290,11 @@
   align-items: center;
   position: relative;
   flex: 1 1 auto;
+  min-width: 0;          /* allow shrinking past content size */
+  overflow: visible;    /* allow pills to be fully visible */
+  max-width: 100%;       /* respect column width */
+  min-height: 48px;      /* enough height for 32px pills + padding */
+  padding: 8px 0;        /* vertical spacing for pills */
 }
 
 .font-card-desc {
@@ -318,38 +323,32 @@
 .font-card-color-swatches {
   display: flex;
   align-items: center;
-  gap: 6px;
-  margin-right: 4px;
+  gap: 12px;
+  margin-right: 8px; /* Extra spacing before Download */
 }
 
 .color-swatch {
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
   cursor: pointer;
   flex-shrink: 0;
   padding: 0;
-  box-shadow: 0 0 0 0px transparent;
-  transition: box-shadow 0.15s ease, transform 0.15s ease;
+  appearance: none;
+  box-sizing: border-box;
+  outline: 0 solid transparent;
+  outline-offset: 0;
+  box-shadow: none; /* explicitly remove shadow/glow */
+  transition: transform 150ms ease;
 }
 
 .color-swatch:hover {
-  transform: scale(1.2);
+  transform: scale(1.1);
 }
 
-/* Active ring: outset ring that matches the swatch color */
+/* Subtle selected state without outer rings */
 .color-swatch--active {
-  box-shadow: 0 0 0 1.5px #fff, 0 0 0 3px #111;
-}
-
-/* Dark mode: active ring uses dark bg */
-[data-theme="dark"] .color-swatch--active {
-  box-shadow: 0 0 0 1.5px #111, 0 0 0 3px #fff;
-}
-
-/* White swatch in dark mode needs a visible border */
-[data-theme="dark"] .color-swatch[title="white"] {
-  border-color: rgba(255,255,255,0.35) !important;
+  transform: scale(1.15);
 }
 
 .font-card-styles {
@@ -367,30 +366,51 @@
 }
 
 .font-card-action-btn {
-  background: transparent;
+  display: inline-block;
+  text-align: center;
+  line-height: 30px; /* slightly smaller than 32px to align text perfectly considering border-box */
+  height: 32px !important;
+  padding: 0 16px;
+  background: #efefef;
+  border-radius: 9999px;
   border: none;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  white-space: nowrap;
+  cursor: pointer;
   font-family: 'Urbanist', sans-serif;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 13px;
   color: #111;
-  cursor: pointer;
-  transition: color 200ms ease, opacity 200ms ease;
+  transition: background 200ms ease, color 200ms ease;
   position: relative;
-  padding: 4px 0;
-  display: inline-block;
+}
+
+.font-card-action-btn.icon-only {
+  width: 32px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.font-card-action-btn.icon-only::after {
+  display: none;
 }
 
 .font-card-action-btn::after {
   content: '';
   position: absolute;
-  width: 100%;
+  display: block;
+  width: calc(100% - 32px);
   transform: scaleX(0);
   height: 1px;
-  bottom: 0;
-  left: 0;
+  bottom: 6px;
+  left: 16px;
   background-color: currentColor;
   transform-origin: bottom right;
   transition: transform 200ms ease-out;
+  z-index: 2;
 }
 
 .font-card-action-btn:hover::after {
@@ -399,6 +419,7 @@
 }
 
 .font-card-action-btn:hover {
+  background: #e0e0e0;
   color: #000;
 }
 
@@ -417,10 +438,12 @@
 
 /* ── Dark Mode ── */
 [data-theme="dark"] .font-card .font-card-action-btn {
+  background: #1a1a1a;
   color: rgba(255, 255, 255, 0.7);
 }
 
 [data-theme="dark"] .font-card .font-card-action-btn:hover {
+  background: #333333;
   color: #fff;
 }
 
@@ -434,12 +457,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 6px;               /* tighter gap so pills have more room */
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: max-content;
+  width: max-content;      /* shrink‑wrap the pill group */
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.25s ease;
@@ -451,23 +477,24 @@
   pointer-events: auto;
 }
 
-/* ── Base pill ── */
 .fchc-pill {
   display: flex;
   align-items: center;
-  gap: 8px;
-  height: 36px !important;
-  padding: 0;
-  background: transparent;
+  gap: 6px;
+  height: 32px !important;
+  padding: 0 12px;        /* increased from 10px */
+  background: #efefef;
+  border-radius: 9999px;
   border: none;
   box-sizing: border-box;
-  flex-shrink: 0;
+  flex-shrink: 1;         /* allow shrinking — key fix */
   white-space: nowrap;
   cursor: pointer;
+  min-width: 0;           /* allow content to compress */
 }
 
 .fchc-pill:hover {
-  background: transparent;
+  background: #e0e0e0;
 }
 
 /* ── Style dropdown ── */
@@ -476,32 +503,45 @@
   font-size: 16px;
   font-weight: 500;
   color: #111;
-  gap: 6px;
-  height: 36px !important;
+  gap: 6px;               /* match other pills */
 }
 
 .fchc-select-text {
-  white-space: nowrap;
+  line-height: 32px;      /* vertically center text inside the 32px pill */
+  display: inline-block;
 }
 
 /* ── Icon+Slider+Value control pill ── */
 .fchc-control {
-  gap: 10px;
-  padding: 0 12px;
-  min-width: 220px;
-  height: 36px !important;
+  gap: 6px;
+  flex: 1 1 140px;        /* grow/shrink equally, min 140px per pill */
+  min-width: 0;           /* remove the hard 180px floor */
+  max-width: 220px;       /* cap so no single pill dominates */
 }
 
-.fchc-icon {
-  color: rgba(0, 0, 0, 0.5);
+.fchc-label {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: #111;
   flex-shrink: 0;
+}
+
+.fchc-value {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: #111;
+  min-width: 32px;
+  text-align: right;
 }
 
 /* ── Slider ── */
 .fchc-slider {
   -webkit-appearance: none;
   appearance: none;
-  flex: 1;
+  flex: 1 1 40px;         /* can shrink down to 40px before pill wraps */
+  min-width: 40px;
   height: 14px;
   background: transparent;
   outline: none;
@@ -514,69 +554,67 @@
 
 /* Track */
 .fchc-slider::-webkit-slider-runnable-track {
-  height: 2px;
+  height: 1px;
   background: rgba(0, 0, 0, 0.2);
-  border-radius: 2px;
+  border-radius: 1px;
 }
 
 .fchc-slider::-moz-range-track {
-  height: 2px;
+  height: 1px;
   background: rgba(0, 0, 0, 0.2);
-  border-radius: 2px;
+  border-radius: 1px;
   border: none;
 }
 
-/* Thumb — solid dark filled circle matching reference */
+/* Thumb */
 .fchc-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 14px;
-  height: 14px;
+  width: 10px;
+  height: 10px;
+  background: #fff;
+  border: 1px solid #111;
   border-radius: 50%;
-  background: #111;
-  cursor: pointer;
-  margin-top: -6px;
-  transition: transform 0.1s ease;
-}
-
-.fchc-slider::-webkit-slider-thumb:hover {
-  transform: scale(1.15);
+  margin-top: -4px; /* (Track height 1px / 2) - (Thumb height 10px / 2) */
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
 
 .fchc-slider::-moz-range-thumb {
-  width: 14px;
-  height: 14px;
+  width: 10px;
+  height: 10px;
+  background: #fff;
+  border: 1px solid #111;
   border-radius: 50%;
-  background: #111;
-  cursor: pointer;
-  border: none;
-  transition: transform 0.1s ease;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
 
 /* ── Value label ── */
 .fchc-value {
   font-family: 'Urbanist', sans-serif;
-  font-size: 16px;
+  font-size: 16px;        /* increased to match label size */
   font-weight: 500;
   color: rgba(0, 0, 0, 0.7);
   white-space: nowrap;
   flex-shrink: 0;
-  min-width: 44px;
+  min-width: 32px;        /* increased for larger font */
   text-align: right;
 }
 
-/* ── Dark mode: invert pills to dark on white hover card ── */
-[data-theme="dark"] .font-card:hover .fchc-pill {
-  background: transparent;
-  border-color: transparent;
+/* ── Dark mode overrides ── */
+[data-theme="dark"] .fchc-pill {
+  background: #1a1a1a;
 }
 
-[data-theme="dark"] .font-card:hover .fchc-pill:hover {
-  background: transparent;
+[data-theme="dark"] .fchc-pill:hover {
+  background: #333333;
 }
 
 [data-theme="dark"] .font-card:hover .fchc-select {
   color: #fff;
+}
+
+[data-theme="dark"] .font-card:hover .fchc-label {
+  color: rgba(255, 255, 255, 0.7);
 }
 
 [data-theme="dark"] .font-card:hover .fchc-icon {
