@@ -4,6 +4,7 @@
   background: #ffffff;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
 }
 
 [data-theme="dark"] .fonts-page {
@@ -114,15 +115,36 @@
   justify-content: space-between;
   flex-wrap: nowrap;
   gap: 16px;
+  margin-top: 48px;
   margin-bottom: 24px;
 }
 
-.font-controls-right {
+.fcb-right-group {
   display: flex;
   align-items: center;
-  gap: 16px;
-  flex-shrink: 0;
+  gap: 24px;
+}
+
+.fcb-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Urbanist', sans-serif;
+  font-size: 16px;
+  color: #111;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
   white-space: nowrap;
+}
+
+[data-theme="dark"] .fcb-action-btn {
+  color: #fff;
+}
+
+.fcb-action-btn:hover {
+  opacity: 0.7;
 }
 
 .font-view-toggle {
@@ -146,9 +168,13 @@
 
 .top-bar-count {
   font-family: 'Urbanist', sans-serif;
-  color: #999;
+  color: #111;
   font-size: 16px;
   white-space: nowrap;
+}
+
+[data-theme="dark"] .top-bar-count {
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .toggle-text {
@@ -304,6 +330,112 @@
   white-space: nowrap;
   margin: 0;
 }
+
+/* ── Swatch Background Layout & Text Overrides ── */
+.font-card.swatch-light-bg,
+.font-card.swatch-dark-bg {
+  position: relative;
+  /* background-color is handled by the ::before pseudo-element for full-width bleed */
+  background-color: transparent !important;
+  overflow: visible !important; /* Allow ::before to extend full width */
+}
+
+/* Use ::before to break out of the container without affecting padding or flex layout */
+.font-card.swatch-light-bg::before,
+.font-card.swatch-dark-bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  background-color: var(--swatch-color);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.font-card.swatch-light-bg .font-card-name,
+.font-card.swatch-light-bg .font-card-preview {
+  color: #111111 !important;
+}
+
+.font-card.swatch-light-bg .font-card-desc {
+  color: rgba(17, 17, 17, 0.7) !important;
+}
+
+.font-card.swatch-dark-bg .font-card-name,
+.font-card.swatch-dark-bg .font-card-preview {
+  color: #ffffff !important;
+}
+
+.font-card.swatch-dark-bg .font-card-desc {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* Adaptive Pill Backgrounds Using Existing Translucent Tokens */
+.font-card.swatch-light-bg .fchc-pill,
+.font-card.swatch-light-bg .font-card-action-btn {
+  background: rgba(0, 0, 0, 0.08) !important;
+}
+.font-card.swatch-light-bg .fchc-pill:hover,
+.font-card.swatch-light-bg .font-card-action-btn:hover {
+  background: rgba(0, 0, 0, 0.2) !important;
+}
+
+.font-card.swatch-dark-bg .fchc-pill,
+.font-card.swatch-dark-bg .font-card-action-btn {
+  background: rgba(255, 255, 255, 0.35) !important;
+}
+.font-card.swatch-dark-bg .fchc-pill:hover,
+.font-card.swatch-dark-bg .font-card-action-btn:hover {
+  background: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* ── Pill Text & Slider Visibility Overrides ── */
+
+/* Keep Action Buttons (Download/Save) adapting to background */
+.font-card.swatch-light-bg .font-card-action-btn {
+  color: #111111 !important;
+}
+.font-card.swatch-dark-bg .font-card-action-btn {
+  color: #ffffff !important;
+}
+
+/* Force All Pill Content & Controls to White */
+.font-card.swatch-light-bg .fchc-select,
+.font-card.swatch-light-bg .fchc-label,
+.font-card.swatch-light-bg .fchc-value,
+.font-card.swatch-light-bg .fchc-icon,
+.font-card.swatch-dark-bg .fchc-select,
+.font-card.swatch-dark-bg .fchc-label,
+.font-card.swatch-dark-bg .fchc-value,
+.font-card.swatch-dark-bg .fchc-icon {
+  color: #ffffff !important;
+}
+
+.font-card.swatch-light-bg .fchc-slider::-webkit-slider-runnable-track,
+.font-card.swatch-dark-bg .fchc-slider::-webkit-slider-runnable-track {
+  background: #ffffff !important;
+}
+
+.font-card.swatch-light-bg .fchc-slider::-moz-range-track,
+.font-card.swatch-dark-bg .fchc-slider::-moz-range-track {
+  background: #ffffff !important;
+}
+
+.font-card.swatch-light-bg .fchc-slider::-webkit-slider-thumb,
+.font-card.swatch-dark-bg .fchc-slider::-webkit-slider-thumb {
+  background: #ffffff !important;
+  border: none !important;
+}
+
+.font-card.swatch-light-bg .fchc-slider::-moz-range-thumb,
+.font-card.swatch-dark-bg .fchc-slider::-moz-range-thumb {
+  background: #ffffff !important;
+  border: none !important;
+}
+
 
 .font-card:hover .font-card-desc {
   opacity: 0;
@@ -555,13 +687,13 @@
 /* Track */
 .fchc-slider::-webkit-slider-runnable-track {
   height: 1px;
-  background: rgba(0, 0, 0, 0.2);
+  background: #111;
   border-radius: 1px;
 }
 
 .fchc-slider::-moz-range-track {
   height: 1px;
-  background: rgba(0, 0, 0, 0.2);
+  background: #111;
   border-radius: 1px;
   border: none;
 }
