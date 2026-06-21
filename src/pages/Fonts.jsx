@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Plus, ChevronDown, ChevronUp, X, Type, RotateCcw, LayoutGrid, Menu, Maximize2, MoveHorizontal } from 'lucide-react';
-import { DownloadSimple, BookmarkSimple } from '@phosphor-icons/react';
+import { DownloadSimple, BookmarkSimple, FadersHorizontal, CaretUpDown, SquaresFour, List } from '@phosphor-icons/react';
 import Pagination from '../components/pagination/Pagination';
 import LoginModal from '../components/navbar/LoginModal';
 import '../components/filter-bar/filter-bar.css';
@@ -36,10 +36,10 @@ const SPECIMEN_PHRASES = [
   "Sharp rhythm"
 ];
 const PREVIEW_COLORS = [
-  { id: 'white', value: '#ffffff', border: '#111111' },
-  { id: 'black', value: '#111111', border: '#111111' },
-  { id: 'orange', value: '#e4572e', border: '#111111' },
-  { id: 'yellow', value: '#f2b544', border: '#111111' },
+  { id: 'white', value: '#ffffff', border: '#111111', isDarkBg: false },
+  { id: 'black', value: '#111111', border: '#111111', isDarkBg: true },
+  { id: 'orange', value: '#e4572e', border: '#111111', isDarkBg: false },
+  { id: 'yellow', value: '#f2b544', border: '#111111', isDarkBg: false },
 ];
 
 
@@ -48,7 +48,7 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
   const [letterSpacing, setLetterSpacing] = useState(0);
   const [lineHeight, setLineHeight] = useState(1.2);
   const [autoFontSize, setAutoFontSize] = useState(null);
-  const [previewColor, setPreviewColor] = useState('#111111');
+  const [activeSwatch, setActiveSwatch] = useState(null);
   const previewSpanRef = useRef(null);
   const previewContainerRef = useRef(null);
   const navigate = useNavigate();
@@ -126,7 +126,14 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
   };
 
   return (
-    <div className="font-card" onClick={handleCardClick} style={{ cursor: 'pointer' }}>
+    <div 
+      className={`font-card${activeSwatch ? (activeSwatch.isDarkBg ? ' swatch-dark-bg' : ' swatch-light-bg') : ''}`} 
+      onClick={handleCardClick} 
+      style={{ 
+        cursor: 'pointer', 
+        '--swatch-color': activeSwatch?.value 
+      }}
+    >
       {/* ── ROW 1: Meta row — always visible, never moves ── */}
       <div className="font-card-top">
         <div className="card-top-left">
@@ -204,9 +211,9 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
             {PREVIEW_COLORS.map((c) => (
               <button
                 key={c.id}
-                className={`color-swatch${previewColor === c.value ? ' color-swatch--active' : ''}`}
+                className={`color-swatch${activeSwatch?.id === c.id ? ' color-swatch--active' : ''}`}
                 style={{ backgroundColor: c.value, border: `1px solid ${c.border}` }}
-                onClick={(e) => { e.stopPropagation(); setPreviewColor(c.value); }}
+                onClick={(e) => { e.stopPropagation(); setActiveSwatch(activeSwatch?.id === c.id ? null : c); }}
                 aria-label={`Preview color ${c.id}`}
                 title={c.id}
               />
@@ -234,7 +241,6 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
             fontSize: autoFontSize ? `${autoFontSize}px` : `${MAX_SIZE}px`,
             fontFamily: font.googleFont,
             lineHeight: 1,
-            color: previewColor,
           }}
         >
           {textToShow}
@@ -359,35 +365,7 @@ const Fonts = () => {
 
       {/* ── HERO FILTER PATTERN ── */}
         <div className="filter-bar-container">
-          <div className="filter-bar-content">
-              <div className="filter-tabs">
-                  <button 
-                      className={`collapse-btn ${isExpanded ? 'active' : ''}`}
-                      onClick={() => setIsExpanded(!isExpanded)}
-                      title={isExpanded ? "Collapse" : "Expand"}
-                  >
-                      <ChevronDown size={16} strokeWidth={3} className="arrow-icon" />
-                  </button>
-                  <button 
-                      className={`filter-tab ${activeTab === 'latest' ? 'active' : ''}`}
-                      onClick={() => setActiveTab('latest')}
-                  >
-                      Latest
-                  </button>
-                  <button 
-                      className={`filter-tab ${activeTab === 'popular' ? 'active' : ''}`}
-                      onClick={() => setActiveTab('popular')}
-                  >
-                      Most popular
-                  </button>
-              </div>
-              <div className="filter-actions">
-                  <button className="filter-btn">
-                      <span>Filter</span>
-                  </button>
-              </div>
-          </div>
-          
+
           <div className={`filter-categories-wrapper ${isExpanded ? 'expanded' : ''}`}>
               <div className="filter-categories-inner">
                 <div className="category-filter-expanded">
@@ -435,21 +413,32 @@ const Fonts = () => {
             <div className="font-controls-bar">
               <span className="top-bar-count">Showing {ITEMS_PER_PAGE} of 3200 fonts</span>
               
-              <div className="font-controls-right">
-                <div className="font-view-toggle">
-                  <span 
-                    className={`toggle-text ${viewMode === 'grid' ? 'active' : ''}`}
-                    onClick={() => setViewMode('grid')}
-                  >
-                    <LayoutGrid size={20} /> Card view
-                  </span>
-                  <span 
-                    className={`toggle-text ${viewMode === 'list' ? 'active' : ''}`}
-                    onClick={() => setViewMode('list')}
-                  >
-                    <Menu size={20} /> List view
-                  </span>
-                </div>
+              <div className="font-view-toggle">
+                <span 
+                  className={`toggle-text ${viewMode === 'grid' ? 'active' : ''}`}
+                  onClick={() => setViewMode('grid')}
+                >
+                  <SquaresFour size={20} /> Card view
+                </span>
+                <span 
+                  className={`toggle-text ${viewMode === 'list' ? 'active' : ''}`}
+                  onClick={() => setViewMode('list')}
+                >
+                  <List size={20} /> List view
+                </span>
+              </div>
+
+              <div className="fcb-right-group">
+                <button 
+                  className="fcb-action-btn"
+                  onClick={() => setIsExpanded(!isExpanded)}
+                >
+                  <FadersHorizontal size={16} weight="bold" /> Filters
+                </button>
+
+                <button className="fcb-action-btn fcb-sort">
+                  Recent first <CaretUpDown size={16} weight="bold" />
+                </button>
               </div>
             </div>
 
