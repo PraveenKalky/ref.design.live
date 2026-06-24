@@ -49,15 +49,35 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
   const [lineHeight, setLineHeight] = useState(1.2);
   const [autoFontSize, setAutoFontSize] = useState(null);
   const [activeSwatch, setActiveSwatch] = useState(null);
+  const [styleDropdownOpen, setStyleDropdownOpen] = useState(false);
+  const [selectedStyleIndex, setSelectedStyleIndex] = useState(0);
   const previewSpanRef = useRef(null);
   const previewContainerRef = useRef(null);
+  const styleDropdownRef = useRef(null);
   const navigate = useNavigate();
+
+  // Build style list from font data
+  const fontStyles = font?.stylesList?.length
+    ? font.stylesList
+    : [{ name: 'Regular', weight: 400, italic: false }];
+  const selectedStyle = fontStyles[selectedStyleIndex] || fontStyles[0];
 
   useEffect(() => {
     if (globalFontSize !== undefined) {
       setFontSize(globalFontSize);
     }
   }, [globalFontSize]);
+
+  // Close style dropdown on outside click
+  useEffect(() => {
+    const handleOutside = (e) => {
+      if (styleDropdownRef.current && !styleDropdownRef.current.contains(e.target)) {
+        setStyleDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleOutside);
+    return () => document.removeEventListener('mousedown', handleOutside);
+  }, []);
 
   const isGrid = viewMode === 'grid';
   const textToShow = globalText && globalText.trim() !== '' 
@@ -127,7 +147,7 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
 
   return (
     <div 
-      className={`font-card${activeSwatch ? (activeSwatch.isDarkBg ? ' swatch-dark-bg' : ' swatch-light-bg') : ''}`} 
+      className={`font-card${activeSwatch ? (activeSwatch.isDarkBg ? ' swatch-dark-bg' : ' swatch-light-bg') : ''}${styleDropdownOpen ? ' dropdown-open' : ''}`} 
       onClick={handleCardClick} 
       style={{ 
         cursor: 'pointer', 
@@ -150,9 +170,34 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
           {viewMode === 'list' && (
             <div className="fchc-bar">
               {/* 1. Style dropdown */}
-              <div className="fchc-pill fchc-select">
-                <span className="fchc-select-text">Hairline Italic</span>
-                <ChevronDown size={14} strokeWidth={2} />
+              <div className="fchc-pill fchc-select" ref={styleDropdownRef} style={{ position: 'relative' }}
+                onClick={(e) => { e.stopPropagation(); setStyleDropdownOpen(prev => !prev); }}
+              >
+                <span className="fchc-select-text">{selectedStyle.name}</span>
+                <ChevronDown
+                  size={14}
+                  strokeWidth={2}
+                  style={{ transform: styleDropdownOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s ease', flexShrink: 0 }}
+                />
+                {styleDropdownOpen && (
+                  <div className="fchc-style-dropdown-menu" onClick={(e) => e.stopPropagation()}>
+                    {fontStyles.map((style, idx) => (
+                      <button
+                        key={idx}
+                        className={`fchc-style-dropdown-item${idx === selectedStyleIndex ? ' is-selected' : ''}`}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedStyleIndex(idx);
+                          setStyleDropdownOpen(false);
+                        }}
+                        style={{ fontWeight: style.weight, fontStyle: style.italic ? 'italic' : 'normal' }}
+                      >
+                        <span>{style.name}</span>
+                        <span className="fchc-style-dropdown-weight">{style.weight}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
 
               {/* 2. Font size */}
@@ -220,14 +265,14 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
             ))}
           </div>
           <button className="font-card-action-btn icon-only" title="Download">
-            <DownloadSimple size={16} weight="bold" />
+            <DownloadSimple size={16} weight="regular" />
           </button>
           <button
             className={`font-card-action-btn icon-only font-card-save-btn${savedIds?.[font.id] ? ' saved' : ''}`}
             onClick={(e) => { e.stopPropagation(); toggleSave?.(font.id); }}
             title={savedIds?.[font.id] ? 'Unsave' : 'Save'}
           >
-            <BookmarkSimple size={16} weight={savedIds?.[font.id] ? "fill" : "bold"} />
+            <BookmarkSimple size={16} weight={savedIds?.[font.id] ? "fill" : "regular"} />
           </button>
         </div>
       </div>

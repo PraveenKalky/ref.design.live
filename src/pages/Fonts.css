@@ -116,7 +116,7 @@
   flex-wrap: nowrap;
   gap: 16px;
   margin-top: 48px;
-  margin-bottom: 24px;
+  margin-bottom: 40px; /* 40px gap between controls bar and search row */
 }
 
 .fcb-right-group {
@@ -228,7 +228,7 @@
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 0 !important;
   padding: 24px 0;
-  overflow: hidden;
+  overflow: visible;
   width: 100%;
   max-width: 100%;
   min-width: 0;
@@ -237,6 +237,8 @@
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
+  position: relative;
+  z-index: 1;
 }
 
 .font-card:last-child {
@@ -249,10 +251,14 @@
   align-items: center;
   width: 100%;
   flex-shrink: 0; /* Never compress — preview gets the remaining height */
+  position: relative;
+  z-index: 10;
 }
 
-.font-card:hover {
+.font-card:hover,
+.font-card.dropdown-open {
   padding: 24px 0;
+  z-index: 20;
 }
 
 [data-theme="dark"] .font-card {
@@ -260,7 +266,8 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-[data-theme="dark"] .font-card:hover {
+[data-theme="dark"] .font-card:hover,
+[data-theme="dark"] .font-card.dropdown-open {
   padding: 24px 0;
 }
 
@@ -597,7 +604,7 @@
   width: max-content;      /* shrink‑wrap the pill group */
   max-width: 100%;
   box-sizing: border-box;
-  overflow: hidden;
+  overflow: visible;       /* allow the dropdown panel to appear outside bounds */
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.25s ease;
@@ -636,11 +643,101 @@
   font-weight: 500;
   color: #111;
   gap: 6px;               /* match other pills */
+  cursor: pointer;
+  user-select: none;
 }
 
 .fchc-select-text {
   line-height: 32px;      /* vertically center text inside the 32px pill */
   display: inline-block;
+}
+
+/* ── Font style dropdown menu (inside fchc-bar) ── */
+.fchc-style-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  min-width: 220px;
+  max-height: 280px;
+  overflow-y: auto;
+  background: #ffffff !important;
+  border: 1px solid #0d0d0d;
+  border-radius: 8px;
+  box-shadow: none;
+  z-index: 200;
+  padding: 0;
+}
+
+.fchc-style-dropdown-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 9px 12px;
+  border: none;
+  background: transparent;
+  font-family: 'Urbanist', 'Outfit', sans-serif;
+  font-size: 14px;
+  color: #0d0d0d !important;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.12s ease, color 0.12s ease;
+  white-space: nowrap;
+}
+
+.fchc-style-dropdown-item:first-child {
+  border-top-left-radius: 7px;
+  border-top-right-radius: 7px;
+}
+
+.fchc-style-dropdown-item:last-child {
+  border-bottom-left-radius: 7px;
+  border-bottom-right-radius: 7px;
+}
+
+.fchc-style-dropdown-item:hover {
+  background: #0d0d0d;
+  color: #ffffff !important;
+}
+
+.fchc-style-dropdown-item.is-selected {
+  background: #0d0d0d;
+  color: #ffffff !important;
+  font-weight: 600;
+}
+
+.fchc-style-dropdown-weight {
+  font-size: 12px;
+  color: #999 !important;
+  font-weight: 400;
+  font-style: normal;
+  margin-left: 8px;
+  transition: color 0.12s ease;
+}
+
+.fchc-style-dropdown-item:hover .fchc-style-dropdown-weight,
+.fchc-style-dropdown-item.is-selected .fchc-style-dropdown-weight {
+  color: rgba(255, 255, 255, 0.55) !important;
+}
+
+/* Dark mode */
+[data-theme="dark"] .fchc-style-dropdown-menu {
+  background: #1a1a1a !important;
+  border-color: #333;
+}
+
+[data-theme="dark"] .fchc-style-dropdown-item {
+  color: #e0e0e0 !important;
+}
+
+[data-theme="dark"] .fchc-style-dropdown-item:hover {
+  background: #333;
+  color: #fff !important;
+}
+
+[data-theme="dark"] .fchc-style-dropdown-item.is-selected {
+  background: #444;
+  color: #fff !important;
 }
 
 /* ── Icon+Slider+Value control pill ── */
@@ -777,6 +874,7 @@
 /* ── Preview safe area ── */
 .font-card-preview {
   position: relative;
+  z-index: 1;
   display: flex;
   flex: 1 1 0;
   min-height: 0;              /* critical: allows flex child to shrink below content size */
@@ -1090,6 +1188,10 @@
   opacity: 1;
 }
 
+.grid-view .font-card:hover .font-card-name {
+  color: #fff; /* white on #000 hover bg — overrides base #111 */
+}
+
 /* Badge positioning */
 .grid-view .font-badge {
   position: absolute;
@@ -1143,7 +1245,7 @@
 
 .grid-view .preview-hover {
   display: none;
-  font-size: 26px !important; 
+  font-size: 26px !important;
   line-height: 1.3;
   text-align: center;
   align-self: center;
@@ -1154,11 +1256,13 @@
   max-height: 240px;
   overflow: hidden;
   white-space: normal;
+  color: #111; /* default: readable on light card bg */
 }
 
 .grid-view .font-card:hover .preview-hover {
   display: block;
   opacity: 1;
+  color: #fff !important; /* always white on black hover bg — overrides swatch locks */
 }
 
 /* Hover Buttons (Download & Save) */
