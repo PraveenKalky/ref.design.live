@@ -51,18 +51,6 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
   const [activeSwatch, setActiveSwatch] = useState(null);
   const [styleDropdownOpen, setStyleDropdownOpen] = useState(false);
   const [selectedStyleIndex, setSelectedStyleIndex] = useState(0);
-
-  // ── List-view–only states ──
-  const [weight, setWeight] = useState(400);
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [colorTheme, setColorTheme] = useState({ id: 'black', text: '#000000', bg: '#ffffff', swatchColor: '#000000' });
-  const swatches = [
-    { id: 'white', text: '#ffffff', bg: '#111111', swatchColor: '#ffffff', border: '1px solid #ccc' },
-    { id: 'black', text: '#000000', bg: '#ffffff', swatchColor: '#000000' },
-    { id: 'red',   text: '#e03d2f', bg: '#ffffff', swatchColor: '#e03d2f' },
-    { id: 'yellow',text: '#f5a623', bg: '#ffffff', swatchColor: '#f5a623' },
-  ];
-
   const previewSpanRef = useRef(null);
   const previewContainerRef = useRef(null);
   const styleDropdownRef = useRef(null);
@@ -79,14 +67,6 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
       setFontSize(globalFontSize);
     }
   }, [globalFontSize]);
-
-  // Init dark-mode colorTheme for list view
-  useEffect(() => {
-    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-    if (isDark) {
-      setColorTheme({ id: 'white', text: '#ffffff', bg: '#111111', swatchColor: '#ffffff', border: '1px solid #444' });
-    }
-  }, []);
 
   // Close style dropdown on outside click
   useEffect(() => {
@@ -105,8 +85,8 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
     : SPECIMEN_PHRASES[font.id % SPECIMEN_PHRASES.length];
 
   // Start large and shrink until text fits the container width
-  const MAX_SIZE = isGrid ? 48 : 180;
-  const MIN_SIZE = isGrid ? 14 : 20;
+  const MAX_SIZE = isGrid ? 148 : 180;
+  const MIN_SIZE = isGrid ? 40 : 20;
 
   useEffect(() => {
     const span = previewSpanRef.current;
@@ -159,78 +139,11 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
 
   const handleCardClick = (e) => {
     // Prevent navigation if the user is interacting with sliders or buttons
-    if (e.target.closest('.font-card-hover-controls') || e.target.closest('.list-item-meta-row') || e.target.closest('button')) {
+    if (e.target.closest('.font-card-hover-controls') || e.target.closest('button')) {
       return;
     }
     navigate(`/fonts/${font.id}`);
   };
-
-  // ── LIST VIEW ── early return with original editorial layout
-  if (viewMode === 'list') {
-    const previewText = globalText && globalText.trim() !== '' ? globalText : getShortDescription(font.name);
-    const isDarkText = colorTheme.text === '#ffffff';
-    return (
-      <div className="font-list-item" style={{ backgroundColor: colorTheme.bg }}>
-        <div className="list-item-meta-row" style={{ color: isDarkText ? '#ffffff' : '#111111' }}>
-          <div className="meta-left">
-            <div className="font-name-wrap" onClick={() => setIsDrawerOpen(!isDrawerOpen)}>
-              <span className="list-font-name">{font.name}</span>
-              {font.badge && (
-                <span className={`font-badge ${font.badge.toLowerCase()}`} style={{ marginLeft: 8 }}>{font.badge}</span>
-              )}
-              <ChevronDown
-                size={14}
-                className={`list-dropdown-indicator ${isDrawerOpen ? 'open' : ''}`}
-                style={{ transform: isDrawerOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s ease' }}
-              />
-            </div>
-            <button className="list-purchase-btn" onClick={(e) => { e.stopPropagation(); navigate(`/fonts/${font.id}`); }}>Purchase</button>
-            <a href={`/fonts/${font.id}`} className="list-link" style={{ color: isDarkText ? '#88888b' : '#66666d' }} onClick={(e) => e.stopPropagation()}>Project Page</a>
-            <button className="list-link-btn" style={{ color: isDarkText ? '#88888b' : '#66666d' }} onClick={(e) => { e.stopPropagation(); alert(`Downloading trial for ${font.name}...`); }}>Download Trial</button>
-          </div>
-
-          <div className="meta-right">
-            <div className="list-slider-group">
-              <span className="slider-icon-label" title="Weight"><span className="weight-symbol">+|||→</span></span>
-              <input type="range" min="100" max="900" step="100" value={weight} onChange={(e) => { e.stopPropagation(); setWeight(parseInt(e.target.value)); }} className="list-slider-input" />
-            </div>
-            <div className="list-slider-group">
-              <span className="slider-icon-label" title="Width"><span className="width-symbol">⇹</span></span>
-              <input type="range" min="-0.05" max="0.3" step="0.01" value={letterSpacing} onChange={(e) => { e.stopPropagation(); setLetterSpacing(parseFloat(e.target.value)); }} className="list-slider-input" />
-            </div>
-            <div className="list-slider-group">
-              <span className="slider-size-text">{fontSize}px</span>
-              <input type="range" min="32" max="256" value={fontSize} onChange={(e) => { e.stopPropagation(); setFontSize(parseInt(e.target.value)); }} className="list-slider-input" />
-            </div>
-            <div className="list-swatches">
-              {swatches.map(sw => (
-                <button key={sw.id} className={`swatch-circle ${colorTheme.id === sw.id ? 'active' : ''}`} style={{ backgroundColor: sw.swatchColor, border: sw.border || 'none' }} onClick={(e) => { e.stopPropagation(); setColorTheme(sw); }} />
-              ))}
-            </div>
-            <button className="list-action-btn" style={{ color: isDarkText ? '#ffffff' : '#111111', borderColor: isDarkText ? '#444' : '#ccc' }} onClick={(e) => { e.stopPropagation(); toggleSave && toggleSave(font.id); }} title="Save Font">
-              <BookmarkSimple size={18} weight={savedIds?.[font.id] ? 'fill' : 'regular'} />
-            </button>
-            <button className="list-action-btn" style={{ color: isDarkText ? '#ffffff' : '#111111', borderColor: isDarkText ? '#444' : '#ccc' }} onClick={(e) => { e.stopPropagation(); openLogin && openLogin(); }} title="Download Font">
-              <DownloadSimple size={18} />
-            </button>
-          </div>
-        </div>
-
-        {isDrawerOpen && (
-          <div className="list-item-drawer" style={{ color: isDarkText ? '#88888b' : '#66666d', borderColor: isDarkText ? '#222' : '#eee' }}>
-            <p className="drawer-desc"><strong>Description:</strong> {getShortDescription(font.name)}</p>
-            <p className="drawer-styles"><strong>Styles:</strong> {font.stylesInfo}</p>
-          </div>
-        )}
-
-        <div className="list-item-preview-area" onClick={handleCardClick} style={{ color: colorTheme.text }}>
-          <span className="list-preview-text" style={{ fontFamily: font.googleFont, fontSize: `${fontSize}px`, fontWeight: weight, letterSpacing: `${letterSpacing}em` }}>
-            {previewText}
-          </span>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div 
@@ -244,11 +157,20 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
       {/* ── ROW 1: Meta row — always visible, never moves ── */}
       <div className="font-card-top">
         <div className="card-top-left">
-          <h3 className="font-card-name">{font.name}</h3>
-          {font.badge && (
-            <span className={`font-badge ${font.badge.toLowerCase()}`}>
-              {font.badge}
-            </span>
+          <div className="font-name-wrap">
+            <h3 className="font-card-name">{font.name}</h3>
+            {font.badge && (
+              <span className={`font-badge ${font.badge.toLowerCase()}`}>
+                {font.badge}
+              </span>
+            )}
+          </div>
+          {viewMode === 'grid' && font.stylesInfo && (
+            <div className="font-card-styles-info">
+              {font.stylesInfo.split('\n').slice(0, 2).map((line, idx) => (
+                <div key={idx} className="metadata-line">{line}</div>
+              ))}
+            </div>
           )}
         </div>
 
@@ -337,52 +259,26 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
           )}
         </div>
 
-        <div className="card-top-right">
-          {/* Color swatches */}
-          <div className="font-card-color-swatches" onClick={(e) => e.stopPropagation()}>
-            {PREVIEW_COLORS.map((c) => (
-              <button
-                key={c.id}
-                className={`color-swatch${activeSwatch?.id === c.id ? ' color-swatch--active' : ''}`}
-                style={{ backgroundColor: c.value, border: `1px solid ${c.border}` }}
-                onClick={(e) => { e.stopPropagation(); setActiveSwatch(activeSwatch?.id === c.id ? null : c); }}
-                aria-label={`Preview color ${c.id}`}
-                title={c.id}
-              />
-            ))}
+        {viewMode === 'list' && font.stylesInfo && (
+          <div className="card-top-metadata">
+            {font.stylesInfo.replace(/\s*[+\n]\s*/g, ' • ')}
           </div>
-          {isGrid ? (
-            <>
-              <button
-                className="font-check-out-btn"
-                title="Download"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <DownloadSimple size={16} weight="regular" /> Download
-              </button>
-              <button
-                className={`font-check-out-btn${savedIds?.[font.id] ? ' saved' : ''}`}
-                onClick={(e) => { e.stopPropagation(); toggleSave?.(font.id); }}
-                title={savedIds?.[font.id] ? 'Unsave' : 'Save'}
-              >
-                <BookmarkSimple size={16} weight={savedIds?.[font.id] ? "fill" : "regular"} />
-                {savedIds?.[font.id] ? 'Saved' : 'Save'}
-              </button>
-            </>
-          ) : (
-            <>
-              <button className="font-card-action-btn icon-only" title="Download">
-                <DownloadSimple size={16} weight="regular" />
-              </button>
-              <button
-                className={`font-card-action-btn icon-only font-card-save-btn${savedIds?.[font.id] ? ' saved' : ''}`}
-                onClick={(e) => { e.stopPropagation(); toggleSave?.(font.id); }}
-                title={savedIds?.[font.id] ? 'Unsave' : 'Save'}
-              >
-                <BookmarkSimple size={16} weight={savedIds?.[font.id] ? "fill" : "regular"} />
-              </button>
-            </>
-          )}
+        )}
+
+        <div className="card-top-right">
+
+          <button className="font-card-action-btn icon-only" title="Download">
+            <DownloadSimple size={16} weight="regular" />
+            <span className="btn-text">Download</span>
+          </button>
+          <button
+            className={`font-card-action-btn icon-only font-card-save-btn${savedIds?.[font.id] ? ' saved' : ''}`}
+            onClick={(e) => { e.stopPropagation(); toggleSave?.(font.id); }}
+            title={savedIds?.[font.id] ? 'Unsave' : 'Save'}
+          >
+            <BookmarkSimple size={16} weight={savedIds?.[font.id] ? "fill" : "regular"} />
+            <span className="btn-text">{savedIds?.[font.id] ? 'Saved' : 'Save'}</span>
+          </button>
         </div>
       </div>
 
@@ -397,10 +293,16 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
             lineHeight: 1,
           }}
         >
-          {textToShow}
+          {viewMode === 'grid' 
+            ? (globalText && globalText.trim() !== '' ? globalText : "Aa")
+            : textToShow
+          }
         </span>
         <span className="preview-hover" style={{ fontSize: `${fontSize}px`, letterSpacing: `${letterSpacing}em`, lineHeight: lineHeight, fontFamily: font.googleFont }}>
-          {globalText && globalText.trim() !== '' ? globalText : "Six javelins thrown by the quick savages whizzed forty paces beyond the mark."}
+          {globalText && globalText.trim() !== '' 
+            ? globalText 
+            : (viewMode === 'grid' ? "Aa" : "Six javelins thrown by the quick savages whizzed forty paces beyond the mark.")
+          }
         </span>
       </div>
     </div>

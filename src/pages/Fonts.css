@@ -273,9 +273,64 @@
 
 .card-top-left {
   display: flex;
-  align-items: center;
-  justify-content: flex-start;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
   flex: 0 0 auto;
+  gap: 8px;
+}
+
+.font-name-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.font-card-styles-info {
+  font-size: 13px;
+  line-height: 1.5;
+  color: #888;
+  white-space: pre-line;
+  text-align: left;
+}
+
+.card-top-metadata {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 14px;
+  color: #666;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+  flex: 1 1 0%;
+  min-width: 0;
+  min-height: 48px;
+  padding: 8px 0;
+  margin-left: 48px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.metadata-line {
+  margin: 0;
+}
+
+[data-theme="dark"] .font-card-styles-info {
+  color: #888;
+}
+[data-theme="dark"] .card-top-metadata {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.font-card:hover .font-card-styles-info {
+  color: #aaa;
+}
+.font-card:hover .card-top-metadata,
+.font-card.dropdown-open .card-top-metadata {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
 
 .font-card-name {
@@ -319,15 +374,15 @@
 
 .card-top-center {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  position: relative;
-  flex: 1 1 auto;
+  flex: 1 1 0%;
   min-width: 0;          /* allow shrinking past content size */
   overflow: visible;    /* allow pills to be fully visible */
   max-width: 100%;       /* respect column width */
   min-height: 48px;      /* enough height for 32px pills + padding */
   padding: 8px 0;        /* vertical spacing for pills */
+  margin-left: 48px;
 }
 
 .font-card-desc {
@@ -336,6 +391,8 @@
   transition: opacity 0.25s ease;
   white-space: nowrap;
   margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* ── Swatch Background Layout & Text Overrides ── */
@@ -456,6 +513,7 @@
   justify-content: flex-end;
   gap: 12px;
   flex: 0 0 auto;
+  margin-left: 48px;
 }
 
 /* ── Color swatches ── */
@@ -531,6 +589,10 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+}
+
+.font-card-action-btn .btn-text {
+  display: none;
 }
 
 .font-card-action-btn.icon-only::after {
@@ -639,7 +701,7 @@
 /* ── Style dropdown ── */
 .fchc-select {
   font-family: 'Urbanist', sans-serif;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 500;
   color: #111;
   gap: 6px;               /* match other pills */
@@ -750,7 +812,7 @@
 
 .fchc-label {
   font-family: 'Urbanist', sans-serif;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 500;
   color: #111;
   flex-shrink: 0;
@@ -758,7 +820,7 @@
 
 .fchc-value {
   font-family: 'Urbanist', sans-serif;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 500;
   color: #111;
   min-width: 32px;
@@ -1165,11 +1227,10 @@
 
 .grid-view .card-top-left {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   gap: 8px;
-  align-items: center;
+  align-items: flex-start;
   text-align: left;
-  flex-wrap: nowrap;
 }
 
 .grid-view .font-card-name {
@@ -1178,14 +1239,14 @@
   margin-bottom: 0;
 }
 
-.grid-view .font-card-styles {
+.grid-view .font-card-styles-info {
   font-size: 13px;
   color: #888;
   white-space: pre-line;
   text-align: left;
 }
 
-.grid-view .font-card:hover .font-card-styles {
+.grid-view .font-card:hover .font-card-styles-info {
   color: #ccc;
   opacity: 1;
 }
@@ -1247,12 +1308,12 @@
 
 .grid-view .preview-hover {
   display: none;
-  font-size: 26px !important;
-  line-height: 1.3;
+  font-size: 148px !important;
+  line-height: 1;
   text-align: center;
   align-self: center;
   padding: 0 16px;
-  margin-bottom: 40px; /* Space for the absolute buttons */
+  margin-bottom: 48px; /* Space for the absolute buttons */
   word-wrap: break-word;
   overflow-wrap: break-word;
   max-height: 240px;
@@ -1270,6 +1331,7 @@
 /* Hover Buttons (Download & Save) */
 .grid-view .card-top-right {
   display: none;
+  margin-left: 0;
 }
 
 /* Hide color swatches in grid hover — only pill buttons show */
@@ -1285,7 +1347,26 @@
   right: 24px;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
+  margin-left: 0;
+}
+
+.grid-view .font-card:hover .font-card-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  width: auto;
+  padding: 0 16px;
+  height: 40px !important;
+  border-radius: 9999px;
+}
+
+.grid-view .font-card:hover .font-card-action-btn .btn-text {
+  display: inline-block;
+  margin-left: 8px;
+  font-size: 13px;
+  font-weight: 600;
 }
 
 /* Full-width pill buttons in card hover */
