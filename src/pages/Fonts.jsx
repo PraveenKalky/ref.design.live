@@ -82,11 +82,11 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
   const isGrid = viewMode === 'grid';
   const textToShow = globalText && globalText.trim() !== '' 
     ? globalText 
-    : "Aa";
+    : SPECIMEN_PHRASES[font.id % SPECIMEN_PHRASES.length];
 
   // Start large and shrink until text fits the container width
-  const MAX_SIZE = isGrid ? 48 : 180;
-  const MIN_SIZE = isGrid ? 14 : 20;
+  const MAX_SIZE = isGrid ? 148 : 180;
+  const MIN_SIZE = isGrid ? 40 : 20;
 
   useEffect(() => {
     const span = previewSpanRef.current;
@@ -157,7 +157,7 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
       {/* ── ROW 1: Meta row — always visible, never moves ── */}
       <div className="font-card-top">
         <div className="card-top-left">
-          <div className="font-name-badge-row">
+          <div className="font-name-wrap">
             <h3 className="font-card-name">{font.name}</h3>
             {font.badge && (
               <span className={`font-badge ${font.badge.toLowerCase()}`}>
@@ -165,8 +165,12 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
               </span>
             )}
           </div>
-          {font.stylesInfo && (
-            <p className="font-card-styles">{font.stylesInfo}</p>
+          {viewMode === 'grid' && font.stylesInfo && (
+            <div className="font-card-styles-info">
+              {font.stylesInfo.split('\n').slice(0, 2).map((line, idx) => (
+                <div key={idx} className="metadata-line">{line}</div>
+              ))}
+            </div>
           )}
         </div>
 
@@ -255,52 +259,26 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
           )}
         </div>
 
-        <div className="card-top-right">
-          {/* Color swatches */}
-          <div className="font-card-color-swatches" onClick={(e) => e.stopPropagation()}>
-            {PREVIEW_COLORS.map((c) => (
-              <button
-                key={c.id}
-                className={`color-swatch${activeSwatch?.id === c.id ? ' color-swatch--active' : ''}`}
-                style={{ backgroundColor: c.value, border: `1px solid ${c.border}` }}
-                onClick={(e) => { e.stopPropagation(); setActiveSwatch(activeSwatch?.id === c.id ? null : c); }}
-                aria-label={`Preview color ${c.id}`}
-                title={c.id}
-              />
-            ))}
+        {viewMode === 'list' && font.stylesInfo && (
+          <div className="card-top-metadata">
+            {font.stylesInfo.replace(/\s*[+\n]\s*/g, ' • ')}
           </div>
-          {isGrid ? (
-            <>
-              <button
-                className="font-check-out-btn"
-                title="Download"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <DownloadSimple size={16} weight="regular" /> Download
-              </button>
-              <button
-                className={`font-check-out-btn${savedIds?.[font.id] ? ' saved' : ''}`}
-                onClick={(e) => { e.stopPropagation(); toggleSave?.(font.id); }}
-                title={savedIds?.[font.id] ? 'Unsave' : 'Save'}
-              >
-                <BookmarkSimple size={16} weight={savedIds?.[font.id] ? "fill" : "regular"} />
-                {savedIds?.[font.id] ? 'Saved' : 'Save'}
-              </button>
-            </>
-          ) : (
-            <>
-              <button className="font-card-action-btn icon-only" title="Download">
-                <DownloadSimple size={16} weight="regular" />
-              </button>
-              <button
-                className={`font-card-action-btn icon-only font-card-save-btn${savedIds?.[font.id] ? ' saved' : ''}`}
-                onClick={(e) => { e.stopPropagation(); toggleSave?.(font.id); }}
-                title={savedIds?.[font.id] ? 'Unsave' : 'Save'}
-              >
-                <BookmarkSimple size={16} weight={savedIds?.[font.id] ? "fill" : "regular"} />
-              </button>
-            </>
-          )}
+        )}
+
+        <div className="card-top-right">
+
+          <button className="font-card-action-btn icon-only" title="Download">
+            <DownloadSimple size={16} weight="regular" />
+            <span className="btn-text">Download</span>
+          </button>
+          <button
+            className={`font-card-action-btn icon-only font-card-save-btn${savedIds?.[font.id] ? ' saved' : ''}`}
+            onClick={(e) => { e.stopPropagation(); toggleSave?.(font.id); }}
+            title={savedIds?.[font.id] ? 'Unsave' : 'Save'}
+          >
+            <BookmarkSimple size={16} weight={savedIds?.[font.id] ? "fill" : "regular"} />
+            <span className="btn-text">{savedIds?.[font.id] ? 'Saved' : 'Save'}</span>
+          </button>
         </div>
       </div>
 
@@ -315,10 +293,16 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
             lineHeight: 1,
           }}
         >
-          {textToShow}
+          {viewMode === 'grid' 
+            ? (globalText && globalText.trim() !== '' ? globalText : "Aa")
+            : textToShow
+          }
         </span>
         <span className="preview-hover" style={{ fontSize: `${fontSize}px`, letterSpacing: `${letterSpacing}em`, lineHeight: lineHeight, fontFamily: font.googleFont }}>
-          {globalText && globalText.trim() !== '' ? globalText : "Six javelins thrown by the quick savages whizzed forty paces beyond the mark."}
+          {globalText && globalText.trim() !== '' 
+            ? globalText 
+            : (viewMode === 'grid' ? "Aa" : "Six javelins thrown by the quick savages whizzed forty paces beyond the mark.")
+          }
         </span>
       </div>
     </div>
