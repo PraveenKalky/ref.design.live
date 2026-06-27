@@ -82,7 +82,7 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
   const isGrid = viewMode === 'grid';
   const textToShow = globalText && globalText.trim() !== '' 
     ? globalText 
-    : SPECIMEN_PHRASES[font.id % SPECIMEN_PHRASES.length];
+    : "Aa";
 
   // Start large and shrink until text fits the container width
   const MAX_SIZE = isGrid ? 48 : 180;
@@ -157,11 +157,16 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
       {/* ── ROW 1: Meta row — always visible, never moves ── */}
       <div className="font-card-top">
         <div className="card-top-left">
-          <h3 className="font-card-name">{font.name}</h3>
-          {font.badge && (
-            <span className={`font-badge ${font.badge.toLowerCase()}`}>
-              {font.badge}
-            </span>
+          <div className="font-name-badge-row">
+            <h3 className="font-card-name">{font.name}</h3>
+            {font.badge && (
+              <span className={`font-badge ${font.badge.toLowerCase()}`}>
+                {font.badge}
+              </span>
+            )}
+          </div>
+          {font.stylesInfo && (
+            <p className="font-card-styles">{font.stylesInfo}</p>
           )}
         </div>
 
@@ -264,16 +269,38 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
               />
             ))}
           </div>
-          <button className="font-card-action-btn icon-only" title="Download">
-            <DownloadSimple size={16} weight="regular" />
-          </button>
-          <button
-            className={`font-card-action-btn icon-only font-card-save-btn${savedIds?.[font.id] ? ' saved' : ''}`}
-            onClick={(e) => { e.stopPropagation(); toggleSave?.(font.id); }}
-            title={savedIds?.[font.id] ? 'Unsave' : 'Save'}
-          >
-            <BookmarkSimple size={16} weight={savedIds?.[font.id] ? "fill" : "regular"} />
-          </button>
+          {isGrid ? (
+            <>
+              <button
+                className="font-check-out-btn"
+                title="Download"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <DownloadSimple size={16} weight="regular" /> Download
+              </button>
+              <button
+                className={`font-check-out-btn${savedIds?.[font.id] ? ' saved' : ''}`}
+                onClick={(e) => { e.stopPropagation(); toggleSave?.(font.id); }}
+                title={savedIds?.[font.id] ? 'Unsave' : 'Save'}
+              >
+                <BookmarkSimple size={16} weight={savedIds?.[font.id] ? "fill" : "regular"} />
+                {savedIds?.[font.id] ? 'Saved' : 'Save'}
+              </button>
+            </>
+          ) : (
+            <>
+              <button className="font-card-action-btn icon-only" title="Download">
+                <DownloadSimple size={16} weight="regular" />
+              </button>
+              <button
+                className={`font-card-action-btn icon-only font-card-save-btn${savedIds?.[font.id] ? ' saved' : ''}`}
+                onClick={(e) => { e.stopPropagation(); toggleSave?.(font.id); }}
+                title={savedIds?.[font.id] ? 'Unsave' : 'Save'}
+              >
+                <BookmarkSimple size={16} weight={savedIds?.[font.id] ? "fill" : "regular"} />
+              </button>
+            </>
+          )}
         </div>
       </div>
 
