@@ -51,6 +51,18 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
   const [activeSwatch, setActiveSwatch] = useState(null);
   const [styleDropdownOpen, setStyleDropdownOpen] = useState(false);
   const [selectedStyleIndex, setSelectedStyleIndex] = useState(0);
+  
+  // List view specific states
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [weight, setWeight] = useState(400);
+  const [colorTheme, setColorTheme] = useState({ id: 'black', text: '#000000', bg: '#ffffff', swatchColor: '#000000' });
+  
+  const swatches = [
+    { id: 'white', text: '#ffffff', bg: '#111111', swatchColor: '#ffffff', border: '1px solid #ccc' },
+    { id: 'black', text: '#000000', bg: '#ffffff', swatchColor: '#000000' },
+    { id: 'red', text: '#e03d2f', bg: '#ffffff', swatchColor: '#e03d2f' },
+    { id: 'yellow', text: '#f5a623', bg: '#ffffff', swatchColor: '#f5a623' }
+  ];
   const previewSpanRef = useRef(null);
   const previewContainerRef = useRef(null);
   const styleDropdownRef = useRef(null);
@@ -67,6 +79,13 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
       setFontSize(globalFontSize);
     }
   }, [globalFontSize]);
+
+  useEffect(() => {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    if (isDark) {
+      setColorTheme({ id: 'white', text: '#ffffff', bg: '#111111', swatchColor: '#ffffff', border: '1px solid #444' });
+    }
+  }, []);
 
   // Close style dropdown on outside click
   useEffect(() => {
@@ -139,11 +158,159 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
 
   const handleCardClick = (e) => {
     // Prevent navigation if the user is interacting with sliders or buttons
-    if (e.target.closest('.font-card-hover-controls') || e.target.closest('button')) {
+    if (e.target.closest('.font-card-hover-controls') || e.target.closest('.list-item-meta-row') || e.target.closest('button')) {
       return;
     }
     navigate(`/fonts/${font.id}`);
   };
+
+  if (viewMode === 'list') {
+    const previewText = globalText && globalText.trim() !== '' ? globalText : getShortDescription(font.name);
+    const isDarkText = colorTheme.text === '#ffffff';
+
+    return (
+      <div 
+        className="font-list-item" 
+        style={{ backgroundColor: colorTheme.bg }}
+      >
+        <div className="list-item-meta-row" style={{ color: isDarkText ? '#ffffff' : '#111111' }}>
+          <div className="meta-left">
+            <div className="list-name-and-styles" style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+              <div className="font-name-wrap" onClick={() => setIsDrawerOpen(!isDrawerOpen)}>
+                <span className="list-font-name">{font.name}</span>
+                <ChevronDown 
+                  size={14} 
+                  className={`list-dropdown-indicator ${isDrawerOpen ? 'open' : ''}`}
+                  style={{ transform: isDrawerOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s ease' }}
+                />
+              </div>
+              {font.stylesInfo && (
+                <p className="font-card-styles" style={{ margin: 0, fontSize: '13px', color: '#888', whiteSpace: 'pre-line', textAlign: 'left', lineHeight: 1.4 }}>{font.stylesInfo}</p>
+              )}
+            </div>
+            <button className="list-purchase-btn" onClick={(e) => { e.stopPropagation(); navigate(`/fonts/${font.id}`); }}>
+              Purchase
+            </button>
+            <a href={`/fonts/${font.id}`} className="list-link" style={{ color: isDarkText ? '#88888b' : '#66666d' }} onClick={(e) => e.stopPropagation()}>
+              Project Page
+            </a>
+            <button className="list-link-btn" style={{ color: isDarkText ? '#88888b' : '#66666d' }} onClick={(e) => { e.stopPropagation(); alert(`Downloading trial for ${font.name}...`); }}>
+              Download Trial
+            </button>
+          </div>
+
+          <div className="meta-right">
+            {/* Weight Slider */}
+            <div className="list-slider-group">
+              <span className="slider-icon-label" title="Weight">
+                <span className="weight-symbol">+|||→</span>
+              </span>
+              <input 
+                type="range" 
+                min="100" 
+                max="900" 
+                step="100"
+                value={weight} 
+                onChange={(e) => { e.stopPropagation(); setWeight(parseInt(e.target.value)); }}
+                className="list-slider-input" 
+              />
+            </div>
+
+            {/* Width Slider (Tracking) */}
+            <div className="list-slider-group">
+              <span className="slider-icon-label" title="Width">
+                <span className="width-symbol">⇹</span>
+              </span>
+              <input 
+                type="range" 
+                min="-0.05" 
+                max="0.3" 
+                step="0.01"
+                value={letterSpacing} 
+                onChange={(e) => { e.stopPropagation(); setLetterSpacing(parseFloat(e.target.value)); }}
+                className="list-slider-input" 
+              />
+            </div>
+
+            {/* Font Size Slider */}
+            <div className="list-slider-group">
+              <span className="slider-size-text">{fontSize}px</span>
+              <input 
+                type="range" 
+                min="32" 
+                max="256" 
+                value={fontSize} 
+                onChange={(e) => { e.stopPropagation(); setFontSize(parseInt(e.target.value)); }}
+                className="list-slider-input" 
+              />
+            </div>
+
+            {/* Color Swatches */}
+            <div className="list-swatches">
+              {swatches.map(sw => (
+                <button 
+                  key={sw.id}
+                  className={`swatch-circle ${colorTheme.id === sw.id ? 'active' : ''}`}
+                  style={{ 
+                    backgroundColor: sw.swatchColor, 
+                    border: sw.border || 'none'
+                  }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setColorTheme(sw);
+                  }}
+                />
+              ))}
+            </div>
+
+            {/* Action Buttons */}
+            <button 
+              className="list-action-btn" 
+              style={{ color: isDarkText ? '#ffffff' : '#111111', borderColor: isDarkText ? '#444' : '#ccc' }}
+              onClick={(e) => { e.stopPropagation(); toggleSave(font.id); }}
+              title="Save Font"
+            >
+              <BookmarkSimple size={18} weight={savedIds?.[font.id] ? "fill" : "regular"} />
+            </button>
+            <button 
+              className="list-action-btn" 
+              style={{ color: isDarkText ? '#ffffff' : '#111111', borderColor: isDarkText ? '#444' : '#ccc' }}
+              onClick={(e) => { e.stopPropagation(); openLogin && openLogin(); }}
+              title="Download Font"
+            >
+              <DownloadSimple size={18} />
+            </button>
+          </div>
+        </div>
+
+        {/* Expandable Drawer (only description now, styles are above) */}
+        {isDrawerOpen && (
+          <div className="list-item-drawer" style={{ color: isDarkText ? '#88888b' : '#66666d', borderColor: isDarkText ? '#222' : '#eee' }}>
+            <p className="drawer-desc"><strong>Description:</strong> {getShortDescription(font.name)}</p>
+          </div>
+        )}
+
+        {/* Preview Area */}
+        <div 
+          className="list-item-preview-area"
+          onClick={handleCardClick}
+          style={{ color: colorTheme.text }}
+        >
+          <span 
+            className="list-preview-text"
+            style={{ 
+              fontFamily: font.googleFont,
+              fontSize: `${fontSize}px`,
+              fontWeight: weight,
+              letterSpacing: `${letterSpacing}em`
+            }}
+          >
+            {previewText}
+          </span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div 
