@@ -264,16 +264,38 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
               />
             ))}
           </div>
-          <button className="font-card-action-btn icon-only" title="Download">
-            <DownloadSimple size={16} weight="regular" />
-          </button>
-          <button
-            className={`font-card-action-btn icon-only font-card-save-btn${savedIds?.[font.id] ? ' saved' : ''}`}
-            onClick={(e) => { e.stopPropagation(); toggleSave?.(font.id); }}
-            title={savedIds?.[font.id] ? 'Unsave' : 'Save'}
-          >
-            <BookmarkSimple size={16} weight={savedIds?.[font.id] ? "fill" : "regular"} />
-          </button>
+          {isGrid ? (
+            <>
+              <button
+                className="font-check-out-btn"
+                title="Download"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <DownloadSimple size={16} weight="regular" /> Download
+              </button>
+              <button
+                className={`font-check-out-btn${savedIds?.[font.id] ? ' saved' : ''}`}
+                onClick={(e) => { e.stopPropagation(); toggleSave?.(font.id); }}
+                title={savedIds?.[font.id] ? 'Unsave' : 'Save'}
+              >
+                <BookmarkSimple size={16} weight={savedIds?.[font.id] ? "fill" : "regular"} />
+                {savedIds?.[font.id] ? 'Saved' : 'Save'}
+              </button>
+            </>
+          ) : (
+            <>
+              <button className="font-card-action-btn icon-only" title="Download">
+                <DownloadSimple size={16} weight="regular" />
+              </button>
+              <button
+                className={`font-card-action-btn icon-only font-card-save-btn${savedIds?.[font.id] ? ' saved' : ''}`}
+                onClick={(e) => { e.stopPropagation(); toggleSave?.(font.id); }}
+                title={savedIds?.[font.id] ? 'Unsave' : 'Save'}
+              >
+                <BookmarkSimple size={16} weight={savedIds?.[font.id] ? "fill" : "regular"} />
+              </button>
+            </>
+          )}
         </div>
       </div>
 

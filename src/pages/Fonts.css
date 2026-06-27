@@ -1160,14 +1160,16 @@
 /* Adjust card top layout */
 .grid-view .font-card-top {
   display: block;
+  position: static; /* Allow card-top-right absolute to resolve to font-card */
 }
 
 .grid-view .card-top-left {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 8px;
-  align-items: flex-start;
+  align-items: center;
   text-align: left;
+  flex-wrap: nowrap;
 }
 
 .grid-view .font-card-name {
@@ -1192,17 +1194,17 @@
   color: #fff; /* white on #000 hover bg — overrides base #111 */
 }
 
-/* Badge positioning */
+/* Badge positioning — inline beside font name */
 .grid-view .font-badge {
-  position: absolute;
-  top: 26px; /* Vertically align with the 24px text */
-  right: 24px;
+  position: static;
   margin: 0;
   font-size: 11px;
   padding: 4px 12px;
   border-radius: 12px;
   z-index: 2;
   font-weight: 600;
+  flex-shrink: 0;
+  align-self: center;
 }
 
 .grid-view .font-badge.update {
@@ -1270,39 +1272,59 @@
   display: none;
 }
 
+/* Hide color swatches in grid hover — only pill buttons show */
+.grid-view .font-card:hover .font-card-color-swatches {
+  display: none;
+}
+
 .grid-view .font-card:hover .card-top-right {
   display: flex;
   position: absolute;
   bottom: 24px;
   left: 24px;
   right: 24px;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
+/* Full-width pill buttons in card hover */
 .grid-view .font-card:hover .font-check-out-btn {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 8px;
   background: #fff;
   color: #000;
   border: none;
   border-radius: 9999px;
-  padding: 0 24px;
-  height: 48px;
-  font-size: 16px;
+  padding: 0 20px;
+  height: 44px;
+  font-family: 'Urbanist', sans-serif;
+  font-size: 14px;
   font-weight: 600;
-  flex: 1; /* Expand to fill available space */
+  flex: 1;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+  white-space: nowrap;
 }
 
-.grid-view .font-card:hover .font-check-out-btn.icon-only {
-  padding: 0;
-  flex: 0 0 48px;
-  width: 48px;
+.grid-view .font-card:hover .font-check-out-btn:hover {
+  background: #f0f0f0;
+  color: #000;
+}
+
+/* Save button saved state */
+.grid-view .font-card:hover .font-check-out-btn.saved {
+  background: #fff;
+  color: #16a34a;
 }
 
 [data-theme="dark"] .grid-view .font-card:hover .font-check-out-btn {
   background: #fff;
   color: #000;
+}
+
+[data-theme="dark"] .grid-view .font-card:hover .font-check-out-btn:hover {
+  background: #e8e8e8;
 }
