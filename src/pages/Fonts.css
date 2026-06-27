@@ -273,9 +273,17 @@
 
 .card-top-left {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   justify-content: flex-start;
   flex: 0 0 auto;
+  gap: 4px;
+}
+
+.font-name-badge-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .font-card-name {
@@ -495,9 +503,9 @@
   font-size: 14px;
   color: #666;
   margin: 0;
-  margin-right: 8px;
   transition: opacity 0.25s ease, color 0.25s ease;
-  white-space: nowrap;
+  white-space: pre-line;
+  line-height: 1.4;
 }
 
 .font-card:hover .font-card-styles {
@@ -1165,11 +1173,10 @@
 
 .grid-view .card-top-left {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   gap: 8px;
-  align-items: center;
+  align-items: flex-start;
   text-align: left;
-  flex-wrap: nowrap;
 }
 
 .grid-view .font-card-name {

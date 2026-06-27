@@ -82,7 +82,7 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
   const isGrid = viewMode === 'grid';
   const textToShow = globalText && globalText.trim() !== '' 
     ? globalText 
-    : SPECIMEN_PHRASES[font.id % SPECIMEN_PHRASES.length];
+    : "Aa";
 
   // Start large and shrink until text fits the container width
   const MAX_SIZE = isGrid ? 48 : 180;
@@ -157,11 +157,16 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
       {/* ── ROW 1: Meta row — always visible, never moves ── */}
       <div className="font-card-top">
         <div className="card-top-left">
-          <h3 className="font-card-name">{font.name}</h3>
-          {font.badge && (
-            <span className={`font-badge ${font.badge.toLowerCase()}`}>
-              {font.badge}
-            </span>
+          <div className="font-name-badge-row">
+            <h3 className="font-card-name">{font.name}</h3>
+            {font.badge && (
+              <span className={`font-badge ${font.badge.toLowerCase()}`}>
+                {font.badge}
+              </span>
+            )}
+          </div>
+          {font.stylesInfo && (
+            <p className="font-card-styles">{font.stylesInfo}</p>
           )}
         </div>
 
