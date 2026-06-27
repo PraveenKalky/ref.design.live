@@ -10,12 +10,24 @@ import { Routes, Route } from 'react-router-dom';
 import Fonts from './pages/Fonts';
 import FontDetails from './pages/font-details/FontDetails';
 import SearchResults from './pages/search-results/SearchResults';
+import Preloader from './components/preloader/Preloader';
 
 function App() {
+  const [showLoader, setShowLoader] = useState(true);
   const [savedItems, setSavedItems] = useState(() => {
     const saved = localStorage.getItem('dv-saved-items');
     return saved ? JSON.parse(saved) : {};
   });
+
+  useEffect(() => {
+    if (showLoader) {
+      document.body.style.overflow = 'hidden';
+      document.body.style.height = '100vh';
+    } else {
+      document.body.style.overflow = '';
+      document.body.style.height = '';
+    }
+  }, [showLoader]);
 
   useEffect(() => {
     localStorage.setItem('dv-saved-items', JSON.stringify(savedItems));
@@ -56,6 +68,7 @@ function App() {
 
   return (
     <div className="app-container">
+      {showLoader && <Preloader onComplete={() => setShowLoader(false)} />}
       <Navbar savedCount={savedCount} theme={theme} toggleTheme={toggleTheme} />
       <Routes>
         <Route path="/" element={
