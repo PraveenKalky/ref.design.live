@@ -106,16 +106,6 @@
   text-decoration: none;
 }
 
-.notfound-card-anchor::before {
-  content: "";
-  position: absolute;
-  inset: -2px;
-  border-radius: inherit;
-  background: currentColor;
-  opacity: 0.12;
-  filter: blur(8px);
-  transform: translateY(6px);
-}
 
 .notfound-card-img {
   width: 100%;
@@ -123,8 +113,7 @@
   object-fit: cover;
   border-radius: 0;
   display: block;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), filter 0.35s ease;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), filter 0.35s ease;
 }
 
 .notfound-card-anchor:hover {
@@ -133,7 +122,6 @@
 
 .notfound-card-anchor:hover .notfound-card-img {
   transform: scale(1.6) rotate(var(--r));
-  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.4);
   filter: saturate(1.15) contrast(1.05);
 }
 
@@ -181,7 +169,7 @@
   appearance: none;
   height: 24px;
   width: 24px;
-  border-radius: 0;
+  border-radius: 50%;
   background: #ffffff;
   border: 4px solid currentColor;
   margin-top: -9px;
@@ -209,7 +197,7 @@
 .notfound-color-range::-moz-range-thumb {
   height: 24px;
   width: 24px;
-  border-radius: 0;
+  border-radius: 50%;
   background: #ffffff;
   border: 4px solid currentColor;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);

@@ -74,21 +74,30 @@ const NotFound = () => {
       const collage = collageRef.current;
       if (!collage) return;
       const rect = collage.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width - 0.5;
-      const y = (e.clientY - rect.top) / rect.height - 0.5;
-      
+      const normX = (e.clientX - rect.left - rect.width / 2) / (rect.width / 2 || 1);
+      const normY = (e.clientY - rect.top - rect.height / 2) / (rect.height / 2 || 1);
+
       // Select all card anchors directly to ensure no tile is ever skipped
       const cards = collage.querySelectorAll('.notfound-card-anchor');
-      cards.forEach((card) => {
-        // Use a single uniform depth so all tiles move together as one unified interactive object
-        card.style.transform = `translate3d(${x * 12}px, ${y * 12}px, 0)`;
+      cards.forEach((card, idx) => {
+        // Guarantee noticeable base movement (10px) + independent parallax depth
+        const depth = 1 + (idx % 4) * 0.25;
+        const x = normX * 10 * depth;
+        const y = normY * 10 * depth;
+        card.style.transform = `translate3d(${x}px, ${y}px, 0)`;
       });
 
-      // Apply exact same parallax to the grey SVG layer so they remain aligned
-      const svg = collage.querySelector('.notfound-grey-svg-layer');
-      if (svg) {
-        svg.style.transform = `translate3d(${x * 12}px, ${y * 12}px, 0)`;
-      }
+      // Apply exact same independent parallax to the grey SVG layer rects so they remain aligned
+      const svgRects = collage.querySelectorAll('.notfound-grey-svg-layer rect');
+      svgRects.forEach((rectNode, idx) => {
+        const depth = 1 + (idx % 4) * 0.25;
+        const x = normX * 10 * depth;
+        const y = normY * 10 * depth;
+        // Convert screen pixels to SVG user units for 100x100 viewBox
+        const userX = x / (rect.width / 100);
+        const userY = y / (rect.height / 100);
+        rectNode.style.transform = `translate(${userX}px, ${userY}px)`;
+      });
     };
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
@@ -109,6 +118,17 @@ const NotFound = () => {
             </span>.
           </p>
         </section>
+
+        {/* CTA Buttons */}
+        <div className="notfound-cta-container">
+          <button onClick={() => nav('/')} className="notfound-back-home">
+            <ArrowLeft size={16} />
+            Back to home
+          </button>
+          <button onClick={() => window.open('https://t.me/praveenequicom', '_blank')} className="notfound-telegram">
+            Telegram Me
+          </button>
+        </div>
 
         {/* Collage */}
         <section className="notfound-collage" ref={collageRef}>
@@ -150,6 +170,7 @@ const NotFound = () => {
                   height={8.53125}
                   fill="var(--dv-text, #ffffff)"
                   opacity={0.15}
+                  style={{ transition: 'transform 0.15s ease-out' }}
                 />
               ))}
             </svg>
@@ -182,7 +203,7 @@ const NotFound = () => {
                       color: `hsla(${cardHue}, 100%, 45%, 0.38)`,
                       '--i': idx,
                       '--r': rotation,
-                      transition: 'color 0.15s ease',
+                      transition: 'color 0.15s ease, transform 0.15s ease-out',
                     }}
                   >
                     <div style={{ position: 'relative', width: '100%', height: '100%' }}>
@@ -225,17 +246,6 @@ const NotFound = () => {
             style={{ color: `hsl(${baseHue}, 100%, 50%)` }}
             title="Drag to change colors"
           />
-        </div>
-
-        {/* CTA Buttons */}
-        <div className="notfound-cta-container">
-          <button onClick={() => nav('/')} className="notfound-back-home">
-            <ArrowLeft size={16} />
-            Back to home
-          </button>
-          <button onClick={() => window.open('https://t.me/praveenequicom', '_blank')} className="notfound-telegram">
-            Telegram Me
-          </button>
         </div>
       </main>
     </div>
