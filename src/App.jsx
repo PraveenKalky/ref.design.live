@@ -6,11 +6,12 @@ import FilterBar from './components/filter-bar/FilterBar';
 import CardGrid from './components/card-grid/CardGrid';
 import Footer from './components/footer/Footer';
 import { Agentation } from 'agentation';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Outlet } from 'react-router-dom';
 import Fonts from './pages/Fonts';
 import FontDetails from './pages/font-details/FontDetails';
 import SearchResults from './pages/search-results/SearchResults';
 import Preloader from './components/preloader/Preloader';
+import NotFound from './pages/404/NotFound';
 
 function App() {
   const [showLoader, setShowLoader] = useState(true);
@@ -69,20 +70,32 @@ function App() {
   return (
     <div className="app-container">
       {showLoader && <Preloader onComplete={() => setShowLoader(false)} />}
-      <Navbar savedCount={savedCount} theme={theme} toggleTheme={toggleTheme} />
+      
       <Routes>
-        <Route path="/" element={
+        {/* Core Layout containing global Navbar and Footer */}
+        <Route element={
           <>
-            <Hero />
-            <FilterBar />
-            <CardGrid savedItems={savedItems} toggleSave={toggleSave} />
+            <Navbar savedCount={savedCount} theme={theme} toggleTheme={toggleTheme} />
+            <Outlet />
+            <Footer />
           </>
-        } />
-        <Route path="/fonts" element={<Fonts />} />
-        <Route path="/fonts/:fontId" element={<FontDetails />} />
-        <Route path="/search-results" element={<SearchResults savedItems={savedItems} toggleSave={toggleSave} />} />
+        }>
+          <Route path="/" element={
+            <>
+              <Hero />
+              <FilterBar />
+              <CardGrid savedItems={savedItems} toggleSave={toggleSave} />
+            </>
+          } />
+          <Route path="/fonts" element={<Fonts />} />
+          <Route path="/fonts/:fontId" element={<FontDetails />} />
+          <Route path="/search-results" element={<SearchResults savedItems={savedItems} toggleSave={toggleSave} />} />
+        </Route>
+
+        {/* Fallback route for 404 page */}
+        <Route path="*" element={<NotFound />} />
       </Routes>
-      <Footer />
+      
       <Agentation />
     </div>
   );
