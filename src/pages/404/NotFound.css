@@ -1,0 +1,286 @@
+.notfound-page {
+  font-family: var(--font-body, 'Satoshi', sans-serif);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 24px;
+  background-color: var(--dv-bg, #0D0D0D);
+  color: var(--dv-text, #ffffff);
+  overflow: hidden;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 1;
+}
+
+
+
+.notfound-main {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  justify-content: center;
+  z-index: 5;
+}
+
+.notfound-message {
+  position: relative;
+  z-index: 12;
+  margin-top: 16px;
+}
+
+.notfound-message h1 {
+  font-family: 'Urbanist', var(--font-display, 'Cabinet Grotesk', sans-serif);
+  font-size: clamp(24px, 3vw, 40px);
+  font-weight: 500;
+  margin: 0 0 16px 0;
+  line-height: 1.1;
+  letter-spacing: -1px;
+  color: var(--dv-text, #ffffff);
+  text-align: center;
+}
+
+.notfound-message p {
+  font-size: clamp(15px, 1.5vw, 18px);
+  max-width: 600px;
+  margin: 0 auto;
+  color: var(--dv-text-ghost, rgba(255, 255, 255, 0.6));
+  line-height: 1.5;
+  text-align: center;
+}
+
+.notfound-color-choice {
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+/* Collage Area */
+.notfound-collage {
+  --card: 5.2%;
+  position: relative;
+  width: min(980px, 80vw);
+  aspect-ratio: 2.1 / 1;
+  perspective: 1000px;
+  margin: 40px 0 24px 0;
+}
+
+/*
+  Shared composition wrapper — THE single source of truth for both 404 states.
+  Carries the centering transform. Both child layers inherit this box exactly.
+  container-type enables cqw units for the grey overlay font-size.
+*/
+.notfound-composition-wrapper {
+  position: absolute;
+  inset: 0;
+  container-type: inline-size;
+}
+
+.notfound-grey-svg-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.notfound-collage-images {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+}
+
+.notfound-card-anchor {
+  position: absolute;
+  width: var(--card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0;
+  transform-style: preserve-3d;
+  transition: filter 0.4s ease, opacity 0.4s ease;
+  will-change: transform;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.notfound-card-anchor::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: currentColor;
+  opacity: 0.12;
+  filter: blur(8px);
+  transform: translateY(6px);
+}
+
+.notfound-card-img {
+  width: 100%;
+  aspect-ratio: 1.28 / 1;
+  object-fit: cover;
+  border-radius: 0;
+  display: block;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), filter 0.35s ease;
+}
+
+.notfound-card-anchor:hover {
+  z-index: 100;
+}
+
+.notfound-card-anchor:hover .notfound-card-img {
+  transform: scale(1.6) rotate(var(--r));
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.4);
+  filter: saturate(1.15) contrast(1.05);
+}
+
+.notfound-card-anchor.pop-in {
+  animation: notfoundPopIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(var(--i) * 18ms);
+}
+
+@keyframes notfoundPopIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.75);
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Slider Controls */
+.notfound-slider-container {
+  position: relative;
+  z-index: 15;
+  width: 320px;
+  max-width: 80vw;
+  margin: 16px auto 24px;
+}
+
+.notfound-color-range {
+  appearance: none;
+  width: 100%;
+  height: 40px;
+  background: transparent;
+  outline: none;
+  cursor: pointer;
+}
+
+.notfound-color-range::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 6px;
+  border-radius: 0;
+  background: linear-gradient(to right, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000);
+}
+
+.notfound-color-range::-webkit-slider-thumb {
+  appearance: none;
+  height: 24px;
+  width: 24px;
+  border-radius: 0;
+  background: #ffffff;
+  border: 4px solid currentColor;
+  margin-top: -9px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.notfound-color-range::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+}
+
+.notfound-color-range::-webkit-slider-thumb:active {
+  transform: scale(0.95);
+  border-width: 8px;
+}
+
+.notfound-color-range::-moz-range-track {
+  width: 100%;
+  height: 6px;
+  border-radius: 0;
+  background: linear-gradient(to right, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000);
+}
+
+.notfound-color-range::-moz-range-thumb {
+  height: 24px;
+  width: 24px;
+  border-radius: 0;
+  background: #ffffff;
+  border: 4px solid currentColor;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* CTA Section */
+.notfound-cta-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin: 16px auto 32px;
+}
+
+.notfound-back-home,
+.notfound-telegram {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 24px;
+  border-radius: 99px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  border: 1px solid var(--dv-border, rgba(255, 255, 255, 0.1));
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.notfound-back-home {
+  background: var(--dv-surface-dark, #1a1a1a);
+  color: var(--dv-text, #ffffff);
+}
+
+.notfound-telegram {
+  background: transparent;
+  color: var(--dv-text, #ffffff);
+}
+
+.notfound-back-home:hover {
+  background: var(--dv-surface-light, #2a2a2a);
+}
+
+.notfound-telegram:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+  .notfound-page {
+    overflow-y: auto;
+  }
+  
+  .notfound-message h1 {
+    font-size: 28px;
+  }
+  
+  .notfound-message p {
+    font-size: 14px;
+    padding: 0 16px;
+  }
+  
+  .notfound-collage {
+    width: 92vw;
+    margin: 32px 0 16px 0;
+    --card: 6.8%; /* Reduced from 8.5% for mobile gap */
+  }
+  
+  .notfound-slider-container {
+    width: 90vw;
+  }
+}
