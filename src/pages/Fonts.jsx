@@ -467,24 +467,7 @@ const Fonts = () => {
           <div className="fonts-gallery-inner">
             
             <div className="font-controls-bar">
-              <span className="top-bar-count">Showing {ITEMS_PER_PAGE} of 3200 fonts</span>
-              
-              <div className="font-view-toggle">
-                <span 
-                  className={`toggle-text ${viewMode === 'grid' ? 'active' : ''}`}
-                  onClick={() => setViewMode('grid')}
-                >
-                  <SquaresFour size={20} /> Card view
-                </span>
-                <span 
-                  className={`toggle-text ${viewMode === 'list' ? 'active' : ''}`}
-                  onClick={() => setViewMode('list')}
-                >
-                  <List size={20} /> List view
-                </span>
-              </div>
-
-              <div className="fcb-right-group">
+              <div className="fcb-left-group">
                 <button 
                   className="fcb-action-btn"
                   onClick={() => setIsExpanded(!isExpanded)}
@@ -495,6 +478,25 @@ const Fonts = () => {
                 <button className="fcb-action-btn fcb-sort">
                   Recent first <CaretUpDown size={16} weight="bold" />
                 </button>
+              </div>
+
+              <span className="top-bar-count">Showing {ITEMS_PER_PAGE} of 3200 fonts</span>
+              
+              <div className="font-view-toggle">
+                <span 
+                  className={`toggle-text ${viewMode === 'grid' ? 'active' : ''}`}
+                  onClick={() => setViewMode('grid')}
+                  title="Card view"
+                >
+                  <SquaresFour size={20} />
+                </span>
+                <span 
+                  className={`toggle-text ${viewMode === 'list' ? 'active' : ''}`}
+                  onClick={() => setViewMode('list')}
+                  title="List view"
+                >
+                  <List size={20} />
+                </span>
               </div>
             </div>
 

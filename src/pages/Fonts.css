@@ -110,6 +110,7 @@
    TOP BAR CONTROLS
 ════════════════════════════════════════════ */
 .font-controls-bar {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -119,39 +120,56 @@
   margin-bottom: 40px; /* 40px gap between controls bar and search row */
 }
 
-.fcb-right-group {
+.fcb-left-group {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 12px;
 }
 
 .fcb-action-btn {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-family: 'Urbanist', sans-serif;
-  font-size: 16px;
+  height: 36px;
+  padding: 0 16px;
+  background: #efefef;
   color: #111;
-  background: transparent;
+  border-radius: 9999px;
   border: none;
+  font-family: 'Urbanist', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
   cursor: pointer;
-  padding: 0;
   white-space: nowrap;
-}
-
-[data-theme="dark"] .fcb-action-btn {
-  color: #fff;
+  transition: background 0.2s ease, opacity 0.2s ease;
 }
 
 .fcb-action-btn:hover {
-  opacity: 0.7;
+  background: #e0e0e0;
+  opacity: 1;
+}
+
+[data-theme="dark"] .fcb-action-btn {
+  background: #1a1a1a;
+  color: #fff;
+}
+
+[data-theme="dark"] .fcb-action-btn:hover {
+  background: #333333;
 }
 
 .font-view-toggle {
   display: flex;
   align-items: center;
-  gap: 16px;
+  background: #efefef;
+  border-radius: 9999px;
+  padding: 3px;
+  gap: 2px;
   flex-shrink: 0;
+}
+
+[data-theme="dark"] .font-view-toggle {
+  background: #1a1a1a;
 }
 
 .top-bar-title {
@@ -167,10 +185,14 @@
 }
 
 .top-bar-count {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   font-family: 'Urbanist', sans-serif;
   color: #111;
   font-size: 16px;
   white-space: nowrap;
+  pointer-events: none;
 }
 
 [data-theme="dark"] .top-bar-count {
@@ -180,25 +202,37 @@
 .toggle-text {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-family: 'Urbanist', sans-serif;
-  font-size: 16px;
-  color: #111;
-  white-space: nowrap;
+  justify-content: center;
+  width: 34px;
+  height: 30px;
+  border-radius: 9999px;
+  color: #666;
   cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.toggle-text:hover {
+  color: #111;
 }
 
 .toggle-text.active {
+  background: #fff;
   color: #e03d2f;
-  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
 }
 
 [data-theme="dark"] .toggle-text {
+  color: #aaa;
+}
+
+[data-theme="dark"] .toggle-text:hover {
   color: #fff;
 }
 
 [data-theme="dark"] .toggle-text.active {
+  background: #333;
   color: #e03d2f;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 

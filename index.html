@@ -953,470 +953,130 @@
                 display: none;
             }
         }
+
+
+        /* --- Inlined Preloader Styles --- */
+        .preloader {
+          position: fixed;
+          inset: 0;
+          z-index: 99999;
+          background: #fff;
+          display: grid;
+          place-items: center;
+          will-change: transform;
+          animation: loaderOut 1.35s cubic-bezier(.77,0,.18,1) 5.15s forwards;
+        }
+
+        .counter-wrap {
+          width: 100%;
+          display: grid;
+          grid-template-columns: 1fr auto 1fr;
+          align-items: center;
+          padding: 0 17vw;
+          gap: clamp(48px, 10vw, 180px);
+          opacity: 0;
+          transform: translateY(28px) scale(.985);
+          filter: blur(9px);
+          animation: loaderSettle 1.45s cubic-bezier(.16,1,.3,1) .12s forwards;
+        }
+
+        .label {
+          font-family: "Urbanist", Inter, Arial, sans-serif;
+          font-size: clamp(36px, 4.5vw, 84px);
+          font-weight: 500;
+          letter-spacing: -0.02em;
+          line-height: .9;
+          color: #050505;
+          will-change: transform, opacity;
+          animation: labelDrift 4.2s cubic-bezier(.22,1,.36,1) .7s forwards;
+        }
+
+        .label.right {
+          text-align: right;
+        }
+
+        .counter {
+          font-family: "Urbanist", Inter, Arial, sans-serif;
+          font-size: clamp(86px, 12vw, 210px);
+          font-weight: 500;
+          letter-spacing: -0.02em;
+          line-height: .78;
+          min-width: 1.15em;
+          text-align: center;
+          font-variant-numeric: tabular-nums;
+          color: #050505;
+          will-change: transform, opacity, filter;
+          transform: scale(.965);
+          opacity: .82;
+          filter: blur(.2px);
+          animation: counterBreath 4.55s cubic-bezier(.22,1,.36,1) .45s forwards;
+        }
+
+        .wipe {
+          position: fixed;
+          inset: 0;
+          z-index: 99998;
+          background: #fff;
+          transform: translateY(100%);
+          pointer-events: none;
+          will-change: transform;
+          animation: wipeUp 1.35s cubic-bezier(.77,0,.18,1) 4.95s forwards;
+        }
+
+        @keyframes loaderSettle {
+          0% { opacity: 0; transform: translateY(30px) scale(.982); filter: blur(10px); }
+          55% { opacity: 1; filter: blur(0); }
+          100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+        }
+
+        @keyframes labelDrift {
+          0% { transform: translateY(0); opacity: .92; }
+          45% { transform: translateY(-4px); opacity: 1; }
+          100% { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes counterBreath {
+          0% { transform: scale(.965); opacity: .78; filter: blur(.45px); }
+          38% { transform: scale(1.018); opacity: 1; filter: blur(0); }
+          100% { transform: scale(1); opacity: 1; filter: blur(0); }
+        }
+
+        @keyframes loaderOut {
+          0% { transform: translateY(0); }
+          100% { transform: translateY(-100%); visibility: hidden; }
+        }
+
+        @keyframes wipeUp {
+          0% { transform: translateY(100%); }
+          44% { transform: translateY(0%); }
+          100% { transform: translateY(-100%); }
+        }
+
+        @media (max-width: 720px) {
+          .counter-wrap {
+            grid-template-columns: 1fr;
+            padding: 0 32px;
+            gap: 26px;
+          }
+          .label, .label.right, .counter {
+            text-align: center;
+          }
+        }
     </style>
 </head>
 
 <body>
-    <div id="root"></div>
+    <div id="root">
+        <div class="preloader">
+            <div class="counter-wrap">
+                <div class="label">Ref.</div>
+                <div class="counter">0</div>
+                <div class="label right">Design.</div>
+            </div>
+        </div>
+        <div class="wipe"></div>
+    </div>
     <script type="module" src="/src/main.jsx"></script>
 
-    <header id="dv-header">
-        <nav>
-            <!-- Left: Brand & Search -->
-            <div class="nav-left">
-                <div class="brand-logo" title="Design Vault">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M19 8.5C19 12.0899 15.8657 15 12 15H7V22H19C19 22 19 22 19 22V8.5Z" fill="#0D0D0D" />
-                        <path d="M12 2H5V15H12C15.8657 15 19 12.0899 19 8.5C19 4.91015 15.8657 2 12 2Z"
-                            fill="#0D0D0D" />
-                    </svg>
-                </div>
-                <div class="search-container">
-                    <i data-lucide="search"></i>
-                    <input type="text" placeholder="Search Websites, Screens, UI Elements, Flows">
-                </div>
-            </div>
-
-            <!-- Center: Segmented Tabs (Desktop) -->
-            <div class="nav-center">
-                <div class="tab-track" id="desktop-track">
-                    <div class="tab-active-pill" id="desktop-pill"></div>
-                    <div class="tab-item" onclick="handleTab(this)">Websites</div>
-                    <div class="tab-item" onclick="handleTab(this)">Apps</div>
-                    <div class="tab-item" onclick="handleTab(this)">Resources</div>
-                    <div class="tab-item" onclick="handleTab(this)">Fonts</div>
-                </div>
-            </div>
-
-            <!-- Right: Utility -->
-            <div class="nav-right">
-                <div class="ghost-link">
-                    <i data-lucide="bookmark"></i>
-                    <span>Saved<span id="saved-count"></span></span>
-                </div>
-                <div class="toggle-btn" onclick="toggleMode()">
-                    <i id="mode-icon" data-lucide="moon"></i>
-                </div>
-                <button class="cta-button">Submit a Flow</button>
-                <div class="pg-avatar">PG</div>
-            </div>
-        </nav>
-    </header>
-
-    <!-- Mobile-only Bottom Tab Bar -->
-    <div class="mobile-bottom-nav">
-        <div class="tab-track" id="mobile-track">
-            <div class="tab-active-pill" id="mobile-pill"></div>
-            <div class="tab-item" onclick="handleTab(this, true)">Websites</div>
-            <div class="tab-item" onclick="handleTab(this, true)">Apps</div>
-            <div class="tab-item" onclick="handleTab(this, true)">Resources</div>
-            <div class="tab-item" onclick="handleTab(this, true)">Fonts</div>
-        </div>
-    </div>
-
-    <main>
-        <section class="hero-section">
-            <div class="hero-content">
-                <!-- Label Pill -->
-                <div class="hero-badge">
-                    Free · Open · Always Growing
-                </div>
-
-                <!-- H1 Header -->
-                <h1>Every flow. Every screen. <span style="color:var(--dv-brand-yellow)">One vault.</span></h1>
-
-                <!-- Subtitle -->
-                <p class="hero-subtitle">
-                    A curated library of UI flows, websites, landing pages, dashboards, Figma components and font
-                    resources — built for designers and developers.
-                </p>
-
-                <!-- Buttons -->
-                <div class="hero-buttons">
-                    <button class="cta-button">Explore Flows</button>
-                    <button class="button-ghost">Browse Categories</button>
-                </div>
-
-                <!-- Stats Row -->
-                <div class="hero-stats">
-                    <div class="stat-item">240+ Flows</div>
-                    <div class="stat-dot"></div>
-                    <div class="stat-item">180+ Websites</div>
-                    <div class="stat-dot"></div>
-                    <div class="stat-item">90+ Components</div>
-                    <div class="stat-dot"></div>
-                    <div class="stat-item">60+ Font Links</div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Sort/Filter Bar Section -->
-        <div class="filter-bar">
-            <div class="filter-container">
-                <div class="filter-left" id="filter-track">
-                    <div class="filter-indicator" id="filter-indicator"></div>
-                    <div class="filter-tab active" data-sort="latest" onclick="handleSort(this)">Latest</div>
-                    <div class="filter-tab" data-sort="popular" onclick="handleSort(this)">Most popular</div>
-                </div>
-                <div class="filter-right">
-                    <i data-lucide="sliders-horizontal"></i>
-                    <span>Filter</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- TAG FILTER ROW - HIDDEN, DO NOT DELETE
-        <div class="tag-filter-section">
-            <div class="tag-row">
-                <div class="tag-pill active" onclick="toggleTag(this)">SaaS <span class="tag-count">341</span></div>
-                <div class="tag-pill" onclick="toggleTag(this)">Landing Page <span class="tag-count">48</span></div>
-                <div class="tag-pill" onclick="toggleTag(this)">Mobile App <span class="tag-count">74</span></div>
-                <div class="tag-pill" onclick="toggleTag(this)">Dashboard <span class="tag-count">62</span></div>
-                <div class="tag-pill" onclick="toggleTag(this)">E-commerce <span class="tag-count">54</span></div>
-                <div class="tag-pill" onclick="toggleTag(this)">Blog <span class="tag-count">29</span></div>
-                <div class="tag-pill" onclick="toggleTag(this)">Portfolio <span class="tag-count">36</span></div>
-                <div class="tag-pill" onclick="toggleTag(this)">Agency <span class="tag-count">41</span></div>
-                <div class="tag-pill" onclick="toggleTag(this)">crypto <span class="tag-count">341</span></div>
-                <div class="tag-pill" onclick="toggleTag(this)">Product <span class="tag-count">209</span></div>
-                <div class="tag-pill" onclick="toggleTag(this)">blockchain <span class="tag-count">140</span></div>
-                <div class="tag-pill" onclick="toggleTag(this)">travel <span class="tag-count">116</span></div>
-                <div class="tag-pill" onclick="toggleTag(this)">healthcare <span class="tag-count">113</span></div>
-                <div class="tag-pill" onclick="toggleTag(this)">Software <span class="tag-count">85</span></div>
-                <div class="tag-pill" onclick="toggleTag(this)">Technology <span class="tag-count">79</span></div>
-                <div class="tag-pill" onclick="toggleTag(this)">Mobile App <span class="tag-count">74</span></div>
-            </div>
-        </div>
-        -->
-
-        <!-- Feed Section -->
-        <section class="design-feed-section">
-            <div id="design-feed" class="card-grid"></div>
-            <div id="pagination" class="pagination"></div>
-        </section>
-    </main>
-
-    <!-- Footer loads dynamically from design-vault/footer/footer.html -->
-    <div id="footer-mount"></div>
-
-    <div id="scroll-to-top" class="scroll-btn" title="Back to Top">
-        <i data-lucide="arrow-up"></i>
-    </div>
-
-    <script>
-        // --- Component Loader ---
-        async function loadComponent(id, url) {
-            try {
-                const response = await fetch(url);
-                const html = await response.text();
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, 'text/html');
-                const content = doc.body ? doc.body.innerHTML : html;
-
-                const container = document.getElementById(id);
-                container.innerHTML = content;
-
-                // Execute scripts manually (innerHTML doesn't run them)
-                const scripts = container.querySelectorAll('script');
-                scripts.forEach(oldScript => {
-                    const newScript = document.createElement('script');
-                    Array.from(oldScript.attributes).forEach(attr => {
-                        newScript.setAttribute(attr.name, attr.value);
-                    });
-                    newScript.appendChild(document.createTextNode(oldScript.innerHTML));
-                    oldScript.parentNode.replaceChild(newScript, oldScript);
-                });
-
-                lucide.createIcons(); // Refresh icons for the new content
-            } catch (err) {
-                console.error(`Failed to load component from ${url}:`, err);
-            }
-        }
-
-        // Init Icons
-        lucide.createIcons();
-
-        // --- Sticky Behavior ---
-        const header = document.getElementById('dv-header');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                header.classList.add('is-scrolled');
-            } else {
-                header.classList.remove('is-scrolled');
-            }
-        });
-
-        // --- Segmented Tab Animation ---
-        function updatePill(tab, isMobile) {
-            const pillId = isMobile ? 'mobile-pill' : 'desktop-pill';
-            const pill = document.getElementById(pillId);
-            if (!pill) return;
-
-            pill.style.width = `${tab.offsetWidth}px`;
-            pill.style.transform = `translateX(${tab.offsetLeft - 4}px)`;
-            pill.style.opacity = '1';
-        }
-
-        function handleTab(el, isMobile = false) {
-            const parent = el.parentElement;
-            parent.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
-            el.classList.add('active');
-            updatePill(el, isMobile);
-        }
-
-        // Initialize pill positions
-        window.addEventListener('load', () => {
-            const dActive = document.querySelector('#desktop-track .tab-item.active');
-            const mActive = document.querySelector('#mobile-track .tab-item.active');
-            if (dActive) updatePill(dActive, false);
-            if (mActive) updatePill(mActive, true);
-        });
-
-        window.addEventListener('resize', () => {
-            const dActive = document.querySelector('#desktop-track .tab-item.active');
-            const mActive = document.querySelector('#mobile-track .tab-item.active');
-            if (dActive) updatePill(dActive, false);
-            if (mActive) updatePill(mActive, true);
-        });
-
-        // --- Sorting & Feed ---
-        const designData = [
-            { id: 1, name: 'leonardo-ai', title: 'Leonardo AI', subtitle: 'The creator-first AI platform', timestamp: 1775308900000, popularity: 1450 },
-            { id: 2, name: 'todesktop', title: 'ToDesktop', subtitle: 'Convert web app to a desktop app', timestamp: 1775308800000, popularity: 1250 },
-            { id: 3, name: 'maison-bovrsier', title: 'Maison Bovrsier', subtitle: 'Artisan furniture for modern spaces', timestamp: 1775308700000, popularity: 1100 },
-            { id: 4, name: 'little-amps', title: 'Little Amps Coffee', subtitle: 'Never ending quest for the perfect coffee', timestamp: 1775308600000, popularity: 920 },
-            { id: 5, name: 'framer-templates', title: 'Framer Templates', subtitle: 'Launch your next site in minutes', timestamp: 1775308500000, popularity: 850 },
-            { id: 6, name: 'linear-dash', title: 'Linear Dashboard', subtitle: 'The issue tracker you actually like using', timestamp: 1775308400000, popularity: 1350 },
-            { id: 7, name: 'stripe', title: 'Stripe', subtitle: 'Financial infrastructure for the internet', timestamp: 1775308300000, popularity: 1600 },
-            { id: 8, name: 'vercel', title: 'Vercel', subtitle: 'Develop. Preview. Ship.', timestamp: 1775308200000, popularity: 1550 },
-            { id: 9, name: 'notion', title: 'Notion', subtitle: 'Your connected workspace', timestamp: 1775308100000, popularity: 1500 },
-            // Page 1 additions
-            { id: 10, name: 'figma', title: 'Figma', subtitle: 'The collaborative interface design tool', timestamp: 1775308000000, popularity: 1800 },
-            { id: 11, name: 'slack', title: 'Slack', subtitle: 'Where work happens', timestamp: 1775307900000, popularity: 1750 },
-            { id: 12, name: 'discord', title: 'Discord', subtitle: 'Your place to talk', timestamp: 1775307800000, popularity: 1700 },
-            { id: 13, name: 'spotify', title: 'Spotify', subtitle: 'Music for everyone', timestamp: 1775307700000, popularity: 1900 },
-            { id: 14, name: 'airbnb', title: 'Airbnb', subtitle: 'Book unique homes and experiences', timestamp: 1775307600000, popularity: 1850 },
-            { id: 15, name: 'uber', title: 'Uber', subtitle: 'Always the ride you want', timestamp: 1775307500000, popularity: 1650 },
-            { id: 16, name: 'dropbox', title: 'Dropbox', subtitle: 'Focus on the work that matters', timestamp: 1775307400000, popularity: 1400 },
-            { id: 17, name: 'loom', title: 'Loom', subtitle: 'Say it with video', timestamp: 1775307300000, popularity: 1300 },
-            { id: 18, name: 'raycast', title: 'Raycast', subtitle: 'A supercharged command palette', timestamp: 1775307200000, popularity: 1450 },
-            { id: 19, name: 'arc', title: 'Arc Browser', subtitle: 'The browser that works for you', timestamp: 1775307100000, popularity: 1550 },
-            { id: 20, name: 'framer-ai', title: 'Framer AI', subtitle: 'Start your next site with AI', timestamp: 1775307000000, popularity: 1600 },
-            { id: 21, name: 'runway', title: 'Runway', subtitle: 'Next-generation creative tools', timestamp: 1775306900000, popularity: 1500 },
-            // Page 2
-            { id: 22, name: 'webflow', title: 'Webflow', subtitle: 'Build with the power of code', timestamp: 1775306800000, popularity: 1700 },
-            { id: 23, name: 'carrd', title: 'Carrd', subtitle: 'Simple, free, responsive one-page sites', timestamp: 1775306700000, popularity: 1400 },
-            { id: 24, name: 'readcv', title: 'Readcv', subtitle: 'A better way to read a CV', timestamp: 1775306600000, popularity: 1350 },
-            { id: 25, name: 'polywork', title: 'Polywork', subtitle: 'A new kind of professional network', timestamp: 1775306500000, popularity: 1200 },
-            { id: 26, name: 'contra', title: 'Contra', subtitle: 'The future of work is freelance', timestamp: 1775306400000, popularity: 1300 },
-            { id: 27, name: 'gumroad', title: 'Gumroad', subtitle: 'Sell anything to anyone', timestamp: 1775306300000, popularity: 1450 },
-            { id: 28, name: 'substack', title: 'Substack', subtitle: 'The home for great writing', timestamp: 1775306200000, popularity: 1550 },
-            { id: 29, name: 'ghost', title: 'Ghost', subtitle: 'Professional publishing platform', timestamp: 1775306100000, popularity: 1500 },
-            { id: 30, name: 'medium', title: 'Medium', subtitle: 'Where good ideas find you', timestamp: 1775306000000, popularity: 1400 },
-            { id: 31, name: 'twitter', title: 'Twitter', subtitle: "What's happening", timestamp: 1775305900000, popularity: 1950 },
-            { id: 32, name: 'threads', title: 'Threads', subtitle: 'Say more with Threads', timestamp: 1775305800000, popularity: 1850 },
-            { id: 33, name: 'instagram', title: 'Instagram', subtitle: 'Bring you closer to people and things', timestamp: 1775305700000, popularity: 1900 },
-            { id: 34, name: 'pinterest', title: 'Pinterest', subtitle: 'Discover recipes and style inspiration', timestamp: 1775305600000, popularity: 1800 },
-            { id: 35, name: 'dribbble', title: 'Dribbble', subtitle: 'Show and tell for designers', timestamp: 1775305500000, popularity: 1750 },
-            { id: 36, name: 'behance', title: 'Behance', subtitle: "The world's largest creative network", timestamp: 1775305400000, popularity: 1700 },
-            { id: 37, name: 'adobe', title: 'Adobe', subtitle: 'Creative Cloud for everyone', timestamp: 1775305300000, popularity: 1850 },
-            { id: 38, name: 'canva', title: 'Canva', subtitle: 'Design anything. Publish anywhere.', timestamp: 1775305200000, popularity: 1900 },
-            { id: 39, name: 'spline', title: 'Spline', subtitle: '3D design tool in the browser', timestamp: 1775305100000, popularity: 1650 },
-            { id: 40, name: 'rive', title: 'Rive', subtitle: 'Interactive design and animation', timestamp: 1775305000000, popularity: 1600 },
-            { id: 41, name: 'lottiefiles', title: 'LottieFiles', subtitle: 'Animations for apps and web', timestamp: 1775304900000, popularity: 1550 },
-            { id: 42, name: 'framer-motion', title: 'Framer Motion', subtitle: 'Motion library for React', timestamp: 1775304800000, popularity: 1500 }
-        ];
-
-        let savedCards = new Set();
-        let currentPage = 1;
-        const itemsPerPage = 21;
-
-        function showToast(msg) {
-            const toast = document.getElementById('toast');
-            toast.innerText = msg;
-            toast.classList.add('show');
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 2000);
-        }
-
-        function updateSavedCount() {
-            const countEl = document.getElementById('saved-count');
-            if (savedCards.size > 0) {
-                countEl.innerText = ` (${savedCards.size})`;
-            } else {
-                countEl.innerText = '';
-            }
-        }
-
-        function toggleSave(id, event, btn) {
-            event.stopPropagation();
-            if (savedCards.has(id)) {
-                savedCards.delete(id);
-                btn.classList.remove('saved');
-                btn.innerHTML = '<i data-lucide="bookmark"></i> Save';
-                showToast("Removed from saves");
-            } else {
-                savedCards.add(id);
-                btn.classList.add('saved');
-                btn.innerHTML = '<i data-lucide="bookmark-check"></i> Saved';
-                showToast("Saved successfully ✓");
-            }
-            updateSavedCount();
-            lucide.createIcons();
-        }
-
-        function handlePage(page) {
-            currentPage = page;
-            const activeSortTab = document.querySelector('.filter-tab.active');
-            handleSort(activeSortTab, false); // false to avoid resetting currentPage
-
-            // Smooth scroll to top of grid
-            const grid = document.getElementById('design-feed');
-            grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-
-        function renderPagination(totalItems) {
-            const totalPages = Math.ceil(totalItems / itemsPerPage);
-            const container = document.getElementById('pagination');
-            if (totalPages <= 1) {
-                container.innerHTML = '';
-                return;
-            }
-
-            let html = `
-                <button class="page-btn" ${currentPage === 1 ? 'disabled' : ''} onclick="handlePage(${currentPage - 1})">
-                    <i data-lucide="chevron-left"></i> Previous
-                </button>
-                <div class="page-numbers">
-            `;
-
-            for (let i = 1; i <= totalPages; i++) {
-                html += `
-                    <div class="page-number ${i === currentPage ? 'active' : ''}" onclick="handlePage(${i})">
-                        ${i}
-                    </div>
-                `;
-            }
-
-            html += `
-                </div>
-                <button class="page-btn" ${currentPage === totalPages ? 'disabled' : ''} onclick="handlePage(${currentPage + 1})">
-                    Next <i data-lucide="chevron-right"></i>
-                </button>
-            `;
-
-            container.innerHTML = html;
-            lucide.createIcons();
-        }
-
-        function renderFeed(data) {
-            const feed = document.getElementById('design-feed');
-            const start = (currentPage - 1) * itemsPerPage;
-            const end = start + itemsPerPage;
-            const pageData = data.slice(start, end);
-
-            feed.innerHTML = pageData.map(item => `
-                <div class="dv-card">
-                    <div class="card-image-wrapper">
-                        <img src="https://picsum.photos/seed/${item.name}/432/328" alt="${item.title}">
-                        <div class="card-overlay">
-                            <div class="card-actions">
-                                <button class="action-btn" onclick="window.open('#', '_blank')">
-                                    <i data-lucide="arrow-up-right"></i> Open
-                                </button>
-                                <button class="action-btn ${savedCards.has(item.id) ? 'saved' : ''}" 
-                                        onclick="toggleSave(${item.id}, event, this)">
-                                    <i data-lucide="${savedCards.has(item.id) ? 'bookmark-check' : 'bookmark'}"></i> 
-                                    ${savedCards.has(item.id) ? 'Saved' : 'Save'}
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <img class="card-logo" src="https://picsum.photos/seed/${item.name}/36/36" alt="${item.title} Logo">
-                        <div class="card-text">
-                            <div class="card-title">${item.title}</div>
-                            <div class="card-subtitle">${item.subtitle}</div>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-
-            renderPagination(data.length);
-            lucide.createIcons();
-        }
-
-        function updateSortIndicator(tab) {
-            const indicator = document.getElementById('filter-indicator');
-            if (!indicator) return;
-            indicator.style.width = `${tab.offsetWidth}px`;
-            indicator.style.left = `${tab.offsetLeft}px`;
-        }
-
-        function handleSort(el, resetPage = true) {
-            if (resetPage) currentPage = 1;
-            const track = el.parentElement;
-            track.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
-            el.classList.add('active');
-            updateSortIndicator(el);
-
-            const method = el.getAttribute('data-sort');
-            const sortedData = [...designData];
-
-            if (method === 'latest') {
-                sortedData.sort((a, b) => b.timestamp - a.timestamp);
-            } else if (method === 'popular') {
-                sortedData.sort((a, b) => b.popularity - a.popularity);
-            }
-
-            renderFeed(sortedData);
-        }
-
-        // --- Tag Selection ---
-        function toggleTag(el) {
-            el.classList.toggle('active');
-        }
-
-        // Initialize Feed & Indicators
-        window.addEventListener('load', () => {
-            const initialTab = document.querySelector('.filter-tab.active');
-            if (initialTab) updateSortIndicator(initialTab);
-            handleSort(initialTab);
-
-            // Load Modular Footer
-            loadComponent('footer-mount', 'design-vault/footer/footer.html');
-        });
-
-        window.addEventListener('resize', () => {
-            const activeTab = document.querySelector('.filter-tab.active');
-            if (activeTab) updateSortIndicator(activeTab);
-        });
-
-        // --- Theme Toggle ---
-        let Theme = 'dark';
-        function toggleMode() {
-            Theme = Theme === 'dark' ? 'light' : 'dark';
-            document.documentElement.setAttribute('data-theme', Theme);
-            const icon = document.getElementById('mode-icon');
-            icon.setAttribute('data-lucide', Theme === 'dark' ? 'moon' : 'sun');
-            lucide.createIcons();
-        }
-
-        // --- Scroll to Top ---
-        const scrollBtn = document.getElementById('scroll-to-top');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 300) {
-                scrollBtn.classList.add('show');
-            } else {
-                scrollBtn.classList.remove('show');
-            }
-        });
-
-        scrollBtn.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-    </script>
-    <div id="toast" class="toast">Saved successfully ✓</div>
-</body>
-
+    </body>
 </html>
