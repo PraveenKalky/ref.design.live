@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import './NotFound.css';
 
 const originalPositions = [
@@ -122,11 +122,16 @@ const NotFound = () => {
         {/* CTA Buttons */}
         <div className="notfound-cta-container">
           <button onClick={() => nav('/')} className="notfound-back-home">
-            <ArrowLeft size={16} />
-            Back to home
+            <span className="notfound-btn-content">
+              Back to home
+              <ArrowRight size={16} />
+            </span>
           </button>
           <button onClick={() => window.open('https://t.me/praveenequicom', '_blank')} className="notfound-telegram">
-            Telegram Me
+            <span className="notfound-btn-content">
+              Telegram Me
+              <ArrowRight size={16} />
+            </span>
           </button>
         </div>
 
