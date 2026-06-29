@@ -3,7 +3,7 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   padding: 24px;
   background-color: var(--dv-bg, #0D0D0D);
   color: var(--dv-text, #ffffff);
@@ -18,7 +18,7 @@
 .notfound-main {
   width: 100%;
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 18px auto 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -35,7 +35,7 @@
 
 .notfound-message h1 {
   font-family: 'Urbanist', var(--font-display, 'Cabinet Grotesk', sans-serif);
-  font-size: clamp(24px, 3vw, 40px);
+  font-size: clamp(20px, 2.2vw, 32px);
   font-weight: 500;
   margin: 0 0 16px 0;
   line-height: 1.1;
@@ -65,8 +65,7 @@
   width: min(980px, 80vw);
   aspect-ratio: 2.1 / 1;
   perspective: 1000px;
-  margin: 40px 0 24px 0;
-  transform: translateY(50px);
+  margin: 28px 0 28px 0;
 }
 
 /*
@@ -136,6 +135,7 @@
     opacity: 0;
     transform: translateY(20px) scale(0.75);
   }
+
   to {
     opacity: 1;
   }
@@ -147,8 +147,7 @@
   z-index: 15;
   width: 320px;
   max-width: 80vw;
-  margin: 16px auto 24px;
-  transform: translateY(50px);
+  margin: 16px auto 16px;
 }
 
 .notfound-color-range {
@@ -224,10 +223,10 @@
   border-radius: 0;
   text-decoration: none;
   font-family: 'Urbanist', var(--font-display, 'Cabinet Grotesk', sans-serif);
-  font-weight: 500;
+  font-weight: 600;
   font-size: 16px;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.02em;
   border: none;
   cursor: pointer;
   background: transparent;
@@ -247,7 +246,8 @@
   content: '';
   position: absolute;
   left: 0;
-  bottom: -11px; /* 10-12px below the text */
+  bottom: -11px;
+  /* 10-12px below the text */
   width: 100%;
   height: 1px;
   background-color: currentColor;
@@ -264,7 +264,8 @@
 /* Arrow Interaction (translates 5px right on hover, invisible by default) */
 .notfound-btn-content svg {
   position: absolute;
-  right: -24px; /* Reserves space equivalent to an 8px gap for a 16px icon */
+  right: -24px;
+  /* Reserves space equivalent to an 8px gap for a 16px icon */
   opacity: 0;
   transform: translateX(-5px);
   transition: transform 250ms ease-out, opacity 250ms ease-out;
@@ -282,22 +283,23 @@
   .notfound-page {
     overflow-y: auto;
   }
-  
+
   .notfound-message h1 {
     font-size: 28px;
   }
-  
+
   .notfound-message p {
     font-size: 14px;
     padding: 0 16px;
   }
-  
+
   .notfound-collage {
     width: 92vw;
     margin: 32px 0 16px 0;
-    --card: 6.8%; /* Reduced from 8.5% for mobile gap */
+    --card: 6.8%;
+    /* Reduced from 8.5% for mobile gap */
   }
-  
+
   .notfound-slider-container {
     width: 90vw;
   }
