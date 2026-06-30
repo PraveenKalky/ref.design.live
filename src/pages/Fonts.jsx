@@ -26,14 +26,13 @@ const getShortDescription = (fontName) => {
   return descriptions[baseName] || descriptions[fontName] || "A premium high-quality typeface.";
 };
 
-const SPECIMEN_PHRASES = [
-  "Schoolbookish",
-  "Urogravimeter",
-  "Defenselessly",
-  "The quick brown fox",
-  "Neutral forms",
-  "Modern grotesk",
-  "Sharp rhythm"
+const HOVER_SENTENCES = [
+  "We promptly judged antique ivory buckles for the next prize.",
+  "Jim quickly realized that the beautiful gowns are expensive.",
+  "The cajoling quirked sexy wizard mob persuade very influentially.",
+  "A quivering Texas zombie fought republic linked jewelry.",
+  "The five boxing wizards jump quickly from Bronx cafes to dazzling Queens nightclubs.",
+  "Jackie will budget for the most expensive zoology equipment."
 ];
 const PREVIEW_COLORS = [
   { id: 'white', value: '#ffffff', border: '#111111', isDarkBg: false },
@@ -42,11 +41,42 @@ const PREVIEW_COLORS = [
   { id: 'yellow', value: '#f2b544', border: '#111111', isDarkBg: false },
 ];
 
+const ScrambleText = ({ text, isHovered }) => {
+  const [displayText, setDisplayText] = useState(text);
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()';
+
+  useEffect(() => {
+    if (!isHovered) {
+      setDisplayText(text);
+      return;
+    }
+
+    let iterations = 0;
+    const interval = setInterval(() => {
+      setDisplayText(
+        text
+          .split('')
+          .map((letter, index) => {
+            if (index < iterations) return text[index];
+            return chars[Math.floor(Math.random() * chars.length)];
+          })
+          .join('')
+      );
+      if (iterations >= text.length) clearInterval(interval);
+      iterations += text.length / 15; // 15 frames
+    }, 30);
+
+    return () => clearInterval(interval);
+  }, [isHovered, text]);
+
+  return <>{displayText}</>;
+};
 
 const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggleSave, openLogin }) => {
   const [fontSize, setFontSize] = useState(globalFontSize || 120);
   const [letterSpacing, setLetterSpacing] = useState(0);
   const [lineHeight, setLineHeight] = useState(1.2);
+  const [isHovered, setIsHovered] = useState(false);
   const [autoFontSize, setAutoFontSize] = useState(null);
   const [activeSwatch, setActiveSwatch] = useState(null);
   const [styleDropdownOpen, setStyleDropdownOpen] = useState(false);
@@ -80,9 +110,16 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
   }, []);
 
   const isGrid = viewMode === 'grid';
+  const SPECIMEN_TEXT = "AaBbCcDdEeFfGgHhIiJjKkLlMm";
+  const hoverSentence = HOVER_SENTENCES[(font.id - 1) % HOVER_SENTENCES.length];
+  
   const textToShow = globalText && globalText.trim() !== '' 
     ? globalText 
-    : SPECIMEN_PHRASES[font.id % SPECIMEN_PHRASES.length];
+    : SPECIMEN_TEXT;
+
+  const hoverTextToShow = globalText && globalText.trim() !== ''
+    ? globalText
+    : (isGrid ? "Aa" : hoverSentence);
 
   // Start large and shrink until text fits the container width
   const MAX_SIZE = isGrid ? 148 : 180;
@@ -137,6 +174,15 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [textToShow, isGrid]);
 
+  // Sync the hover text size and slider with the auto-fitted size when typing custom text
+  useEffect(() => {
+    if (globalText && globalText.trim() !== '') {
+      if (autoFontSize) setFontSize(autoFontSize);
+    } else {
+      setFontSize(globalFontSize || 120);
+    }
+  }, [globalText, autoFontSize, globalFontSize]);
+
   const handleCardClick = (e) => {
     // Prevent navigation if the user is interacting with sliders or buttons
     if (e.target.closest('.font-card-hover-controls') || e.target.closest('button')) {
@@ -148,7 +194,9 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
   return (
     <div 
       className={`font-card${activeSwatch ? (activeSwatch.isDarkBg ? ' swatch-dark-bg' : ' swatch-light-bg') : ''}${styleDropdownOpen ? ' dropdown-open' : ''}`} 
-      onClick={handleCardClick} 
+      onClick={handleCardClick}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       style={{ 
         cursor: 'pointer', 
         '--swatch-color': activeSwatch?.value 
@@ -291,6 +339,8 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
             fontSize: autoFontSize ? `${autoFontSize}px` : `${MAX_SIZE}px`,
             fontFamily: font.googleFont,
             lineHeight: 1,
+            fontWeight: selectedStyle.weight,
+            fontStyle: selectedStyle.italic ? 'italic' : 'normal',
           }}
         >
           {viewMode === 'grid' 
@@ -298,11 +348,16 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
             : textToShow
           }
         </span>
-        <span className="preview-hover" style={{ fontSize: `${fontSize}px`, letterSpacing: `${letterSpacing}em`, lineHeight: lineHeight, fontFamily: font.googleFont }}>
-          {globalText && globalText.trim() !== '' 
-            ? globalText 
-            : (viewMode === 'grid' ? "Aa" : "Six javelins thrown by the quick savages whizzed forty paces beyond the mark.")
-          }
+        <span className="preview-hover" style={{ 
+          fontSize: `${fontSize}px`, 
+          letterSpacing: `${letterSpacing}em`, 
+          lineHeight: lineHeight, 
+          whiteSpace: (globalText && globalText.trim() !== '') ? 'nowrap' : 'normal',
+          fontFamily: font.googleFont,
+          fontWeight: selectedStyle.weight,
+          fontStyle: selectedStyle.italic ? 'italic' : 'normal',
+        }}>
+          {viewMode === 'grid' && (!globalText || globalText.trim() === '') ? "Aa" : <ScrambleText text={hoverTextToShow} isHovered={isHovered} />}
         </span>
       </div>
     </div>

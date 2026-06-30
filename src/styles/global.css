@@ -1,5 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&family=Outfit:wght@100..900&display=swap');
 
+@font-face {
+  font-family: 'PolySans Trial';
+  src: url('../components/Fonts/PolySans-Trial/Latin/Ultimate/Standard/otf/PolySansTrial-Neutral.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'PolySans Trial';
+  src: url('../components/Fonts/PolySans-Trial/Latin/Ultimate/Standard/otf/PolySansTrial-Bulky.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
 :root {
   /* Colors */
   --color-primary: #4F46E5;
