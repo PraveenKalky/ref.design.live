@@ -12,6 +12,7 @@ import FontDetails from './pages/font-details/FontDetails';
 import SearchResults from './pages/search-results/SearchResults';
 import Preloader from './components/preloader/Preloader';
 import NotFound from './pages/404/NotFound';
+import HoverTests from './pages/HoverTests';
 
 function App() {
   const [showLoader, setShowLoader] = useState(true);
@@ -90,6 +91,7 @@ function App() {
           <Route path="/fonts" element={<Fonts />} />
           <Route path="/fonts/:fontId" element={<FontDetails />} />
           <Route path="/search-results" element={<SearchResults savedItems={savedItems} toggleSave={toggleSave} />} />
+          <Route path="/hover-tests" element={<HoverTests />} />
         </Route>
 
         {/* Fallback route for 404 page */}

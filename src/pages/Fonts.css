@@ -57,7 +57,7 @@
 }
 
 .fonts-heading {
-  font-family: 'Urbanist', sans-serif;
+  font-family: 'PolySans Trial', 'PolySans-Trial', 'PolySansTrial', 'PolySans', 'Urbanist', sans-serif;
   font-size: clamp(48px, 6vw, 72px);
   font-weight: 500;
   line-height: 1.1;
@@ -78,7 +78,7 @@
 }
 
 .fonts-subtext {
-  font-family: 'Urbanist', sans-serif;
+  font-family: 'PolySans Trial', 'PolySans-Trial', 'PolySansTrial', 'PolySans', 'Urbanist', sans-serif;
   font-size: 18px;
   line-height: 1.6;
   color: #555;
@@ -613,7 +613,7 @@
   font-weight: 600;
   font-size: 13px;
   color: #111;
-  transition: background 200ms ease, color 200ms ease;
+  transition: background 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
 }
 
@@ -656,6 +656,7 @@
 .font-card-action-btn:hover {
   background: #e0e0e0;
   color: #000;
+  transform: translateY(-2px);
 }
 
 /* Saved state */
@@ -994,9 +995,10 @@
   line-height: 1;       /* line-height 1 = exact cap height — no extra space */
   max-width: 100%;
   text-align: left;
-  transition: opacity 0.25s ease, visibility 0.25s ease;
+  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.45s, transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
   overflow: visible;    /* span itself doesn't clip — container does */
   flex-shrink: 0;
+  transform: translateY(0) scale(1);
 }
 
 .preview-hover {
@@ -1010,7 +1012,7 @@
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.25s ease, visibility 0.25s ease;
+  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.45s;
   white-space: normal;
   line-height: 1.2;
   padding: 0; /* No extra padding needed */
@@ -1024,12 +1026,13 @@
 .font-card:hover .preview-default {
   opacity: 0;
   visibility: hidden;
-  display: none;
+  transform: translateY(-10px) scale(0.99);
 }
 
 .font-card:hover .preview-hover {
   opacity: 1;
   visibility: visible;
+  transform: translateY(-50%) scale(1);
 }
 
 
