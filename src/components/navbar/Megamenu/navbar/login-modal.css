@@ -50,7 +50,7 @@
 }
 
 .lm-welcome {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'PolySans Neutral', 'PolySans Trial', sans-serif;
   font-size: 21px;
   font-weight: 500;
   color: #111;
@@ -69,7 +69,7 @@
 }
 
 .lm-wordmark {
-  font-family: 'Playfair Display', serif;
+  font-family: 'PolySans Neutral', 'PolySans Trial', sans-serif;
   font-size: 80px;
   font-weight: 900;
   color: #111;
@@ -91,7 +91,7 @@
 
 /* Register link */
 .lm-register {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'PolySans Neutral', 'PolySans Trial', sans-serif;
   font-size: 13.5px;
   color: #444;
   margin: 0;
@@ -123,7 +123,7 @@
 }
 
 .lm-title {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'PolySans Neutral', 'PolySans Trial', sans-serif;
   font-size: 28px;
   font-weight: 700;
   color: #111;
@@ -145,7 +145,7 @@
 }
 
 .lm-label {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'PolySans Neutral', 'PolySans Trial', sans-serif;
   font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.1em;
@@ -161,7 +161,7 @@
   border-bottom: 1.5px solid #D8D8D8;
   border-radius: 0;
   padding: 0 2px;
-  font-family: 'Outfit', sans-serif;
+  font-family: 'PolySans Neutral', 'PolySans Trial', sans-serif;
   font-size: 14px;
   color: #111;
   outline: none;
@@ -183,7 +183,7 @@
   display: flex;
   align-items: center;
   gap: 9px;
-  font-family: 'Outfit', sans-serif;
+  font-family: 'PolySans Neutral', 'PolySans Trial', sans-serif;
   font-size: 13.5px;
   color: #444;
   cursor: pointer;
@@ -206,7 +206,7 @@
   height: 54px;
   background: #1a1a1a;
   color: #fff;
-  font-family: 'Outfit', sans-serif;
+  font-family: 'PolySans Neutral', 'PolySans Trial', sans-serif;
   font-size: 16px;
   font-weight: 600;
   border: none;
@@ -233,7 +233,7 @@
 }
 
 .lm-forgot {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'PolySans Neutral', 'PolySans Trial', sans-serif;
   font-size: 12px;
   color: #555;
   text-decoration: underline;

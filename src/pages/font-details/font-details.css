@@ -54,7 +54,7 @@
 }
 
 .hero-font-about {
-  font-family: 'Urbanist', 'Outfit', sans-serif;
+  font-family: 'PolySans Neutral', 'PolySans Trial', sans-serif;
   font-size: 18px;
   font-weight: 400;
   color: rgba(244, 240, 230, 0.7);
@@ -91,7 +91,7 @@
 .hero-pill-nav .nav-item {
   text-decoration: none;
   color: #111;
-  font-family: 'Urbanist', 'Outfit', sans-serif;
+  font-family: 'PolySans Neutral', 'PolySans Trial', sans-serif;
   font-size: 14px;
   font-weight: 500;
   transition: color 0.2s ease;
@@ -130,7 +130,7 @@
   border-radius: 9999px;
   height: 50px;
   padding: 0 28px;
-  font-family: 'Urbanist', 'Outfit', sans-serif;
+  font-family: 'PolySans Neutral', 'PolySans Trial', sans-serif;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
@@ -182,7 +182,7 @@
 }
 
 .hero-spec-label {
-  font-family: 'Urbanist', 'Outfit', sans-serif;
+  font-family: 'PolySans Neutral', 'PolySans Trial', sans-serif;
   font-size: 10px;
   font-weight: 500;
   text-transform: uppercase;
@@ -191,7 +191,7 @@
 }
 
 .hero-spec-value {
-  font-family: 'Urbanist', 'Outfit', sans-serif;
+  font-family: 'PolySans Neutral', 'PolySans Trial', sans-serif;
   font-size: 14px;
   font-weight: 400;
   color: rgba(255, 255, 255, 0.9);

@@ -61,7 +61,7 @@ body.search-open .navbar-header {
 }
 
 .wordmark {
-    font-family: 'Playfair Display', serif;
+    font-family: 'PolySans Neutral', 'PolySans Trial', sans-serif;
     font-weight: 700;
     font-size: 24px;
     color: #000000;
@@ -166,7 +166,7 @@ body.search-open .navbar-header {
 }
 
 .nav-link {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'PolySans Neutral', 'PolySans Trial', sans-serif;
     font-size: 16px;
     font-weight: 400;
     color: #999;
@@ -269,7 +269,7 @@ body.search-open .navbar-header {
     border: none;
     cursor: pointer;
     transition: transform 0.2s ease;
-    font-family: 'Outfit', sans-serif;
+    font-family: 'PolySans Neutral', 'PolySans Trial', sans-serif;
 }
 
 .submit-pill:hover {
@@ -310,7 +310,7 @@ body.search-open .navbar-header {
 /* ── Auth: logged-in avatar ── */
 .user-avatar-circle--active {
   background: #3B5BFF;
-  font-family: 'Urbanist', sans-serif;
+  font-family: 'PolySans Neutral', 'PolySans Trial', sans-serif;
   font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.02em;
@@ -359,5 +359,5 @@ body.search-open .navbar-header {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Urbanist', sans-serif;
+  font-family: 'PolySans Neutral', 'PolySans Trial', sans-serif;
 }

@@ -9,14 +9,14 @@
   max-width: 1440px;
   margin: 0 auto;
   padding: 120px 40px 60px; /* Offset fixed header */
-  font-family: 'Urbanist', sans-serif !important;
+  font-family: 'PolySans Neutral', 'PolySans Trial', sans-serif;
   color: var(--dv-text);
   background-color: var(--dv-bg);
   min-height: 100vh;
 }
 
 .search-results-page * {
-  font-family: 'Urbanist', sans-serif !important;
+  font-family: 'PolySans Neutral', 'PolySans Trial', sans-serif;
 }
 
 /* --- Filter Tabs --- */
@@ -28,7 +28,7 @@
 }
 
 .sr-filter-tab {
-  font-family: 'Urbanist', sans-serif !important;
+  font-family: 'PolySans Neutral', 'PolySans Trial', sans-serif;
   background: rgba(255, 255, 255, 0.05);
   color: var(--dv-text-ghost);
   border: none !important;

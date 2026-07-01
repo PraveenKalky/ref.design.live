@@ -41,35 +41,68 @@ const PREVIEW_COLORS = [
   { id: 'yellow', value: '#f2b544', border: '#111111', isDarkBg: false },
 ];
 
-const ScrambleText = ({ text, isHovered }) => {
-  const [displayText, setDisplayText] = useState(text);
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()';
+
+// Google fonts that render ONLY uppercase — lowercase chars display as caps
+// These need uppercase-only scramble chars so width profile matches final text
+const ALL_CAPS_FONTS = [
+  'Bebas Neue',       // Formula
+  'Big Shoulders Display',
+  'Alfa Slab One',
+];
+
+const isAllCapsFont = (googleFont = '') =>
+  ALL_CAPS_FONTS.some(f => googleFont.includes(f));
+
+// Scramble char sets — letter-only to keep width variance low
+const SCRAMBLE_UPPER = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+const SCRAMBLE_MIXED = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+
+const ScrambleText = ({ text, active, uppercase }) => {
+  const [display, setDisplay] = useState(text);
+  const rafRef = useRef(null);
+  const iterRef = useRef(0);
+  // Use uppercase-only chars for all-caps fonts so scramble width ≈ final text width
+  const CHARS = uppercase ? SCRAMBLE_UPPER : SCRAMBLE_MIXED;
 
   useEffect(() => {
-    if (!isHovered) {
-      setDisplayText(text);
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    iterRef.current = 0;
+
+    if (!active) {
+      setDisplay(text);
       return;
     }
 
-    let iterations = 0;
-    const interval = setInterval(() => {
-      setDisplayText(
+    const TOTAL_FRAMES = 22;
+    const resolvePerFrame = text.length / TOTAL_FRAMES;
+
+    const step = () => {
+      iterRef.current += resolvePerFrame;
+      const resolvedCount = Math.floor(iterRef.current);
+
+      setDisplay(
         text
           .split('')
-          .map((letter, index) => {
-            if (index < iterations) return text[index];
-            return chars[Math.floor(Math.random() * chars.length)];
+          .map((char, i) => {
+            if (char === ' ' || char === '\n') return char; // preserve spaces → stable line breaks
+            if (i < resolvedCount) return text[i];           // resolved: show real char
+            return CHARS[Math.floor(Math.random() * CHARS.length)]; // scramble
           })
           .join('')
       );
-      if (iterations >= text.length) clearInterval(interval);
-      iterations += text.length / 15; // 15 frames
-    }, 30);
 
-    return () => clearInterval(interval);
-  }, [isHovered, text]);
+      if (resolvedCount < text.length) {
+        rafRef.current = requestAnimationFrame(step);
+      } else {
+        setDisplay(text); // exact final text guaranteed
+      }
+    };
 
-  return <>{displayText}</>;
+    rafRef.current = requestAnimationFrame(step);
+    return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); };
+  }, [active, text]);
+
+  return <>{display}</>;
 };
 
 const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggleSave, openLogin }) => {
@@ -117,9 +150,16 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
     ? globalText 
     : SPECIMEN_TEXT;
 
-  const hoverTextToShow = globalText && globalText.trim() !== ''
-    ? globalText
-    : (isGrid ? "Aa" : hoverSentence);
+  // Detect all-caps fonts — they render every char as uppercase
+  const allCaps = isAllCapsFont(font.googleFont);
+
+  const hoverTextToShow = (() => {
+    const raw = globalText && globalText.trim() !== ''
+      ? globalText
+      : (isGrid ? 'Aa' : hoverSentence);
+    // All-caps fonts: uppercase the text so width profile matches scramble chars
+    return allCaps ? raw.toUpperCase() : raw;
+  })();
 
   // Start large and shrink until text fits the container width
   const MAX_SIZE = isGrid ? 148 : 180;
@@ -334,30 +374,41 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
       <div className="font-card-preview" ref={previewContainerRef}>
         <span
           className="preview-default"
-          ref={previewSpanRef}
           style={{
-            fontSize: autoFontSize ? `${autoFontSize}px` : `${MAX_SIZE}px`,
             fontFamily: font.googleFont,
-            lineHeight: 1,
             fontWeight: selectedStyle.weight,
             fontStyle: selectedStyle.italic ? 'italic' : 'normal',
           }}
         >
-          {viewMode === 'grid' 
-            ? (globalText && globalText.trim() !== '' ? globalText : "Aa")
-            : textToShow
-          }
+          {/* Inner span used by JS for text measurement */}
+          <span
+            ref={previewSpanRef}
+            style={{
+              fontSize: autoFontSize ? `${autoFontSize}px` : `${MAX_SIZE}px`,
+              lineHeight: 1,
+              whiteSpace: 'nowrap',
+              display: 'inline-block',
+            }}
+          >
+            {viewMode === 'grid' 
+              ? (globalText && globalText.trim() !== '' ? globalText : "Aa")
+              : textToShow
+            }
+          </span>
         </span>
         <span className="preview-hover" style={{ 
           fontSize: `${fontSize}px`, 
           letterSpacing: `${letterSpacing}em`, 
-          lineHeight: lineHeight, 
-          whiteSpace: (globalText && globalText.trim() !== '') ? 'nowrap' : 'normal',
           fontFamily: font.googleFont,
           fontWeight: selectedStyle.weight,
           fontStyle: selectedStyle.italic ? 'italic' : 'normal',
         }}>
-          {viewMode === 'grid' && (!globalText || globalText.trim() === '') ? "Aa" : <ScrambleText text={hoverTextToShow} isHovered={isHovered} />}
+          <span className="preview-hover-inner" style={{ lineHeight: lineHeight }}>
+            {viewMode === 'grid' && (!globalText || globalText.trim() === '')
+              ? "Aa"
+              : <ScrambleText text={hoverTextToShow} active={isHovered} uppercase={allCaps} />
+            }
+          </span>
         </span>
       </div>
     </div>
