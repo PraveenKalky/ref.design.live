@@ -51,7 +51,7 @@
 }
 
 .wordmark {
-    font-family: 'Playfair Display', serif;
+    font-family: 'PolySans Neutral', 'PolySans Trial', sans-serif;
     font-weight: 700;
     font-size: 24px;
     color: #000000;
@@ -156,7 +156,7 @@
 }
 
 .nav-link {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'PolySans Neutral', 'PolySans Trial', sans-serif;
     font-size: 16px;
     font-weight: 400;
     color: #999;
@@ -248,7 +248,7 @@
     border: none;
     cursor: pointer;
     transition: transform 0.2s ease;
-    font-family: 'Outfit', sans-serif;
+    font-family: 'PolySans Neutral', 'PolySans Trial', sans-serif;
 }
 
 .submit-pill:hover {

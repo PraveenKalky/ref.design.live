@@ -16,13 +16,13 @@
 }
 
 .ht-container h1 {
-  font-family: 'Urbanist', sans-serif;
+  font-family: 'PolySans Neutral', 'PolySans Trial', sans-serif;
   font-size: 40px;
   margin-bottom: 16px;
 }
 
 .ht-container p {
-  font-family: 'Urbanist', sans-serif;
+  font-family: 'PolySans Neutral', 'PolySans Trial', sans-serif;
   font-size: 18px;
   color: #666;
   margin-bottom: 48px;
@@ -42,7 +42,7 @@
   box-sizing: border-box;
   position: relative;
   overflow: hidden;
-  font-family: 'Inter', sans-serif;
+  font-family: 'PolySans Neutral', 'PolySans Trial', sans-serif;
 }
 
 [data-theme="dark"] .ht-card {
@@ -82,7 +82,7 @@
 /* Base styles for preview spans */
 .ht-preview-default, .ht-preview-hover {
   display: block;
-  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-family: 'PolySans Neutral', 'PolySans Trial', sans-serif;
 }
 
 .ht-preview-default {

@@ -4,7 +4,7 @@
   flex-direction: column;
   gap: 12px;
   width: 100%;
-  font-family: 'Urbanist', sans-serif;
+  font-family: 'PolySans Neutral', 'PolySans Trial', sans-serif;
 }
 
 /* Row 1: Tab Bar */
@@ -70,7 +70,7 @@
   background: none;
   border: none;
   padding: 0;
-  font-family: 'Urbanist', sans-serif;
+  font-family: 'PolySans Neutral', 'PolySans Trial', sans-serif;
   font-size: 24px;
   font-weight: 400;
   color: #999;
@@ -97,10 +97,12 @@
   justify-content: center;
   background: #f0f0f2;
   color: #666;
-  font-family: 'Urbanist', sans-serif;
+  font-family: 'PolySans Neutral', 'PolySans Trial', sans-serif;
   font-size: 14px;
   font-weight: 500;
-  padding: 4px 12px;
+  height: 24px;
+  padding: 0 12px;
+  line-height: 1;
   border-radius: 999px;
   margin-left: 0;
   opacity: 0;

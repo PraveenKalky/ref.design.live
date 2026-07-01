@@ -1,5 +1,5 @@
 .notfound-page {
-  font-family: var(--font-body, 'Satoshi', sans-serif);
+  font-family: 'PolySans Neutral', 'PolySans Trial', sans-serif;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -34,7 +34,7 @@
 }
 
 .notfound-message h1 {
-  font-family: 'Urbanist', var(--font-display, 'Cabinet Grotesk', sans-serif);
+  font-family: 'PolySans Neutral', 'PolySans Trial', sans-serif;
   font-size: clamp(20px, 2.2vw, 32px);
   font-weight: 500;
   margin: 0 0 16px 0;
@@ -222,7 +222,7 @@
   padding: 0;
   border-radius: 0;
   text-decoration: none;
-  font-family: 'Urbanist', var(--font-display, 'Cabinet Grotesk', sans-serif);
+  font-family: 'PolySans Neutral', 'PolySans Trial', sans-serif;
   font-weight: 600;
   font-size: 16px;
   text-transform: uppercase;

@@ -23,7 +23,7 @@
 }
 
 .label {
-  font-family: "Urbanist", Inter, Arial, sans-serif;
+  font-family: 'PolySans Neutral', 'PolySans Trial', sans-serif;
   font-size: clamp(36px, 4.5vw, 84px);
   font-weight: 500;
   letter-spacing: -0.02em;
@@ -38,7 +38,7 @@
 }
 
 .counter {
-  font-family: "Urbanist", Inter, Arial, sans-serif;
+  font-family: 'PolySans Neutral', 'PolySans Trial', sans-serif;
   font-size: clamp(86px, 12vw, 210px);
   font-weight: 500;
   letter-spacing: -0.02em;

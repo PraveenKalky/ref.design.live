@@ -31,7 +31,7 @@
 
 .footer-links-left a,
 .footer-links-right a {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'PolySans Neutral', 'PolySans Trial', sans-serif;
   font-size: 16px;
   font-weight: 500;
   color: var(--dv-text-ghost);
@@ -53,7 +53,7 @@
 }
 
 .footer-big-text {
-  font-family: 'Cabinet Grotesk', sans-serif;
+  font-family: 'PolySans Neutral', 'PolySans Trial', sans-serif;
   font-weight: 700;
   color: var(--dv-text);
   line-height: 0.9;

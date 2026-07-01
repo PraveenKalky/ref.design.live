@@ -6,7 +6,7 @@
   background-color: #ffffff;
   color: #0d0d0d;
   padding: 80px 0 120px;
-  font-family: 'Urbanist', 'Outfit', sans-serif;
+  font-family: 'PolySans Neutral', 'PolySans Trial', sans-serif;
 }
 
 .glyphs-container {
@@ -83,7 +83,7 @@
   border-radius: 9999px;
   padding: 0 16px;
   height: 36px;
-  font-family: 'Urbanist', 'Outfit', sans-serif;
+  font-family: 'PolySans Neutral', 'PolySans Trial', sans-serif;
   font-size: 16px;
   font-weight: 500;
   color: #0d0d0d;
@@ -173,7 +173,7 @@
   border: none;
   background: transparent;
   border-radius: 9999px;
-  font-family: 'Urbanist', 'Outfit', sans-serif;
+  font-family: 'PolySans Neutral', 'PolySans Trial', sans-serif;
   font-size: 13px;
   font-weight: 500;
   color: #999;
@@ -293,7 +293,7 @@
   font-weight: 500;
   color: #ffffff;
   cursor: pointer;
-  font-family: 'Urbanist', 'Outfit', sans-serif;
+  font-family: 'PolySans Neutral', 'PolySans Trial', sans-serif;
   user-select: none;
 }
 
@@ -335,7 +335,7 @@
   font-weight: 500;
   color: #ffffff;
   cursor: pointer;
-  font-family: 'Urbanist', 'Outfit', sans-serif;
+  font-family: 'PolySans Neutral', 'PolySans Trial', sans-serif;
   user-select: none;
 }
 
@@ -405,7 +405,7 @@
   font-size: 13px;
   font-weight: 500;
   color: #ffffff;
-  font-family: 'Urbanist', 'Outfit', sans-serif;
+  font-family: 'PolySans Neutral', 'PolySans Trial', sans-serif;
   position: absolute;
   bottom: 4px;
   white-space: nowrap;
@@ -463,7 +463,7 @@
   font-size: 13px;
   font-weight: 500;
   color: #ffffff;
-  font-family: 'Urbanist', 'Outfit', sans-serif;
+  font-family: 'PolySans Neutral', 'PolySans Trial', sans-serif;
   bottom: -105px;
   white-space: nowrap;
 }
@@ -522,7 +522,7 @@
   font-size: 15px;
   font-weight: 500;
   color: #ffffff;
-  font-family: 'Urbanist', 'Outfit', sans-serif;
+  font-family: 'PolySans Neutral', 'PolySans Trial', sans-serif;
   letter-spacing: -0.01em;
   flex-shrink: 0;
 }
