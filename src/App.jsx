@@ -92,10 +92,10 @@ function App() {
           <Route path="/fonts/:fontId" element={<FontDetails />} />
           <Route path="/search-results" element={<SearchResults savedItems={savedItems} toggleSave={toggleSave} />} />
           <Route path="/hover-tests" element={<HoverTests />} />
+          
+          {/* Fallback route for 404 page now INSIDE the layout */}
+          <Route path="*" element={<NotFound />} />
         </Route>
-
-        {/* Fallback route for 404 page */}
-        <Route path="*" element={<NotFound />} />
       </Routes>
       
       <Agentation />
