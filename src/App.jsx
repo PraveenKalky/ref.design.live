@@ -13,6 +13,7 @@ import SearchResults from './pages/search-results/SearchResults';
 import Preloader from './components/preloader/Preloader';
 import NotFound from './pages/404/NotFound';
 import HoverTests from './pages/HoverTests';
+import ArcCarousel from './pages/sandbox/ArcCarousel';
 
 function App() {
   const [showLoader, setShowLoader] = useState(true);
@@ -73,6 +74,9 @@ function App() {
       {showLoader && <Preloader onComplete={() => setShowLoader(false)} />}
       
       <Routes>
+        {/* Isolated Sandbox Routes */}
+        <Route path="/sandbox/arc-carousel" element={<ArcCarousel />} />
+
         {/* Core Layout containing global Navbar and Footer */}
         <Route element={
           <>
