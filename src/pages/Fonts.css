@@ -1348,49 +1348,40 @@
   align-items: center;
   justify-content: center;
   padding: 0;
-  margin-top: 24px;
+  margin-top: 0;
   position: static;
-  overflow: hidden;
-  min-height: 180px;
+  overflow: visible;
+  transition: padding-bottom 0.3s ease;
+}
+
+/* On hover, reserve space for the absolute buttons:
+   button height (40px) + gap above buttons (42px) + bottom inset (24px) = 106px */
+.grid-view .font-card:hover .font-card-preview {
+  padding-bottom: 106px;
 }
 
 .grid-view .preview-default {
-  font-size: clamp(140px, 20vw, 220px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   line-height: 1;
   text-align: center;
-  transition: opacity 0.3s ease;
-  overflow: hidden;
-  max-height: 100%;
-  white-space: nowrap;
+  overflow: visible;
+  width: 100%;
 }
 
+/* Preview ALWAYS stays fully visible — on default and hover */
 .grid-view .font-card:hover .preview-default {
-  opacity: 0;
-  display: none;
+  opacity: 1;
+  display: flex;
 }
 
 .grid-view .preview-hover {
-  display: none;
-  font-size: 148px !important;
-  line-height: 1;
-  text-align: center;
-  align-self: center;
-  justify-content: center;
-  padding: 0 16px;
-  margin-bottom: 48px; /* Space for the absolute buttons */
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  max-height: 240px;
-  overflow: hidden;
-  white-space: normal;
-  color: #111; /* default: readable on light card bg */
-  will-change: opacity;
+  display: none !important;
 }
 
 .grid-view .font-card:hover .preview-hover {
-  display: flex;
-  opacity: 1;
-  color: #fff !important; /* always white on black hover bg — overrides swatch locks */
+  display: none !important;
 }
 
 /* Hover Buttons (Download & Save) */

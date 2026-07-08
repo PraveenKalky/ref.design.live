@@ -380,21 +380,31 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
             fontStyle: selectedStyle.italic ? 'italic' : 'normal',
           }}
         >
-          {/* Inner span used by JS for text measurement */}
-          <span
-            ref={previewSpanRef}
-            style={{
-              fontSize: autoFontSize ? `${autoFontSize}px` : `${MAX_SIZE}px`,
-              lineHeight: 1,
-              whiteSpace: 'nowrap',
-              display: 'inline-block',
-            }}
-          >
-            {viewMode === 'grid' 
-              ? (globalText && globalText.trim() !== '' ? globalText : "Aa")
-              : textToShow
-            }
-          </span>
+          {viewMode === 'grid' && (!globalText || globalText.trim() === '') ? (
+            <svg width="238" height="152" viewBox="0 0 238 152" style={{ display: 'block', margin: '0 auto', overflow: 'visible' }}>
+              <text
+                x="50%"
+                y="55%"
+                textAnchor="middle"
+                dominantBaseline="middle"
+                fill="currentColor"
+                fontFamily="inherit"
+                fontSize="120"
+              >Aa</text>
+            </svg>
+          ) : (
+            <span
+              ref={previewSpanRef}
+              style={{
+                fontSize: autoFontSize ? `${autoFontSize}px` : `${MAX_SIZE}px`,
+                lineHeight: 1,
+                whiteSpace: 'nowrap',
+                display: 'inline-block',
+              }}
+            >
+              {viewMode === 'grid' ? globalText : textToShow}
+            </span>
+          )}
         </span>
         <span className="preview-hover" style={{ 
           fontSize: `${fontSize}px`, 
