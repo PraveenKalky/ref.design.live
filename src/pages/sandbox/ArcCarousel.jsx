@@ -28,7 +28,7 @@ const ArcCarousel = () => {
 
     const numCards = images.length;
     const spacing = 14; // Ultra-tight degrees spacing (approx 12-16px gap)
-    const wrapLimit = numCards * spacing; 
+    const wrapLimit = numCards * spacing;
     const halfWrap = wrapLimit / 2;
     const speed = 0.15; // degrees per frame
 
@@ -44,17 +44,17 @@ const ArcCarousel = () => {
         let rawAngle = (i * spacing + offsetRef.current) % wrapLimit;
         // Handle negative modulo correctly
         if (rawAngle < 0) rawAngle += wrapLimit;
-        
+
         const angle = rawAngle - halfWrap;
         const absAngle = Math.abs(angle);
 
         // Opacity: fade out completely at edges so the wrap jump is invisible
         // Visible up to 60deg, fades to 0 by 85deg (halfWrap is 112)
         const opacity = Math.max(0, 1 - (absAngle > 60 ? (absAngle - 60) / 25 : 0));
-        
+
         // Scale: Center is 1, edges shrink slightly
         const scale = Math.max(0.7, 1 - (absAngle / 300));
-        
+
         // z-index: Center card must be on top
         const zIndex = Math.round(100 - absAngle);
 
@@ -80,8 +80,8 @@ const ArcCarousel = () => {
 
   return (
     <div className="sandbox-arc-wrapper">
-      <div 
-        className="sandbox-carousel-container" 
+      <div
+        className="sandbox-carousel-container"
         ref={containerRef}
         onMouseEnter={() => (isHoveredRef.current = true)}
         onMouseLeave={() => (isHoveredRef.current = false)}
@@ -91,8 +91,8 @@ const ArcCarousel = () => {
         </div>
 
         {images.map((src, idx) => (
-          <div 
-            key={idx} 
+          <div
+            key={idx}
             className="sandbox-arc-card"
             ref={(el) => (cardsRef.current[idx] = el)}
           >

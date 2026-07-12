@@ -3,6 +3,7 @@ import { Plus, ChevronDown, ChevronUp, X, Type, RotateCcw, LayoutGrid, Menu, Max
 import { DownloadSimple, BookmarkSimple, FadersHorizontal, CaretUpDown, SquaresFour, List } from '@phosphor-icons/react';
 import Pagination from '../components/pagination/Pagination';
 import LoginModal from '../components/navbar/LoginModal';
+import AaPathPreview from '../components/font-preview/AaPathPreview';
 import '../components/filter-bar/filter-bar.css';
 import '../components/filters/category-filter-expanded.css';
 import './Fonts.css';
@@ -380,21 +381,32 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
             fontStyle: selectedStyle.italic ? 'italic' : 'normal',
           }}
         >
-          {/* Inner span used by JS for text measurement */}
-          <span
-            ref={previewSpanRef}
-            style={{
-              fontSize: autoFontSize ? `${autoFontSize}px` : `${MAX_SIZE}px`,
-              lineHeight: 1,
-              whiteSpace: 'nowrap',
-              display: 'inline-block',
-            }}
-          >
-            {viewMode === 'grid' 
-              ? (globalText && globalText.trim() !== '' ? globalText : "Aa")
-              : textToShow
-            }
-          </span>
+          {viewMode === 'grid' && (!globalText || globalText.trim() === '') ? (
+            /* AaPathPreview uses opentype.js to extract glyph outlines.
+               Output is a real SVG <path> — no <text> node, no Typography
+               panel in Figma, pure vector shapes that scale cleanly. */
+            <AaPathPreview
+              googleFont={font.googleFont}
+              weight={selectedStyle.weight}
+              italic={selectedStyle.italic}
+              color="currentColor"
+              width={238}
+              height={152}
+              ariaLabel={`${font.name} Aa preview`}
+            />
+          ) : (
+            <span
+              ref={previewSpanRef}
+              style={{
+                fontSize: autoFontSize ? `${autoFontSize}px` : `${MAX_SIZE}px`,
+                lineHeight: 1,
+                whiteSpace: 'nowrap',
+                display: 'inline-block',
+              }}
+            >
+              {viewMode === 'grid' ? globalText : textToShow}
+            </span>
+          )}
         </span>
         <span className="preview-hover" style={{ 
           fontSize: `${fontSize}px`, 
