@@ -1255,9 +1255,9 @@
   background: #efefef;
   border-radius: 8px;
   position: relative;
-  transition: all 0.3s ease;
-  overflow: hidden; /* Changed from visible to hidden */
-  justify-content: space-between;
+  transition: background 0.3s ease, color 0.3s ease;
+  overflow: hidden;
+  justify-content: flex-start;
   border: none;
   max-width: 100%;
 }
@@ -1341,56 +1341,84 @@
   color: #fff;
 }
 
-/* Adjust Preview Area */
+/* ── Grid View: Preview Container ──
+   Dimensions: 238px width × 151px height
+   Position: top: 225px, left: 50% (centered via translate-x)
+   Bottom gap: 24px (from 400px height - 151px height - 225px top = 24px) */
 .grid-view .font-card-preview {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  margin-top: 0;
-  position: static;
-  overflow: visible;
-  transition: padding-bottom 0.3s ease;
+  position: absolute !important;
+  top: 225px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: 238px !important;
+  height: 151px !important;
+  max-width: none !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: inherit;
+  transition: top 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
-/* On hover, reserve space for the absolute buttons:
-   button height (40px) + gap above buttons (42px) + bottom inset (24px) = 106px */
-.grid-view .font-card:hover .font-card-preview {
-  padding-bottom: 106px;
-}
-
+/* ── Grid View: preview-default span ── */
 .grid-view .preview-default {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 1;
-  text-align: center;
-  overflow: visible;
-  width: 100%;
+  position: relative !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: inherit !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+  transition: none !important;
+  overflow: visible !important;
 }
 
-/* Preview ALWAYS stays fully visible — on default and hover */
+/* ── Grid View: SVG Element ── */
+.grid-view .font-card-preview svg {
+  width: 238px !important;
+  height: 152px !important;
+  max-width: none !important;
+  max-height: none !important;
+  display: block !important;
+}
+
+/* CRITICAL: The base .font-card:hover .preview-default sets visibility:hidden.
+   Override it here so the SVG Aa stays visible on card hover in grid view. */
 .grid-view .font-card:hover .preview-default {
-  opacity: 1;
-  display: flex;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+  display: flex !important;
 }
 
-.grid-view .preview-hover {
-  display: none !important;
+/* On hover: transition top coordinate to 143px to create equal gaps above buttons */
+.grid-view .font-card:hover .font-card-preview {
+  top: 143px !important;
 }
 
+/* Disable the long-sentence preview-hover in grid view entirely */
+.grid-view .preview-hover,
 .grid-view .font-card:hover .preview-hover {
   display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
 }
 
-/* Hover Buttons (Download & Save) */
+/* Hover Buttons — position: absolute at bottom */
 .grid-view .card-top-right {
   display: none;
   margin-left: 0;
 }
 
-/* Hide color swatches in grid hover — only pill buttons show */
 .grid-view .font-card:hover .font-card-color-swatches {
   display: none;
 }

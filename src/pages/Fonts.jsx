@@ -3,6 +3,7 @@ import { Plus, ChevronDown, ChevronUp, X, Type, RotateCcw, LayoutGrid, Menu, Max
 import { DownloadSimple, BookmarkSimple, FadersHorizontal, CaretUpDown, SquaresFour, List } from '@phosphor-icons/react';
 import Pagination from '../components/pagination/Pagination';
 import LoginModal from '../components/navbar/LoginModal';
+import AaPathPreview from '../components/font-preview/AaPathPreview';
 import '../components/filter-bar/filter-bar.css';
 import '../components/filters/category-filter-expanded.css';
 import './Fonts.css';
@@ -381,17 +382,18 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
           }}
         >
           {viewMode === 'grid' && (!globalText || globalText.trim() === '') ? (
-            <svg width="238" height="152" viewBox="0 0 238 152" style={{ display: 'block', margin: '0 auto', overflow: 'visible' }}>
-              <text
-                x="50%"
-                y="55%"
-                textAnchor="middle"
-                dominantBaseline="middle"
-                fill="currentColor"
-                fontFamily="inherit"
-                fontSize="120"
-              >Aa</text>
-            </svg>
+            /* AaPathPreview uses opentype.js to extract glyph outlines.
+               Output is a real SVG <path> — no <text> node, no Typography
+               panel in Figma, pure vector shapes that scale cleanly. */
+            <AaPathPreview
+              googleFont={font.googleFont}
+              weight={selectedStyle.weight}
+              italic={selectedStyle.italic}
+              color="currentColor"
+              width={238}
+              height={152}
+              ariaLabel={`${font.name} Aa preview`}
+            />
           ) : (
             <span
               ref={previewSpanRef}
