@@ -316,7 +316,7 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
                   />
                   <div 
                     className="fchc-slider-default-marker"
-                    style={{ left: `${((defaultFontSize - 24) / (200 - 24)) * 100}%` }}
+                    style={{ left: 'calc(5px + (100% - 10px) * 0.22727)' }}
                   />
                 </div>
                 <span className="fchc-value">{fontSize}</span>
@@ -348,7 +348,7 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
                   />
                   <div 
                     className="fchc-slider-default-marker"
-                    style={{ left: `${((defaultLineHeight - 0.8) / (2.5 - 0.8)) * 100}%` }}
+                    style={{ left: 'calc(5px + (100% - 10px) * 0.23529)' }}
                   />
                 </div>
                 <span className="fchc-value">{parseFloat(lineHeight).toFixed(2)}</span>
@@ -380,7 +380,7 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
                   />
                   <div 
                     className="fchc-slider-default-marker"
-                    style={{ left: `${((defaultLetterSpacing - (-0.5)) / (0.5 - (-0.5))) * 100}%` }}
+                    style={{ left: 'calc(5px + (100% - 10px) * 0.5)' }}
                   />
                 </div>
                 <span className="fchc-value">{parseFloat(letterSpacing).toFixed(2)}</span>

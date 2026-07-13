@@ -843,6 +843,7 @@
   flex: 1 1 140px;        /* grow/shrink equally, min 140px per pill */
   min-width: 0;           /* remove the hard 180px floor */
   max-width: 220px;       /* cap so no single pill dominates */
+  position: relative;     /* added to contain absolute reset button */
 }
 
 .fchc-label {
@@ -889,6 +890,10 @@
 }
 
 .fchc-reset-btn {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
   background: transparent;
   border: none;
   padding: 0;
@@ -898,12 +903,13 @@
   justify-content: center;
   color: #111;
   width: 12px;
-  margin-left: 6px;
+  height: 12px;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
   transition: transform 0.2s ease, opacity 0.15s ease, visibility 0.15s ease;
   flex-shrink: 0;
+  z-index: 10;
 }
 
 .fchc-reset-btn.is-active {
@@ -914,7 +920,7 @@
 
 .fchc-reset-btn.is-active:hover {
   opacity: 1;
-  transform: rotate(-45deg);
+  transform: translateY(-50%) rotate(-45deg);
 }
 
 [data-theme="dark"] .fchc-reset-btn {
@@ -960,7 +966,7 @@
   width: 10px;
   height: 10px;
   background: #fff;
-  border: 1.5px solid #111;
+  border: 1.2px solid #111;
   border-radius: 50%;
   margin-top: -4px; /* (Track height 1px / 2) - (Thumb height 10px / 2) */
   box-shadow: 0 1px 2px rgba(0,0,0,0.1);
@@ -970,7 +976,7 @@
   width: 10px;
   height: 10px;
   background: #fff;
-  border: 1.5px solid #111;
+  border: 1.2px solid #111;
   border-radius: 50%;
   box-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
@@ -983,8 +989,10 @@
   color: rgba(0, 0, 0, 0.7);
   white-space: nowrap;
   flex-shrink: 0;
-  min-width: 32px;        /* increased for larger font */
+  width: 52px;
+  padding-right: 16px;
   text-align: right;
+  box-sizing: border-box;
 }
 
 /* ── Dark mode overrides ── */
