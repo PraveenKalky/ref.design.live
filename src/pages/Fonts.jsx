@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Plus, ChevronDown, ChevronUp, X, Type, RotateCcw, LayoutGrid, Menu, Maximize2, MoveHorizontal } from 'lucide-react';
-import { DownloadSimple, BookmarkSimple, FadersHorizontal, CaretUpDown, SquaresFour, List } from '@phosphor-icons/react';
+import { BookmarkSimple, FadersHorizontal, CaretUpDown, SquaresFour, List } from '@phosphor-icons/react';
 import Pagination from '../components/pagination/Pagination';
 import LoginModal from '../components/navbar/LoginModal';
 import AaPathPreview from '../components/font-preview/AaPathPreview';
@@ -405,7 +405,7 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
         <div className="card-top-right">
 
           <button className="font-card-action-btn icon-only" title="Download">
-            <DownloadSimple size={16} weight="regular" />
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256"><path d="M224,144v64a8,8,0,0,1-8,8H40a8,8,0,0,1-8-8V144a8,8,0,0,1,16,0v56H208V144a8,8,0,0,1,16,0Zm-101.66,5.66a8,8,0,0,0,11.32,0l40-40a8,8,0,0,0-11.32-11.32L136,124.69V32a8,8,0,0,0-16,0v92.69L93.66,98.34a8,8,0,0,0-11.32,11.32Z"></path></svg>
             <span className="btn-text">Download</span>
           </button>
           <button
