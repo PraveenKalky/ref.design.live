@@ -718,16 +718,15 @@
   align-items: center;
   gap: 6px;
   height: 32px !important;
-  padding: 0 26px 0 12px; /* right 26px = 12px icon + 10px gap + 4px clearance; left 12px */
+  padding: 0 12px;
   background: #efefef;
   border-radius: 9999px;
   border: none;
   box-sizing: border-box;
-  flex-shrink: 1;         /* allow shrinking — key fix */
+  flex-shrink: 1;
   white-space: nowrap;
   cursor: pointer;
-  min-width: 0;           /* allow content to compress */
-  position: relative;     /* anchor for the absolutely-positioned reset button */
+  min-width: 0;
 }
 
 .fchc-pill:hover {
@@ -889,12 +888,8 @@
   background-color: rgba(255, 255, 255, 0.25);
 }
 
-/* Reset button — anchored to the pill's right padding zone, outside slider + value flow */
+/* Reset button — conditionally rendered flex child, only in DOM when value ≠ default */
 .fchc-reset-btn {
-  position: absolute;
-  right: 10px;           /* sits inside the pill's 12px right padding — clear of value and track */
-  top: 50%;
-  transform: translateY(-50%);
   background: transparent;
   border: none;
   padding: 0;
@@ -902,28 +897,23 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #111;
+  color: rgba(0, 0, 0, 0.5);
   width: 12px;
   height: 12px;
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transition: transform 0.2s ease, opacity 0.15s ease, visibility 0.15s ease;
-  z-index: 10;
+  flex-shrink: 0;
+  transition: color 0.15s ease, transform 0.2s ease;
 }
 
-.fchc-reset-btn.is-active {
-  opacity: 0.7;
-  visibility: visible;
-  pointer-events: auto;
-}
-
-.fchc-reset-btn.is-active:hover {
-  opacity: 1;
-  transform: translateY(-50%) rotate(-45deg);
+.fchc-reset-btn:hover {
+  color: #111;
+  transform: rotate(-45deg);
 }
 
 [data-theme="dark"] .fchc-reset-btn {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+[data-theme="dark"] .fchc-reset-btn:hover {
   color: rgba(255, 255, 255, 0.85);
 }
 
@@ -984,14 +974,12 @@
 /* ── Value label ── */
 .fchc-value {
   font-family: 'PolySans Neutral', 'PolySans Trial', sans-serif;
-  font-size: 16px;        /* increased to match label size */
+  font-size: 16px;
   font-weight: 500;
   color: rgba(0, 0, 0, 0.7);
   white-space: nowrap;
   flex-shrink: 0;
-  width: 36px;            /* fits 4-char values like 1.60, -0.5, 200 */
   text-align: right;
-  box-sizing: border-box;
 }
 
 /* ── Dark mode overrides ── */
