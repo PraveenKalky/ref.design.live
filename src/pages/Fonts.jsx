@@ -319,17 +319,19 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
                     style={{ left: 'calc(5px + (100% - 10px) * 0.22727)' }}
                   />
                 </div>
-                <span className="fchc-value">{fontSize}</span>
-                <button
-                  className={`fchc-reset-btn ${fontSize !== defaultFontSize ? 'is-active' : ''}`}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setFontSize(defaultFontSize);
-                  }}
-                  title="Reset size"
-                >
-                  <RotateCcw size={12} strokeWidth={2.5} />
-                </button>
+                <span className="fchc-value">
+                  {fontSize}
+                  <button
+                    className={`fchc-reset-btn ${fontSize !== defaultFontSize ? 'is-active' : ''}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setFontSize(defaultFontSize);
+                    }}
+                    title="Reset size"
+                  >
+                    <RotateCcw size={12} strokeWidth={2.5} />
+                  </button>
+                </span>
               </div>
 
               {/* 3. Leading (Line Height) */}
@@ -351,17 +353,19 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
                     style={{ left: 'calc(5px + (100% - 10px) * 0.23529)' }}
                   />
                 </div>
-                <span className="fchc-value">{parseFloat(lineHeight).toFixed(2)}</span>
-                <button
-                  className={`fchc-reset-btn ${lineHeight !== defaultLineHeight ? 'is-active' : ''}`}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setLineHeight(defaultLineHeight);
-                  }}
-                  title="Reset leading"
-                >
-                  <RotateCcw size={12} strokeWidth={2.5} />
-                </button>
+                <span className="fchc-value">
+                  {parseFloat(lineHeight).toFixed(2)}
+                  <button
+                    className={`fchc-reset-btn ${lineHeight !== defaultLineHeight ? 'is-active' : ''}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setLineHeight(defaultLineHeight);
+                    }}
+                    title="Reset leading"
+                  >
+                    <RotateCcw size={12} strokeWidth={2.5} />
+                  </button>
+                </span>
               </div>
 
               {/* 4. Tracking */}
@@ -383,17 +387,19 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
                     style={{ left: 'calc(5px + (100% - 10px) * 0.5)' }}
                   />
                 </div>
-                <span className="fchc-value">{parseFloat(letterSpacing).toFixed(2)}</span>
-                <button
-                  className={`fchc-reset-btn ${letterSpacing !== defaultLetterSpacing ? 'is-active' : ''}`}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setLetterSpacing(defaultLetterSpacing);
-                  }}
-                  title="Reset spacing"
-                >
-                  <RotateCcw size={12} strokeWidth={2.5} />
-                </button>
+                <span className="fchc-value">
+                  {parseFloat(letterSpacing).toFixed(2)}
+                  <button
+                    className={`fchc-reset-btn ${letterSpacing !== defaultLetterSpacing ? 'is-active' : ''}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setLetterSpacing(defaultLetterSpacing);
+                    }}
+                    title="Reset spacing"
+                  >
+                    <RotateCcw size={12} strokeWidth={2.5} />
+                  </button>
+                </span>
               </div>
             </div>
           )}

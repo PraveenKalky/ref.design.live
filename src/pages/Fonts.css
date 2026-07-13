@@ -843,7 +843,6 @@
   flex: 1 1 140px;        /* grow/shrink equally, min 140px per pill */
   min-width: 0;           /* remove the hard 180px floor */
   max-width: 220px;       /* cap so no single pill dominates */
-  position: relative;     /* added to contain absolute reset button */
 }
 
 .fchc-label {
@@ -891,7 +890,8 @@
 
 .fchc-reset-btn {
   position: absolute;
-  right: 10px;
+  right: 100%;
+  margin-right: 8px;
   top: 50%;
   transform: translateY(-50%);
   background: transparent;
@@ -989,10 +989,11 @@
   color: rgba(0, 0, 0, 0.7);
   white-space: nowrap;
   flex-shrink: 0;
-  width: 52px;
-  padding-right: 16px;
+  width: 40px;
+  padding-right: 0;
   text-align: right;
   box-sizing: border-box;
+  position: relative;
 }
 
 /* ── Dark mode overrides ── */
