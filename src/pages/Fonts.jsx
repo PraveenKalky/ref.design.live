@@ -110,6 +110,9 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
   const [fontSize, setFontSize] = useState(globalFontSize || 120);
   const [letterSpacing, setLetterSpacing] = useState(0);
   const [lineHeight, setLineHeight] = useState(1.2);
+  const defaultFontSize = globalFontSize || 120;
+  const defaultLineHeight = 1.2;
+  const defaultLetterSpacing = 0;
   const [isHovered, setIsHovered] = useState(false);
   const [autoFontSize, setAutoFontSize] = useState(null);
   const [activeSwatch, setActiveSwatch] = useState(null);
@@ -301,48 +304,102 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
               {/* 2. Font size */}
               <div className="fchc-pill fchc-control">
                 <span className="fchc-label">Size</span>
-                <input
-                  type="range"
-                  min="24"
-                  max="200"
-                  value={fontSize}
-                  onChange={(e) => setFontSize(Number(e.target.value))}
-                  className="fchc-slider"
-                  onClick={(e) => e.stopPropagation()}
-                />
+                <div className="fchc-slider-wrapper">
+                  <input
+                    type="range"
+                    min="24"
+                    max="200"
+                    value={fontSize}
+                    onChange={(e) => setFontSize(Number(e.target.value))}
+                    className="fchc-slider"
+                    onClick={(e) => e.stopPropagation()}
+                  />
+                  <div 
+                    className="fchc-slider-default-marker"
+                    style={{ left: `${((defaultFontSize - 24) / (200 - 24)) * 100}%` }}
+                  />
+                </div>
                 <span className="fchc-value">{fontSize}</span>
+                {fontSize !== defaultFontSize && (
+                  <button
+                    className="fchc-reset-btn"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setFontSize(defaultFontSize);
+                    }}
+                    title="Reset size"
+                  >
+                    <RotateCcw size={12} strokeWidth={2.5} />
+                  </button>
+                )}
               </div>
 
               {/* 3. Leading (Line Height) */}
               <div className="fchc-pill fchc-control">
                 <span className="fchc-label">Leading</span>
-                <input
-                  type="range"
-                  min="0.8"
-                  max="2.5"
-                  step="0.05"
-                  value={lineHeight}
-                  onChange={(e) => setLineHeight(Number(e.target.value))}
-                  className="fchc-slider"
-                  onClick={(e) => e.stopPropagation()}
-                />
+                <div className="fchc-slider-wrapper">
+                  <input
+                    type="range"
+                    min="0.8"
+                    max="2.5"
+                    step="0.05"
+                    value={lineHeight}
+                    onChange={(e) => setLineHeight(Number(e.target.value))}
+                    className="fchc-slider"
+                    onClick={(e) => e.stopPropagation()}
+                  />
+                  <div 
+                    className="fchc-slider-default-marker"
+                    style={{ left: `${((defaultLineHeight - 0.8) / (2.5 - 0.8)) * 100}%` }}
+                  />
+                </div>
                 <span className="fchc-value">{parseFloat(lineHeight).toFixed(2)}</span>
+                {lineHeight !== defaultLineHeight && (
+                  <button
+                    className="fchc-reset-btn"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setLineHeight(defaultLineHeight);
+                    }}
+                    title="Reset leading"
+                  >
+                    <RotateCcw size={12} strokeWidth={2.5} />
+                  </button>
+                )}
               </div>
 
               {/* 4. Tracking */}
               <div className="fchc-pill fchc-control">
                 <span className="fchc-label">Spacing</span>
-                <input
-                  type="range"
-                  min="-0.5"
-                  max="0.5"
-                  step="0.01"
-                  value={letterSpacing}
-                  onChange={(e) => setLetterSpacing(Number(e.target.value))}
-                  className="fchc-slider"
-                  onClick={(e) => e.stopPropagation()}
-                />
+                <div className="fchc-slider-wrapper">
+                  <input
+                    type="range"
+                    min="-0.5"
+                    max="0.5"
+                    step="0.01"
+                    value={letterSpacing}
+                    onChange={(e) => setLetterSpacing(Number(e.target.value))}
+                    className="fchc-slider"
+                    onClick={(e) => e.stopPropagation()}
+                  />
+                  <div 
+                    className="fchc-slider-default-marker"
+                    style={{ left: `${((defaultLetterSpacing - (-0.5)) / (0.5 - (-0.5))) * 100}%` }}
+                  />
+                </div>
                 <span className="fchc-value">{parseFloat(letterSpacing).toFixed(2)}</span>
+                {letterSpacing !== defaultLetterSpacing && (
+                  <button
+                    className="fchc-reset-btn"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setLetterSpacing(defaultLetterSpacing);
+                    }}
+                    title="Reset spacing"
+                  >
+                    <RotateCcw size={12} strokeWidth={2.5} />
+                  </button>
+                )}
               </div>
             </div>
           )}
