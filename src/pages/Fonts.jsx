@@ -320,18 +320,16 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
                   />
                 </div>
                 <span className="fchc-value">{fontSize}</span>
-                {fontSize !== defaultFontSize && (
-                  <button
-                    className="fchc-reset-btn"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setFontSize(defaultFontSize);
-                    }}
-                    title="Reset size"
-                  >
-                    <RotateCcw size={12} strokeWidth={2.5} />
-                  </button>
-                )}
+                <button
+                  className={`fchc-reset-btn ${fontSize !== defaultFontSize ? 'is-active' : ''}`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setFontSize(defaultFontSize);
+                  }}
+                  title="Reset size"
+                >
+                  <RotateCcw size={12} strokeWidth={2.5} />
+                </button>
               </div>
 
               {/* 3. Leading (Line Height) */}
@@ -354,18 +352,16 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
                   />
                 </div>
                 <span className="fchc-value">{parseFloat(lineHeight).toFixed(2)}</span>
-                {lineHeight !== defaultLineHeight && (
-                  <button
-                    className="fchc-reset-btn"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setLineHeight(defaultLineHeight);
-                    }}
-                    title="Reset leading"
-                  >
-                    <RotateCcw size={12} strokeWidth={2.5} />
-                  </button>
-                )}
+                <button
+                  className={`fchc-reset-btn ${lineHeight !== defaultLineHeight ? 'is-active' : ''}`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setLineHeight(defaultLineHeight);
+                  }}
+                  title="Reset leading"
+                >
+                  <RotateCcw size={12} strokeWidth={2.5} />
+                </button>
               </div>
 
               {/* 4. Tracking */}
@@ -388,18 +384,16 @@ const FontCard = ({ font, globalText, globalFontSize, viewMode, savedIds, toggle
                   />
                 </div>
                 <span className="fchc-value">{parseFloat(letterSpacing).toFixed(2)}</span>
-                {letterSpacing !== defaultLetterSpacing && (
-                  <button
-                    className="fchc-reset-btn"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setLetterSpacing(defaultLetterSpacing);
-                    }}
-                    title="Reset spacing"
-                  >
-                    <RotateCcw size={12} strokeWidth={2.5} />
-                  </button>
-                )}
+                <button
+                  className={`fchc-reset-btn ${letterSpacing !== defaultLetterSpacing ? 'is-active' : ''}`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setLetterSpacing(defaultLetterSpacing);
+                  }}
+                  title="Reset spacing"
+                >
+                  <RotateCcw size={12} strokeWidth={2.5} />
+                </button>
               </div>
             </div>
           )}
