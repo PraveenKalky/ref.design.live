@@ -718,7 +718,7 @@
   align-items: center;
   gap: 6px;
   height: 32px !important;
-  padding: 0 12px;        /* increased from 10px */
+  padding: 0 26px 0 12px; /* right 26px = 12px icon + 10px gap + 4px clearance; left 12px */
   background: #efefef;
   border-radius: 9999px;
   border: none;
@@ -727,6 +727,7 @@
   white-space: nowrap;
   cursor: pointer;
   min-width: 0;           /* allow content to compress */
+  position: relative;     /* anchor for the absolutely-positioned reset button */
 }
 
 .fchc-pill:hover {
@@ -888,10 +889,10 @@
   background-color: rgba(255, 255, 255, 0.25);
 }
 
+/* Reset button — anchored to the pill's right padding zone, outside slider + value flow */
 .fchc-reset-btn {
   position: absolute;
-  right: 100%;
-  margin-right: 8px;
+  right: 10px;           /* sits inside the pill's 12px right padding — clear of value and track */
   top: 50%;
   transform: translateY(-50%);
   background: transparent;
@@ -908,7 +909,6 @@
   visibility: hidden;
   pointer-events: none;
   transition: transform 0.2s ease, opacity 0.15s ease, visibility 0.15s ease;
-  flex-shrink: 0;
   z-index: 10;
 }
 
@@ -989,11 +989,9 @@
   color: rgba(0, 0, 0, 0.7);
   white-space: nowrap;
   flex-shrink: 0;
-  width: 40px;
-  padding-right: 0;
+  width: 36px;            /* fits 4-char values like 1.60, -0.5, 200 */
   text-align: right;
   box-sizing: border-box;
-  position: relative;
 }
 
 /* ── Dark mode overrides ── */
