@@ -510,11 +510,18 @@ const Fonts = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [viewMode, setViewMode] = useState('list');
   const dropdownRef = useRef(null);
+  
+  const [isSortOpen, setIsSortOpen] = useState(false);
+  const [selectedSort, setSelectedSort] = useState("Most recent first");
+  const sortDropdownRef = useRef(null);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsDropdownOpen(false);
+      }
+      if (sortDropdownRef.current && !sortDropdownRef.current.contains(event.target)) {
+        setIsSortOpen(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -641,9 +648,37 @@ const Fonts = () => {
                   <FadersHorizontal size={16} weight="bold" /> Filters
                 </button>
 
-                <button className="fcb-action-btn fcb-sort">
-                  Recent first <CaretUpDown size={16} weight="bold" />
-                </button>
+                <div className="sort-container" ref={sortDropdownRef}>
+                  <button 
+                    className="fcb-action-btn fcb-sort sort-trigger"
+                    onClick={(e) => { e.stopPropagation(); setIsSortOpen(!isSortOpen); }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Escape') setIsSortOpen(false);
+                    }}
+                    aria-haspopup="listbox" 
+                    aria-expanded={isSortOpen}
+                  >
+                    <span id="sortLabel">{selectedSort}</span> <CaretUpDown size={16} weight="bold" />
+                  </button>
+
+                  <div className={`sort-dropdown ${isSortOpen ? 'open' : ''}`} role="listbox">
+                    {['Most recent first', 'Most popular first', 'Alphabetical A-Z', 'Alphabetical Z-A'].map((opt) => (
+                      <button 
+                        key={opt}
+                        role="option"
+                        aria-selected={selectedSort === opt}
+                        className={`sort-option ${selectedSort === opt ? 'selected' : ''}`}
+                        onClick={(e) => { 
+                          e.stopPropagation(); 
+                          setSelectedSort(opt); 
+                          setIsSortOpen(false); 
+                        }}
+                      >
+                        {opt}
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </div>
 
               <span className="top-bar-count">Showing {ITEMS_PER_PAGE} of 3200 fonts</span>
