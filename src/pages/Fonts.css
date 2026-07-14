@@ -171,9 +171,11 @@
   transform: translateX(-50%);
   background: #f0f0f0;
   border-radius: 20px;
+  corner-shape: squircle;
+  -webkit-corner-shape: squircle;
   padding: 12px;
-  width: 220px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+  width: 100%;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -197,6 +199,8 @@
   font-weight: 500;
   padding: 12px 16px;
   border-radius: 9999px;
+  corner-shape: squircle;
+  -webkit-corner-shape: squircle;
   border: none;
   background: #ffffff;
   color: #111;
