@@ -17,6 +17,8 @@
   gap: 16px;
   background: transparent;
   border-radius: 0;
+  corner-shape: squircle;
+  -webkit-corner-shape: squircle;
   cursor: pointer;
   transition: transform 0.2s ease-in-out;
 }
@@ -32,6 +34,8 @@
   overflow: hidden;
   background-color: #1a1a1a;
   border-radius: 0;
+  corner-shape: squircle;
+  -webkit-corner-shape: squircle;
 }
 
 .card-image {
