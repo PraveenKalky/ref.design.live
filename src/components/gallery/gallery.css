@@ -9,7 +9,7 @@
 
 .flow-card {
   background: white;
-  border-radius: 16px;
+  border-radius: 20px;
   corner-shape: squircle;
   -webkit-corner-shape: squircle;
   border: 1px solid var(--color-border);
@@ -31,7 +31,7 @@
   aspect-ratio: 4/3;
   overflow: hidden;
   position: relative;
-  border-radius: 16px 16px 0 0;
+  border-radius: 20px 20px 0 0;
   corner-shape: squircle;
   -webkit-corner-shape: squircle;
   background: var(--color-muted);

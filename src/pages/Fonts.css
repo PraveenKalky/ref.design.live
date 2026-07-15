@@ -345,7 +345,7 @@
 .font-card {
   background: transparent;
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 0 !important;
+  border-radius: 20px !important;
   corner-shape: squircle;
   -webkit-corner-shape: squircle;
   padding: 24px 0;
@@ -1409,7 +1409,7 @@
   padding: 24px;
   height: 400px;
   background: #efefef;
-  border-radius: 8px;
+  border-radius: 20px;
   corner-shape: squircle;
   -webkit-corner-shape: squircle;
   position: relative;
