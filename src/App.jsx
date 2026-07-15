@@ -14,6 +14,7 @@ import Preloader from './components/preloader/Preloader';
 import NotFound from './pages/404/NotFound';
 import HoverTests from './pages/HoverTests';
 import ArcCarousel from './pages/sandbox/ArcCarousel';
+import SliderSandbox from './pages/sandbox/SliderSandbox';
 
 function App() {
   const [showLoader, setShowLoader] = useState(true);
@@ -76,6 +77,7 @@ function App() {
       <Routes>
         {/* Isolated Sandbox Routes */}
         <Route path="/sandbox/arc-carousel" element={<ArcCarousel />} />
+        <Route path="/sandbox/slider" element={<SliderSandbox />} />
 
         {/* Core Layout containing global Navbar and Footer */}
         <Route element={
