@@ -124,6 +124,8 @@
   width: 36px;
   height: 36px;
   border-radius: 8px;
+  corner-shape: squircle;
+  -webkit-corner-shape: squircle;
   background-color: #222;
   object-fit: cover;
 }
