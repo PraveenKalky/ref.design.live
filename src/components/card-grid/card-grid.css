@@ -16,7 +16,7 @@
   flex-direction: column;
   gap: 16px;
   background: transparent;
-  border-radius: 20px;
+  border-radius: 26px;
   corner-shape: squircle;
   -webkit-corner-shape: squircle;
   cursor: pointer;
@@ -33,7 +33,7 @@
   height: 300px;
   overflow: hidden;
   background-color: #1a1a1a;
-  border-radius: 20px;
+  border-radius: 26px;
   corner-shape: squircle;
   -webkit-corner-shape: squircle;
 }
