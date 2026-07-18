@@ -5,6 +5,8 @@ import FontDetailsHero from './FontDetailsHero';
 import FontStylesPreview from './FontStylesPreview';
 import FontSpecimen from './FontSpecimen';
 import FontSpecimenShowcase from './FontSpecimenShowcase';
+import FamilyOverview from './FamilyOverview';
+import RightGroteskFamilyNav from './RightGroteskFamilyNav';
 import GlyphsSection from './GlyphsSection';
 import InformationSection from './InformationSection';
 import './font-details.css';
@@ -33,9 +35,11 @@ const FontDetails = () => {
 
   return (
     <div className="font-details-page">
+      {font?.name === 'Right Grotesk' && <RightGroteskFamilyNav />}
+
       <FontDetailsHero font={font} />
 
-
+      <FamilyOverview font={font} />
 
       <FontStylesPreview font={font} />
 
