@@ -174,13 +174,21 @@ const FontDetailsHero = ({ font }) => {
           <button className="hero-save-btn hover-opt11">
             <span className="txt-wrap" data-text="Save">Save</span>
           </button>
-          <button className="hero-download-btn hover-opt11 download-link">
+          <button className="hero-download-btn hover-opt11">
             <span className="txt-wrap" data-text="Download">Download</span>
-            <span className="arrow-wrap"><ArrowRight size={16} weight="bold" /></span>
           </button>
         </div>
       </div>
       </div>
+
+      <section className="font-intro-section">
+        <div className="font-intro-container">
+          <h1 className="font-intro-title">{font?.name}</h1>
+          <p className="font-intro-description">
+            {font?.description || `${font?.name} is a striking sans serif font family designed by Nikola Kostić. It features forty-five distinct styles, offering immense versatility for modern digital design. Published by Kostic Type Foundry, this premium typeface strikes a perfect balance between legibility and character.`}
+          </p>
+        </div>
+      </section>
 
       <section className="font-details-hero carousel-layout">
         

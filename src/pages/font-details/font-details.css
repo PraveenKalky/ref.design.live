@@ -98,11 +98,7 @@
   white-space: nowrap;
 }
 
-.hero-text-nav {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
+
 
 .hero-save-btn,
 .hero-download-btn {
@@ -156,26 +152,6 @@
   color: #FF3B30;
 }
 
-/* Download arrow logic */
-.download-link {
-  /* removed overflow visible to maintain vertical clip */
-}
-.arrow-wrap {
-  display: inline-flex;
-  overflow: hidden;
-  max-width: 0;
-  opacity: 0;
-  transition: max-width 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  white-space: pre;
-  transform: translateX(-10px);
-  margin-left: 8px;
-  line-height: 24px;
-}
-.download-link:hover .arrow-wrap {
-  max-width: 24px;
-  opacity: 1;
-  transform: translateX(0);
-}
 
 .hero-download-icon {
   opacity: 0;
@@ -253,7 +229,7 @@
   height: auto;
   min-height: 680px;
   background: var(--background, #fff);
-  padding: 80px 0 40px;
+  padding: 8px 0 40px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -417,8 +393,14 @@
 .hero-text-nav {
   display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
+  gap: 8px !important;
   justify-self: center;
+}
+
+.hero-text-nav .nav-item {
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 .hero-buttons-group {
@@ -427,6 +409,42 @@
   gap: 24px;
   flex-wrap: nowrap;
   justify-self: end;
+}
+
+/* ── FONT INTRODUCTION SECTION ── */
+.font-intro-section {
+  width: 100%;
+  padding: 64px 32px 8px 32px;
+  background-color: #ffffff;
+}
+
+.font-intro-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+}
+
+.font-intro-title {
+  font-family: 'Right Grotesk', 'PolySans Neutral', sans-serif;
+  font-size: clamp(48px, 10vw, 120px);
+  font-weight: 500;
+  line-height: 1.1;
+  color: #111111;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.font-intro-description {
+  font-family: 'PolySans Neutral', 'PolySans Trial', sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #444444;
+  margin: 0;
+  width: 100%;
 }
 
 @media (max-width: 1024px) {
