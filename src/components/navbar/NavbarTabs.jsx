@@ -18,7 +18,7 @@ const NavbarTabs = () => {
         { name: 'Apps',        path: '/'      },
         { name: 'Resources',   path: '/'      },
         { name: 'Fonts',       path: '/fonts' },
-        { name: 'UI/UX Tastes',path: '/'      },
+        { name: 'UI/UX Tastes',path: '/ui-tastes' },
     ];
 
     const containerRef = useRef(null);
