@@ -11,6 +11,7 @@ import Fonts from './pages/Fonts';
 import FontDetails from './pages/font-details/FontDetails';
 import UITastesPage from './pages/ui-tastes/UITastesPage';
 import SearchResults from './pages/search-results/SearchResults';
+import Websites from './pages/Websites';
 import Preloader from './components/preloader/Preloader';
 import NotFound from './pages/404/NotFound';
 import HoverTests from './pages/HoverTests';
@@ -99,6 +100,7 @@ function App() {
           } />
           <Route path="/fonts" element={<Fonts />} />
           <Route path="/fonts/:fontId" element={<FontDetails />} />
+          <Route path="/websites" element={<Websites />} />
           <Route path="/ui-tastes" element={<UITastesPage savedItems={savedItems} toggleSave={toggleSave} />} />
           <Route path="/search-results" element={<SearchResults savedItems={savedItems} toggleSave={toggleSave} />} />
           <Route path="/hover-tests" element={<HoverTests />} />
