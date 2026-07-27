@@ -18,6 +18,7 @@ import HoverTests from './pages/HoverTests';
 import ArcCarousel from './pages/sandbox/ArcCarousel';
 import SliderSandbox from './pages/sandbox/SliderSandbox';
 import RightGroteskSandbox from './pages/sandbox/RightGroteskSandbox';
+import Changelog from './pages/changelog/Changelog';
 
 function App() {
   const [showLoader, setShowLoader] = useState(true);
@@ -104,6 +105,7 @@ function App() {
           <Route path="/ui-tastes" element={<UITastesPage savedItems={savedItems} toggleSave={toggleSave} />} />
           <Route path="/search-results" element={<SearchResults savedItems={savedItems} toggleSave={toggleSave} />} />
           <Route path="/hover-tests" element={<HoverTests />} />
+          <Route path="/changelog" element={<Changelog />} />
           
           {/* Fallback route for 404 page now INSIDE the layout */}
           <Route path="*" element={<NotFound />} />
