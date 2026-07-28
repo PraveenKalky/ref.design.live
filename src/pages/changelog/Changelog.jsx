@@ -3,100 +3,165 @@ import './Changelog.css';
 
 const changelogData = [
   {
-    version: '1.4.0',
-    date: 'Tuesday, July 23, 2024',
-    description: 'Performance and accessibility improvements focused on delivering a faster and more inclusive experience.',
-    groups: [
-      {
-        type: 'New',
-        title: 'Features',
-        badgeClass: 'new',
-        items: ['Introduced automated accessibility contrast checker.']
-      },
-      {
-        type: 'Improvement',
-        title: 'Enhancements',
-        badgeClass: 'improvement',
-        items: [
-          'Improved component rendering speeds across the board.',
-          'Enhanced contrast ratios for accessibility compliance.'
-        ]
-      },
-      {
-        type: 'Fix',
-        title: 'Bug Fixes',
-        badgeClass: 'fix',
-        items: ['Fixed minor layout bugs on mobile devices.']
-      }
-    ]
-  },
-  {
-    version: '1.3.0',
-    date: 'Monday, July 15, 2024',
-    description: 'Improved Fonts experience to give you more typographic flexibility.',
-    groups: [
-      {
-        type: 'New',
-        title: 'Features',
-        badgeClass: 'new',
-        items: ['Added PolySans Trial integration for premium typography testing.']
-      },
-      {
-        type: 'Improvement',
-        title: 'Enhancements',
-        badgeClass: 'improvement',
-        items: ['Refactored font loading strategy to reduce layout shift.']
-      }
-    ]
-  },
-  {
-    version: '1.2.0',
-    date: 'Wednesday, July 10, 2024',
-    description: 'Added Websites gallery to showcase the best web design inspiration.',
-    groups: [
-      {
-        type: 'New',
-        title: 'Features',
-        badgeClass: 'new',
-        items: ['New grid layout designed specifically for website inspiration.']
-      },
-      {
-        type: 'Improvement',
-        title: 'Enhancements',
-        badgeClass: 'improvement',
-        items: ['Hover micro-interactions updated for a smoother feel.']
-      }
-    ]
-  },
-  {
     version: '1.1.0',
-    date: 'Friday, July 5, 2024',
-    description: 'Added UI/UX Tastes.',
+    date: 'Tuesday, July 28, 2026',
+    description: 'Introduced the official Change-Log to track project history and refined the layout.',
     groups: [
+      {
+        type: 'New',
+        title: 'Features',
+        badgeClass: 'new',
+        items: ['Added the official Change-Log page to track project history.']
+      },
       {
         type: 'Improvement',
         title: 'Enhancements',
         badgeClass: 'improvement',
         items: [
-          'Refined shadow tokens for depth.',
-          'Added new border radius utilities for more pill shapes.'
+          'Refined typography using PolySans across the Change-Log.',
+          'Adjusted vertical spacing and layout constraints for better readability.'
         ]
       }
     ]
   },
   {
     version: '1.0.0',
-    date: 'Monday, July 1, 2024',
-    description: 'Initial release of the design vault.',
+    date: 'Monday, July 27, 2026',
+    description: 'Integrated the Websites gallery and implemented automated scraping for UI/UX Tastes.',
     groups: [
       {
-        type: 'Release',
-        title: 'Initial Setup',
+        type: 'New',
+        title: 'Features',
         badgeClass: 'new',
         items: [
-          'Core design system setup and token architecture.',
-          'Basic component library built out.'
+          'Integrated Websites Hero Section.',
+          'Implemented real thumbnail scraping and automated migration for UI/UX Tastes.'
         ]
+      },
+      {
+        type: 'Improvement',
+        title: 'Enhancements',
+        badgeClass: 'improvement',
+        items: ['Refined font details layout and spacing.']
+      },
+      {
+        type: 'Fix',
+        title: 'Bug Fixes',
+        badgeClass: 'fix',
+        items: ['Fixed Tailwind dark mode variants in Websites hero wrapper.']
+      }
+    ]
+  },
+  {
+    version: '0.9.0',
+    date: 'Friday, July 24, 2026',
+    description: 'Launched dedicated Font Details pages with interactive showcases and glyph previews.',
+    groups: [
+      {
+        type: 'New',
+        title: 'Features',
+        badgeClass: 'new',
+        items: [
+          'Added dedicated Font Details page with premium hero section and routing.',
+          'Integrated Specimen and Showcase sections with interactive hover-reveal sliders.',
+          'Added dynamic specifications section and interactive font styles preview with hover states.'
+        ]
+      },
+      {
+        type: 'Improvement',
+        title: 'Enhancements',
+        badgeClass: 'improvement',
+        items: ['Redesigned Glyphs UI layout, adding dynamic sizing and dotted guides.']
+      },
+      {
+        type: 'Fix',
+        title: 'Bug Fixes',
+        badgeClass: 'fix',
+        items: ['Resolved font card preview overflow and alignment issues.']
+      }
+    ]
+  },
+  {
+    version: '0.8.0',
+    date: 'Wednesday, July 22, 2026',
+    description: 'Major search engine enhancements and full-screen result overlays.',
+    groups: [
+      {
+        type: 'New',
+        title: 'Features',
+        badgeClass: 'new',
+        items: [
+          'Built dedicated Search Results page with filter tabs and semantic search.',
+          'Added live suggestion dropdown with font/flow/ui matches and keyboard navigation.'
+        ]
+      },
+      {
+        type: 'Improvement',
+        title: 'Enhancements',
+        badgeClass: 'improvement',
+        items: ['Transitioned search overlay to full-screen flat results for better visibility.']
+      },
+      {
+        type: 'Fix',
+        title: 'Bug Fixes',
+        badgeClass: 'fix',
+        items: ['Resolved search layout flickering and implemented smooth open/close animations.']
+      }
+    ]
+  },
+  {
+    version: '0.7.0',
+    date: 'Monday, July 20, 2026',
+    description: 'Introduced the Font Gallery and pagination systems.',
+    groups: [
+      {
+        type: 'New',
+        title: 'Features',
+        badgeClass: 'new',
+        items: [
+          'Implemented Font gallery with 64 font cards and global preview bar.',
+          'Added pagination to Home and Fonts pages with smart dots logic.'
+        ]
+      },
+      {
+        type: 'Improvement',
+        title: 'Enhancements',
+        badgeClass: 'improvement',
+        items: ['Redesigned Fonts page layout to use list-style preview and sidebar filters.']
+      },
+      {
+        type: 'Fix',
+        title: 'Bug Fixes',
+        badgeClass: 'fix',
+        items: ['Refined grid view card layout, alignment, and hover button proportions.']
+      }
+    ]
+  },
+  {
+    version: '0.6.0',
+    date: 'Thursday, July 16, 2026',
+    description: 'Initial platform foundation and core UI component implementation.',
+    groups: [
+      {
+        type: 'New',
+        title: 'Features',
+        badgeClass: 'new',
+        items: [
+          'Implemented full landing page foundation with Hero, Navbar, Filter Bar, and Card Grid.',
+          'Added Login and Register modals with toast notifications and View Transitions animations.'
+        ]
+      },
+      {
+        type: 'Improvement',
+        title: 'Enhancements',
+        badgeClass: 'improvement',
+        items: ['Redesigned navbar tabs to pill shape and added premium hover badges.']
+      },
+      {
+        type: 'Fix',
+        title: 'Bug Fixes',
+        badgeClass: 'fix',
+        items: ['Addressed dark mode active text colors and navigation pill backgrounds.']
       }
     ]
   }
