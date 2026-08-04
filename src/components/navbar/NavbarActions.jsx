@@ -26,6 +26,12 @@ const NavbarActions = ({ savedCount, theme, toggleTheme }) => {
     try { await signOut(); } catch (e) { console.error(e); }
   };
 
+  React.useEffect(() => {
+    const handleOpenLogin = () => setIsLoginOpen(true);
+    window.addEventListener('open-login', handleOpenLogin);
+    return () => window.removeEventListener('open-login', handleOpenLogin);
+  }, []);
+
   return (
     <>
       <div className="nav-right">
@@ -40,7 +46,7 @@ const NavbarActions = ({ savedCount, theme, toggleTheme }) => {
           )}
         </div>
 
-        <button className="submit-pill">Submit</button>
+        <Link to="/submit" className="submit-pill" style={{ textDecoration: 'none' }}>Submit</Link>
 
         {user ? (
           /* ── Logged-in state ── */
